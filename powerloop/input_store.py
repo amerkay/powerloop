@@ -23,7 +23,7 @@ class InputStore():
     """
 
     INPUT_DEFAULTS = {
-        'pointname': ('Arug', 'str'),
+        'pointname': ('*', 'str'),
         'openfarm_slug': ('*', 'str'),
         'age_min_day': (-1, 'int'),
         'age_max_day': (36500, 'int'),
@@ -48,7 +48,7 @@ class InputStore():
         'default_speed': (800, 'int'),
         'use_tsp_greedy': (True, 'bool'),
         'grid_coverage_per_step': ('None', 'str'),
-        'debug': (2, 'int')
+        'debug': (1, 'int')
     }
 
     def __init__(self, farmwarename):
