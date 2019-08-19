@@ -82,7 +82,7 @@ class Plants():
                 b_plantstage = self._filter_plant_stage(p['plant_stage'], plant_stage)
 
                 if (p['name'].lower().find(point_name.lower()) >= 0 or point_name == '*') \
-                    and (p['openfarm_slug'].lower() == openfarm_slug.lower() or openfarm_slug == '*') \
+                    and (p['openfarm_slug'].lower().find(openfarm_slug.lower()) >= 0 or openfarm_slug == '*')\
                     and (age_min_day <= age_day <= age_max_day) and b_meta is True \
                         and b_coordinate_x and b_coordinate_y and b_plantstage:
                     filtered_points.append(p.copy())
