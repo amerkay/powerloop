@@ -27,4 +27,4 @@ Forked from https://github.com/rdegosse/Loop-Plants-With-Filters, thank you @rde
 
 ## Inputs documentation
 
-[See manifest.json](blob/master/manifest.json), includes extra "help" key with more information.
+[See manifest.json](manifest.json), includes extra "help" key with more information.
