@@ -1,7 +1,4 @@
-# import datetime
 import math
-
-# from farmware_tools import app
 
 # import static logger and create shortcut function
 from logger import Logger

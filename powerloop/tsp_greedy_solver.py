@@ -1,5 +1,5 @@
 """
-Greedy algorithm for TSP adapted from author Josh Kelle:
+Greedy algorithm for TSP adapted from Josh Kelle's work at:
 https://github.com/rellermeyer/99tsp/blob/master/python/greedy/greedy.py
 """
 
@@ -45,6 +45,7 @@ def solveGreedyTSP(data):
             should be visited.
         min_dist: The total distance of best_path
     """
+
     best_path = None
     min_dist = None
 

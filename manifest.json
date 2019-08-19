@@ -2,7 +2,7 @@
  "package": "powerloop",
  "language": "python",
  "author": "rdegosse",
- "description": "Loop plants with filters, execute sequences and save meta data",
+ "description": "[FARMWARE] PowerLoop for Farmbot OS: Loop your farmbot by plants with search filters, or by automatic waypoint calculation to cover Plant search results grid area. Features include executing sequences and saving meta data.",
  "version": "1.0.0",
  "min_os_version_major": 7,
  "url": "https://raw.githubusercontent.com/amerkay/powerloop/master/manifest.json",
@@ -31,10 +31,10 @@
   {"name": "save_plant_stage", "label": "Set plant stage (none,planned,planted,sprouted,harvested)", "value": "None"},
   {"name": "offset_x", "label": "Offset X value when moving - (integer, randint(i,j))", "value": 0},
   {"name": "offset_y", "label": "Offset Y value when moving - (integer, randint(i,j))", "value": 0},
-  {"name": "default_z", "label": "default Z axis value when moving", "value": 0},
-  {"name": "default_speed", "label": "default speed value when moving", "value": 800},
+  {"name": "default_z", "label": "Default Z axis value when moving", "value": 0},
+  {"name": "default_speed", "label": "Default speed value when moving", "value": 800},
   {"name": "use_tsp_greedy", "label": "Use Travelling Salesman Problem Greedy algorithm to optimize route? If 'yes', no quotes, TSP Greedy Algorithm will be used", "value": "True"},
-  {"name": "grid_coverage_per_step", "label": "Grid coverage (x, y) per step. E.g for camera field of view enter '(200, 280)', no quotes.", "value": "None"},
+  {"name": "grid_coverage_per_step", "label": "Grid coverage (x, y) per step. E.g for camera field of view enter '(200, 280). ALWAYS set value in sequence setup.', no quotes.", "value": "None"},
   {"name": "debug", "label": "Debug (0-> No FW debug msg, 1-> FW debug msg, 2-> No Move/exec and FW debug msg only)", "value": 1}
   ]
 }

@@ -1,4 +1,6 @@
 class FakePlants():
+    """ FakePlants JSON for use in local testing/debugging. """
+
     @staticmethod
     def get_fake_plants():
         return [{

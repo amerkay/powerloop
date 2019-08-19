@@ -21,7 +21,7 @@ Forked from https://github.com/rdegosse/Loop-Plants-With-Filters, thank you @rde
     - Save plant_stage value if required
 - Execute End Sequences
 
-![Travelling Salesman Solution](https://i.imgur.com/7lyVWwf.jpg)
+![Travelling Salesman Solution](tsp_greedy_farmware_screenshot.jpg)
 *Fig. 1: Travelling Salesman Solution to filtered list of plants*
 
 

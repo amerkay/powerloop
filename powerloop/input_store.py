@@ -2,6 +2,7 @@ import os
 import re
 import random
 
+# import static logger and create shortcut function
 from logger import Logger
 log = Logger.log
 
