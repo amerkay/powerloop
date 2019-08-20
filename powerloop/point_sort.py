@@ -17,7 +17,15 @@ log = Logger.log
 
 class PointSort():
     @staticmethod
-    def sort_points(points):
+    def sort_points(points, use_tsp_solver=True):
+        """ Sort the points """
+        if (use_tsp_solver is True):
+            return PointSort.sort_points_tsp_greedy(points)
+        else:
+            return PointSort.sort_points_basic(points)
+
+    @staticmethod
+    def sort_points_basic(points):
         """ Sort points using basic x, y sorting.
 
         Arguments:

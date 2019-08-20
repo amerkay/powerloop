@@ -42,7 +42,7 @@ def run_points_loop(points, sexec, run_after_each=None, use_tsp_solver=True):
         run_after_each {method} -- Method to run after each move (default: {None})
         use_tsp_solver {bool} -- Use TSP Solver instead of regular sort (default: {True})
     """
-    points_sorted = sort_points(points, use_tsp_solver)
+    points_sorted = PointSort.sort_points(points, use_tsp_solver)
 
     if len(points_sorted) > 0:
         sexec.execute_sequence_init()
@@ -57,14 +57,6 @@ def run_points_loop(points, sexec, run_after_each=None, use_tsp_solver=True):
                 run_after_each(p)
 
         sexec.execute_sequence_end()
-
-
-def sort_points(points, use_tsp_solver=True):
-    """ Sort the points """
-    if (use_tsp_solver is True):
-        return PointSort.sort_points_tsp_greedy(points)
-    else:
-        return PointSort.sort_points(points)
 
 
 if __name__ == "__main__":

@@ -2,7 +2,7 @@
 
 Loop your Farmbot by plants with filters, or by automatic waypoint calculation to cover plant search results grid area.
 
-> FARMBOT_OS 7 minimum for now as we are using python3.7. Please open an issue with problems with other versions.
+> FARMBOT_OS 6. Tested only on 7.0.1 for now. Should work on 6. Please open an issue with problems with other versions.
 
 > Originally forked from https://github.com/rdegosse/Loop-Plants-With-Filters, thank you @rdegosse!
 
