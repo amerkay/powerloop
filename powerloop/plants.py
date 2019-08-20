@@ -196,6 +196,10 @@ class Plants():
             save_point = self._update_save_meta(point)
             save_point = self._update_save_plant_stage(point, save_point)
 
+            if len(save_point) < 2:
+                log('Nothing to save: {}'.format(save_point), title='save_plant')
+                return
+
             log('Saving Point: {}'.format(save_point), title='save_plant')
 
             if Logger.LOGGER_LEVEL < 2:
@@ -204,6 +208,7 @@ class Plants():
             else:
                 time.sleep(2)
                 log('Slept 2s for: {}'.format(save_point), title='save_plant')
+
         except Exception as e:
             log('Exception thrown: {}'.format(e), 'error', title='save_plant')
             raise e
