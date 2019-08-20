@@ -3,7 +3,7 @@
     "language": "python",
     "author": "amerkay",
     "description": "PowerLoop for Farmbot: Loop your farmbot by plants with search filters, or by automatic waypoint calculation to cover Plant search results grid area. Features include executing sequences and saving meta data.",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "min_os_version_major": 6,
     "url": "https://raw.githubusercontent.com/amerkay/powerloop/master/manifest.json",
     "zip": "https://github.com/amerkay/powerloop/archive/master.zip",
@@ -172,9 +172,9 @@
     },
     {
         "name": "default_speed",
-        "label": "Default speed value when moving",
+        "label": "Default speed value when moving. Percent of max speed (1-100)",
         "help": [""],
-        "value": 800
+        "value": 100
     },
     {
         "name": "use_tsp_greedy",

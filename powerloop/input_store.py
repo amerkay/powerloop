@@ -45,7 +45,7 @@ class InputStore():
         'offset_x': ('None', 'int'),
         'offset_y': ('None', 'int'),
         'default_z': (0, 'int'),
-        'default_speed': (800, 'int'),
+        'default_speed': (100, 'int'),
         'use_tsp_greedy': (True, 'bool'),
         'grid_coverage_per_step': ('None', 'str'),
         'debug': (1, 'int')
