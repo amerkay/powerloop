@@ -80,7 +80,6 @@ if __name__ == "__main__":
         # function to pass to run_points_loop() to run after each move
         def run_after_each(p):
             executor.submit(plants.save_plant, p)
-            # plants.save_plant(p)
 
         # use points resulting from points_grid if used (returns not None)
         run_points_loop(points=points_grid if points_grid else points_plants,

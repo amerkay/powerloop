@@ -202,12 +202,9 @@ class Plants():
 
             log('Saving Point: {}'.format(save_point), title='save_plant')
 
-            if Logger.LOGGER_LEVEL < 2:
+            if Logger.LOGGER_LEVEL < 2 or True:
                 endpoint = 'points/{}'.format(save_point['id'])
                 app.put(endpoint, payload=save_point)
-            else:
-                time.sleep(2)
-                log('Slept 2s for: {}'.format(save_point), title='save_plant')
 
         except Exception as e:
             log('Exception thrown: {}'.format(e), 'error', title='save_plant')
