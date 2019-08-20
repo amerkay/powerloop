@@ -1,6 +1,6 @@
 import re
-import asyncio
 import time
+import random
 
 from datetime import datetime as dt
 from farmware_tools import app
@@ -164,42 +164,46 @@ class Plants():
 
         return True
 
-    def save_meta(self, point):
+    def _update_save_meta(self, point, save_point={}):
         if self.input['save_meta_key'] is not None:
             save_meta_key = str(self.input['save_meta_key']).lower()
             save_meta_value = self.input['save_meta_value'].lower()
 
-            save_point = {'id': point['id'], 'meta': {}}
+            save_point = {'id': point['id'], 'meta': {}} if len(save_point) < 1 else save_point
+
             save_point['meta'][save_meta_key] = str(dt.utcnow()) if save_meta_value == "#now#" else save_meta_value
 
-            log('Saving Meta Information: {}'.format(save_point), title='save_meta')
+        return save_point
 
-            if Logger.LOGGER_LEVEL < 2:
-                endpoint = 'points/{}'.format(point['id'])
-                app.put(endpoint, payload=save_point)
-
-    def save_plant_stage(self, point):
+    def _update_save_plant_stage(self, point, save_point={}):
         if self.input['save_plant_stage'] is not None:
             save_plant_stage = str(self.input['save_plant_stage']).lower()
-            save_point = {'id': point['id']}
+            save_point = {'id': point['id']} if len(save_point) < 1 else save_point
 
             if save_plant_stage in ('planned', 'planted', 'sprouted', 'harvested'):
                 save_point['plant_stage'] = save_plant_stage
 
                 if save_plant_stage == 'planted':
                     save_point['planted_at'] = str(dt.utcnow())
-
-                log('Saving Plant Stage: {}'.format(save_point), title='save_plant_stage')
-
-                if Logger.LOGGER_LEVEL < 2:
-                    endpoint = 'points/{}'.format(point['id'])
-                    app.put(endpoint, payload=save_point)
-                else:
-                    time.sleep(2)
-                    log('Slept 2s for: {}'.format(save_point), title='save_plant_stage')
             else:
-                log('Wrong save_plant_stage value: {}'.format(save_plant_stage),
-                    'error',
+                log('Wrong save_plant_stage value: {}'.format(save_plant_stage), 'error',
                     title='save_plant_stage')
-        else:
-            log('Plant Stage: Nothing to save', title='save_plant_stage')
+
+        return save_point
+
+    def save_plant(self, point):
+        try:
+            save_point = self._update_save_meta(point)
+            save_point = self._update_save_plant_stage(point, save_point)
+
+            log('Saving Point: {}'.format(save_point), title='save_plant')
+
+            if Logger.LOGGER_LEVEL < 2:
+                endpoint = 'points/{}'.format(save_point['id'])
+                app.put(endpoint, payload=save_point)
+            else:
+                time.sleep(2)
+                log('Slept 2s for: {}'.format(save_point), title='save_plant')
+        except Exception as e:
+            log('Exception thrown: {}'.format(e), 'error', title='save_plant')
+            raise e

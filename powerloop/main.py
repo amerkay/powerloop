@@ -1,8 +1,8 @@
 import os
 import sys
-import asyncio
-
 from traceback import format_exc
+import concurrent.futures
+
 from plants import Plants
 from grid_points import GridPoints
 from input_store import InputStore
@@ -60,39 +60,35 @@ if __name__ == "__main__":
         # create SequenceExecutor instance
         sexec = SequenceExecutor(FARMWARE_NAME, input_store)
 
-        log('Start...', message_type='info', title=FARMWARE_NAME)
-        log('==> Python Version {}'.format(sys.version_info), message_type='success', title=FARMWARE_NAME)
+        log('Start... Python Version {}'.format(sys.version_info), message_type='info', title="init")
 
         # create Plants class instance
         plants = Plants(FARMWARE_NAME, input_store)
         grid_points = GridPoints(FARMWARE_NAME, input_store)
+        executor = concurrent.futures.ProcessPoolExecutor(max_workers=4)
     except Exception as e:
-        log("exception: {}, traceback: {}".format(e, format_exc()),
-            message_type='error',
-            title=FARMWARE_NAME + " : init")
+        log("Exception thrown: {}, traceback: {}".format(e, format_exc()), message_type='error', title="init")
         raise Exception(e)
-    else:
-        try:
-            # load the plants
-            points_plants = plants.load_points_with_filters()
 
-            # Use plants loaded to choose grid waypoints
-            points_grid = grid_points.calc_points_from_points(points_plants)
+    try:
+        # load the plants
+        points_plants = plants.load_points_with_filters()
 
-            # function to pass to run_points_loop() to run after each move
-            def run_after_each(p):
-                plants.save_meta(p)
-                plants.save_plant_stage(p)
+        # Use plants loaded to choose grid waypoints
+        points_grid = grid_points.calc_points_from_points(points_plants)
 
-            # use points resulting from points_grid if used (returns not None)
-            run_points_loop(points=points_grid if points_grid else points_plants,
-                            sexec=sexec,
-                            run_after_each=run_after_each if points_grid is None else None,
-                            use_tsp_solver=input_store.input['use_tsp_greedy'])
-        except Exception as e:
-            log("exception: {}, traceback: {}".format(e, format_exc()),
-                message_type='error',
-                title=FARMWARE_NAME + " : runtime")
-            raise Exception(e)
+        # function to pass to run_points_loop() to run after each move
+        def run_after_each(p):
+            executor.submit(plants.save_plant, p)
+            # plants.save_plant(p)
+
+        # use points resulting from points_grid if used (returns not None)
+        run_points_loop(points=points_grid if points_grid else points_plants,
+                        sexec=sexec,
+                        run_after_each=run_after_each if points_grid is None else None,
+                        use_tsp_solver=input_store.input['use_tsp_greedy'])
+    except Exception as e:
+        log("exception: {}, traceback: {}".format(e, format_exc()), message_type='error', title="runtime")
+        raise Exception(e)
 
     log('End...', message_type='info', title=FARMWARE_NAME)
