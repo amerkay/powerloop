@@ -58,7 +58,7 @@ class InputStore():
 
     def get_input_env(self):
         """ Get input variables values. """
-        prefix = self.farmwarename.lower().replace('-', '_')
+        prefix = self.farmwarename.replace('-', '_')
 
         # get all inputs values
         for key, settings in InputStore.INPUT_DEFAULTS.items():

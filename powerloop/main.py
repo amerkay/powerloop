@@ -30,6 +30,9 @@ from point_sort import PointSort
 from logger import Logger
 log = Logger.log
 
+# Farmware name, must be same as "package" attribe in manifest.json
+FARMWARE_NAME = "PowerLoop"
+
 
 def run_points_loop(points, sexec, run_after_each=None, use_tsp_solver=True):
     """ Loop all the points loaded, and execute sequences.
@@ -60,13 +63,6 @@ def run_points_loop(points, sexec, run_after_each=None, use_tsp_solver=True):
 
 
 if __name__ == "__main__":
-
-    # get farmware name from path
-    FARMWARE_NAME = "powerloop-dev"
-    try:
-        FARMWARE_NAME = ((__file__.split(os.sep))[len(__file__.split(os.sep)) - 3]).replace('-master', '')
-    except:
-        pass
 
     Logger.FARMWARE_NAME = FARMWARE_NAME
 
