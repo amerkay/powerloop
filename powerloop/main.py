@@ -31,7 +31,7 @@ from logger import Logger
 log = Logger.log
 
 # Farmware name, must be same as "package" attribe in manifest.json
-FARMWARE_NAME = "PowerLoop"
+FARMWARE_NAME = "powerloop"
 
 
 def run_points_loop(points, sexec, run_after_each=None, use_tsp_solver=True):
