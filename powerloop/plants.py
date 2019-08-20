@@ -1,8 +1,10 @@
 import re
+import asyncio
+import time
 
 from datetime import datetime as dt
 from farmware_tools import app
-# from fake_plants import FakePlants
+from fake_plants import FakePlants
 
 # import static logger and create shortcut function
 from logger import Logger
@@ -23,7 +25,7 @@ class Plants():
     def load_points_with_filters(self):
         points = app.post('points/search', payload={'pointer_type': 'Plant'})
 
-        # points = FakePlants.get_fake_plants() if Logger.LOGGER_LEVEL == 2 else points
+        points = FakePlants.get_fake_plants() if Logger.LOGGER_LEVEL == 2 else points
 
         # this is for local debugging purposes
         if isinstance(points, str):
@@ -192,6 +194,9 @@ class Plants():
                 if Logger.LOGGER_LEVEL < 2:
                     endpoint = 'points/{}'.format(point['id'])
                     app.put(endpoint, payload=save_point)
+                else:
+                    time.sleep(2)
+                    log('Slept 2s for: {}'.format(save_point), title='save_plant_stage')
             else:
                 log('Wrong save_plant_stage value: {}'.format(save_plant_stage),
                     'error',

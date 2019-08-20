@@ -23,7 +23,7 @@ class InputStore():
     """
 
     INPUT_DEFAULTS = {
-        'pointname': ('*', 'str'),
+        'pointname': ('arug', 'str'),
         'openfarm_slug': ('*', 'str'),
         'age_min_day': (-1, 'int'),
         'age_max_day': (36500, 'int'),
@@ -41,14 +41,14 @@ class InputStore():
         'sequence_end': ('None', 'list'),
         'save_meta_key': ('None', 'str'),
         'save_meta_value': ('None', 'str'),
-        'save_plant_stage': ('None', 'str'),
+        'save_plant_stage': ('sprouted', 'str'),
         'offset_x': ('None', 'int'),
         'offset_y': ('None', 'int'),
         'default_z': (0, 'int'),
         'default_speed': (100, 'int'),
         'use_tsp_greedy': (True, 'bool'),
         'grid_coverage_per_step': ('None', 'str'),
-        'debug': (1, 'int')
+        'debug': (2, 'int')
     }
 
     def __init__(self, farmwarename):

@@ -1,6 +1,8 @@
 import os
-from traceback import format_exc
+import sys
+import asyncio
 
+from traceback import format_exc
 from plants import Plants
 from grid_points import GridPoints
 from input_store import InputStore
@@ -59,6 +61,7 @@ if __name__ == "__main__":
         sexec = SequenceExecutor(FARMWARE_NAME, input_store)
 
         log('Start...', message_type='info', title=FARMWARE_NAME)
+        log('==> Python Version {}'.format(sys.version_info), message_type='success', title=FARMWARE_NAME)
 
         # create Plants class instance
         plants = Plants(FARMWARE_NAME, input_store)
