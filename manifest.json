@@ -3,24 +3,30 @@
     "language": "python",
     "author": "amerkay",
     "description": "PowerLoop for Farmbot: Loop your farmbot by plants with search filters, or by automatic waypoint calculation to cover Plant search results grid area. Features include executing sequences and saving meta data.",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "min_os_version_major": 6,
     "url": "https://raw.githubusercontent.com/amerkay/powerloop/master/manifest.json",
     "zip": "https://github.com/amerkay/powerloop/archive/master.zip",
     "executable": "python",
-    "args": ["powerloop-master/powerloop/main.py"],
+    "args": [
+        "powerloop-master/powerloop/main.py"
+    ],
     "config": [
     {
         "name": "pointname",
         "label": "Filter by plant name, case insensitive. 'aru' matches 'Arugula', * for all.",
         "value": "*",
-        "help": ["Uses string contains. "]
+        "help": [
+            "Uses string contains. "
+        ]
     },
     {
         "name": "openfarm_slug",
         "label": "Filter by Openfarm slug name, case insensitive. 'aru' matches 'Arugula', * for all.",
         "value": "*",
-        "help": [""],
+        "help": [
+            ""
+        ]
     },
     {
         "name": "age_min_day",
@@ -98,9 +104,9 @@
         "name": "sequence_init",
         "label": "Init Sequences, one-time execution. Eg. 'SeqName1, SeqName2'",
         "help": [
-          "Default: 'None' -> no execute sequence",
-          "Sequence name matched using equals, case-insensitive.",
-          "Can be an ordered list of sequences with ',' seperator. Eg. 'Seq1,Seq2,...'"
+            "Default: 'None' -> no execute sequence",
+            "Sequence name matched using equals, case-insensitive.",
+            "Can be an ordered list of sequences with ',' seperator. Eg. 'Seq1,Seq2,...'"
         ],
         "value": "None"
     },
@@ -108,9 +114,9 @@
         "name": "sequence_beforemove",
         "label": "Sequences Before Next Move, for each plant. Eg. 'SeqName1, SeqName2'",
         "help": [
-          "Default: 'None' -> no execute sequence",
-          "Sequence name matched using equals, case-insensitive.",
-          "Can be an ordered list of sequences with ',' seperator. Eg. 'Seq1,Seq2,...'"
+            "Default: 'None' -> no execute sequence",
+            "Sequence name matched using equals, case-insensitive.",
+            "Can be an ordered list of sequences with ',' seperator. Eg. 'Seq1,Seq2,...'"
         ],
         "value": "None"
     },
@@ -119,18 +125,18 @@
         "label": "Sequences After Move, for each plant. Eg. 'SeqName1, SeqName2'",
         "value": "None",
         "help": [
-          "Default: 'None' -> no execute sequence",
-          "Sequence name matched using equals, case-insensitive.",
-          "Can be an ordered list of sequences with ',' seperator. Eg. 'Seq1,Seq2,...'"
-        ],
+            "Default: 'None' -> no execute sequence",
+            "Sequence name matched using equals, case-insensitive.",
+            "Can be an ordered list of sequences with ',' seperator. Eg. 'Seq1,Seq2,...'"
+        ]
     },
     {
         "name": "sequence_end",
         "label": "End Sequences, one-time execution. Eg. 'SeqName1, SeqName2'",
         "help": [
-          "Default: 'None' -> no execute sequence",
-          "Sequence name matched using equals, case-insensitive.",
-          "Can be an ordered list of sequences with ',' seperator. Eg. 'Seq1,Seq2,...'"
+            "Default: 'None' -> no execute sequence",
+            "Sequence name matched using equals, case-insensitive.",
+            "Can be an ordered list of sequences with ',' seperator. Eg. 'Seq1,Seq2,...'"
         ],
         "value": "None"
     },
@@ -144,24 +150,30 @@
         "name": "save_meta_value",
         "label": "Save in meta data : value (str / #NOW#)",
         "value": "None",
-        "help": [""],
+        "help": [""]
     },
     {
         "name": "save_plant_stage",
         "label": "Set plant stage (None, planned, planted, sprouted, harvested)",
-        "help": ["If planted, 'planted_at' property is changed to now UTC (like web app)"],
+        "help": [
+            "If planted, 'planted_at' property is changed to now UTC (like web app)"
+        ],
         "value": "None"
     },
     {
         "name": "offset_x",
         "label": "Offset X value when moving - (integer, randint(i,j))",
-        "help": ["Optional: set to 'randint(i,j)' no quotes, returns a random integer N such that i <= N <= j."],
+        "help": [
+            "Optional: set to 'randint(i,j)' no quotes, returns a random integer N such that i <= N <= j."
+        ],
         "value": 0
     },
     {
         "name": "offset_y",
         "label": "Offset Y value when moving - (integer, randint(i,j))",
-        "help": ["Optional: set to 'randint(i,j)' no quotes, returns a random integer N such that i <= N <= j."],
+        "help": [
+            "Optional: set to 'randint(i,j)' no quotes, returns a random integer N such that i <= N <= j."
+        ],
         "value": 0
     },
     {
@@ -173,21 +185,23 @@
     {
         "name": "default_speed",
         "label": "Default speed value when moving. Percent of max speed (1-100)",
-        "help": [""],
-        "value": 100
+        "value": 100,
+        "help": [""]
     },
     {
         "name": "use_tsp_greedy",
         "label": "Use Travelling Salesman Problem Greedy algorithm to optimize route? If 'yes', no quotes, TSP Greedy Algorithm will be used.",
-        "help": ["Default: True -> use TSPGreedy, rather than sort(x,y). See README, Fig. 1."],
+        "help": [
+            "Default: True -> use TSPGreedy, rather than sort(x,y). See README, Fig. 1."
+        ],
         "value": "True"
     },
     {
         "name": "grid_coverage_per_step",
         "label": "Grid coverage (x, y) per step. E.g for camera field of view enter '(200, 280). ALWAYS set value in sequence setup.', no quotes.",
         "help": [
-          "Default: 'None' to disable grid coverage. Uses the default plant search and filter for the points data.",
-          "Grid coverage (x, y) per step. E.g for camera field of view enter '(200, 280)', no quotes, depending on your z axis height for camera FoV. If set it uses the results of Plant filtering, then calculates waypoints based on grid_coverage_per_step value."
+            "Default: 'None' to disable grid coverage. Uses the default plant search and filter for the points data.",
+            "Grid coverage (x, y) per step. E.g for camera field of view enter '(200, 280)', no quotes, depending on your z axis height for camera FoV. If set it uses the results of Plant filtering, then calculates waypoints based on grid_coverage_per_step value."
         ],
         "value": "None"
     },
@@ -195,9 +209,9 @@
         "name": "debug",
         "label": "Debug mode (0-> No FW debug msg, 1-> FW debug msg, 2-> No Move/exec and FW debug msg only)",
         "help": [
-          "0 -> no farmware debug log",
-          "1 -> farmware debug log",
-          "2 -> simulation : no move, no execute sequence, no save meta data AND only farmware debug log"
+            "0 -> no farmware debug log",
+            "1 -> farmware debug log",
+            "2 -> simulation : no move, no execute sequence, no save meta data AND only farmware debug log"
         ],
         "value": 1
     }]
