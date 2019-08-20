@@ -202,7 +202,7 @@ class Plants():
 
             log('Saving Point: {}'.format(save_point), title='save_plant')
 
-            if Logger.LOGGER_LEVEL < 2 or True:
+            if Logger.LOGGER_LEVEL < 2:
                 endpoint = 'points/{}'.format(save_point['id'])
                 app.put(endpoint, payload=save_point)
 

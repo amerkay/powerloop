@@ -65,6 +65,9 @@ if __name__ == "__main__":
         # create Plants class instance
         plants = Plants(FARMWARE_NAME, input_store)
         grid_points = GridPoints(FARMWARE_NAME, input_store)
+
+        # start a concurrent task executor, with pool size 4
+        # Example at https://github.com/goutomroy/digging_asyncio/blob/master/process_pool_executor.py
         executor = concurrent.futures.ProcessPoolExecutor(max_workers=4)
     except Exception as e:
         log("Exception thrown: {}, traceback: {}".format(e, format_exc()), message_type='error', title="init")
@@ -79,6 +82,7 @@ if __name__ == "__main__":
 
         # function to pass to run_points_loop() to run after each move
         def run_after_each(p):
+            # add function to task executor
             executor.submit(plants.save_plant, p)
 
         # use points resulting from points_grid if used (returns not None)
