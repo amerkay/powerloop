@@ -94,8 +94,8 @@ if __name__ == "__main__":
         plants = Plants(FARMWARE_NAME, input_store)
         grid_points = GridPoints(FARMWARE_NAME, input_store)
 
-        # start a concurrent task executor, with pool size 4
-        # Example at https://github.com/goutomroy/digging_asyncio/blob/master/process_pool_executor.py
+        # Start a concurrent task executor, with pool size 4
+        # Example at doc @ https://docs.python.org/3/library/concurrent.futures.html
         executor = concurrent.futures.ProcessPoolExecutor(max_workers=4)
     except Exception as e:
         log("Exception thrown: {}, traceback: {}".format(e, format_exc()), message_type='error', title="init")
@@ -131,4 +131,6 @@ if __name__ == "__main__":
         log("exception: {}, traceback: {}".format(e, format_exc()), message_type='error', title="runtime")
         raise Exception(e)
 
+    # shutdown executor
+    executor.shutdown()
     log('End', message_type='success', title=FARMWARE_NAME)
