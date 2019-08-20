@@ -1,3 +1,14 @@
+""" SequenceExecutor class
+
+Includes methods for loading the sequence ids and executing the init, before move, after move, end
+list of sequences input.
+
+Source: https://github.com/rdegosse/Loop-Plants-With-Filters, thank you @rdegosse!
+
+Variables:
+    log {method} -- A reference function Logger().log()
+"""
+
 from farmware_tools import app
 from farmware_tools import device
 
@@ -7,8 +18,6 @@ log = Logger.log
 
 
 class SequenceExecutor():
-    """ SequenceExecutor class to execute list of sequences [] """
-
     def __init__(self, farmwarename, input_store):
         self.farmwarename = farmwarename
         self.input_store = input_store

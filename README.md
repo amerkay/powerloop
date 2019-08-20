@@ -4,7 +4,7 @@ Loop your Farmbot by plants with filters, or by automatic waypoint calculation t
 
 > FARMBOT_OS 7 minimum for now as we are using python3.7. Please open an issue with problems with other versions.
 
-> Forked from https://github.com/rdegosse/Loop-Plants-With-Filters, thank you @rdegosse!
+> Originally forked from https://github.com/rdegosse/Loop-Plants-With-Filters, thank you @rdegosse!
 
 
 ## PowerLoop's Features

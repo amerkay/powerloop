@@ -1,10 +1,21 @@
+""" Plants class
+
+Uses API call POST points/search to load all Plants.
+Then apply_filters() uses the settings loaded from input_store to keep the matching subset.
+
+Uses farmware_tools to control device and contact app API.
+
+Source: https://github.com/rdegosse/Loop-Plants-With-Filters, thank you @rdegosse!
+
+Variables:
+    log {method} -- A reference function Logger().log()
+"""
+
 import re
-import time
-import random
 
 from datetime import datetime as dt
 from farmware_tools import app
-from fake_plants import FakePlants
+# from fake_plants import FakePlants
 
 # import static logger and create shortcut function
 from logger import Logger
@@ -12,12 +23,13 @@ log = Logger.log
 
 
 class Plants():
-    """
-    Main class to load with filters and loop plants
-
-    Adapted from https://github.com/rdegosse/Loop-Plants-With-Filters, thank you @rdegosse!
-    """
     def __init__(self, farmwarename, input_store):
+        """ Plants class constructor
+
+        Arguments:
+            farmwarename {str} -- Farmware name
+            input_store {InputStore instance} -- for loading the user settings
+        """
         self.farmwarename = farmwarename
         self.input_store = input_store
         self.input = input_store.input
@@ -25,7 +37,7 @@ class Plants():
     def load_points_with_filters(self):
         points = app.post('points/search', payload={'pointer_type': 'Plant'})
 
-        points = FakePlants.get_fake_plants() if Logger.LOGGER_LEVEL == 2 else points
+        # points = FakePlants.get_fake_plants() if Logger.LOGGER_LEVEL == 2 else points
 
         # this is for local debugging purposes
         if isinstance(points, str):
@@ -49,6 +61,7 @@ class Plants():
 
         log('filters applied, resulting in {} points'.format(len(points_out)),
             title='load_points_with_filters')
+
         # log(self.points, title='load_points_with_filters')
         return points_out
 
@@ -105,17 +118,15 @@ class Plants():
         return True
 
     def _filter_coordinates(self, p_coord, min_coord, max_coord):
-        """ Filter point p by min and max
-
-        [description]
+        """ Test point p against min and max coordinates
 
         Arguments:
-            p_coord {int} -- point coordinate p['x'] or 'y'
+            p_coord {int} -- point coordinate, example p['x']
             min_coord {int} -- min coordinate value allowed
             max_coord {int} -- max coordinate value allowed
 
         Returns:
-            bool -- True if match or None, False if not match
+            bool -- True if match or None, False if not a match
         """
         if None not in (min_coord, max_coord, p_coord):
             if int(min_coord) <= int(p_coord) <= int(max_coord):
@@ -127,6 +138,18 @@ class Plants():
         return False
 
     def _filter_meta(self, p, meta_key, meta_value):
+        """ Test point p against meta_key, meta_value
+
+        Uses value from self.input['filter_meta_op'] to choose the comparision method used.
+
+        Arguments:
+            p {set} -- Celeryscript Point JSON object
+            meta_key {str} -- Comparision key
+            meta_value {str} -- Comparision value
+
+        Returns:
+            bool -- True if match or None, False if not a match
+        """
         if None not in (p, meta_key, meta_value):
             try:
                 target_age_in_seconds = \
@@ -165,6 +188,17 @@ class Plants():
         return True
 
     def _update_save_meta(self, point, save_point={}):
+        """ Creates or appends 'save_meta' data and returns ammended save_point set
+
+        Arguments:
+            point {set} -- Celeryscript Point JSON object
+
+        Keyword Arguments:
+            save_point {dict} -- [description] (default: {{}})
+
+        Returns:
+            {set} -- Ammended save_point set with the updates to be posted via API call
+        """
         if self.input['save_meta_key'] is not None:
             save_meta_key = str(self.input['save_meta_key']).lower()
             save_meta_value = self.input['save_meta_value'].lower()
@@ -176,6 +210,18 @@ class Plants():
         return save_point
 
     def _update_save_plant_stage(self, point, save_point={}):
+        """ Creates or appends 'save_plant_stage' data and returns ammended save_point set.
+
+        Arguments:
+            point {set} -- Celeryscript Point JSON object
+
+        Keyword Arguments:
+            save_point {dict} -- Optional, use if you already have a save_point created
+                                 you'd like to append to (default: {{}})
+
+        Returns:
+            {set} -- Ammended save_point set with the updates to be posted via API call
+        """
         if self.input['save_plant_stage'] is not None:
             save_plant_stage = str(self.input['save_plant_stage']).lower()
             save_point = {'id': point['id']} if len(save_point) < 1 else save_point
@@ -192,6 +238,14 @@ class Plants():
         return save_point
 
     def save_plant(self, point):
+        """ Execute the PUT points/{id} API call.
+
+        Arguments:
+            point {set} -- Celeryscript Point JSON object to update
+
+        Raises:
+            e -- exception
+        """
         try:
             save_point = self._update_save_meta(point)
             save_point = self._update_save_plant_stage(point, save_point)
@@ -202,7 +256,7 @@ class Plants():
 
             log('Saving Point: {}'.format(save_point), title='save_plant')
 
-            if Logger.LOGGER_LEVEL < 2:
+            if Logger.LOGGER_LEVEL < 3:
                 endpoint = 'points/{}'.format(save_point['id'])
                 app.put(endpoint, payload=save_point)
 

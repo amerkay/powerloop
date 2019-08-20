@@ -2,8 +2,8 @@
     "package": "powerloop",
     "language": "python",
     "author": "amerkay",
-    "description": "PowerLoop for Farmbot: Loop your farmbot by plants with search filters, or by automatic waypoint calculation to cover Plant search results grid area. Features include executing sequences and saving meta data.",
-    "version": "1.0.9",
+    "description": "PowerLoop for Farmbot: Loop your farmbot by plants with search filters, or by automatic waypoint calculation to cover Plant search results grid area. Features include executing sequences and saving meta data. The code is as annotated as could be, so have a look at https://github.com/amerkay/powerloop/",
+    "version": "1.0.10",
     "min_os_version_major": 7,
     "url": "https://raw.githubusercontent.com/amerkay/powerloop/master/manifest.json",
     "zip": "https://github.com/amerkay/powerloop/archive/master.zip",
@@ -193,11 +193,12 @@
     },
     {
         "name": "debug",
-        "label": "Debug mode (0-> No FW debug msg, 1-> FW debug msg, 2-> No Move/exec and FW debug msg only)",
+        "label": "Debug mode (0-> No FW debug msg, 1-> FW debug msg, 2-> No move/exec - do save point data, 3-> simulation, log only)",
         "help": [
           "0 -> no farmware debug log",
           "1 -> farmware debug log",
-          "2 -> simulation : no move, no execute sequence, no save meta data AND only farmware debug log"
+          "2 -> no move, no execute sequences. Do save point data and farmware debug log",
+          "3 -> simulation mode. No move, no execute sequence, no save meta data. Enable farmware debug log"
         ],
         "value": 1
     }]
