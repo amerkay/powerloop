@@ -3,7 +3,7 @@
     "language": "python",
     "author": "amerkay",
     "description": "PowerLoop for Farmbot: Loop your farmbot by plants with search filters, or by automatic waypoint calculation to cover Plant search results grid area. Features include executing sequences and saving meta data.",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "min_os_version_major": 6,
     "url": "https://raw.githubusercontent.com/amerkay/powerloop/master/manifest.json",
     "zip": "https://github.com/amerkay/powerloop/archive/master.zip",
@@ -13,14 +13,14 @@
     {
         "name": "pointname",
         "label": "Filter by plant name, case insensitive. 'aru' matches 'Arugula', * for all.",
-        "help": ["Uses string contains. "],
-        "value": "*"
+        "value": "*",
+        "help": ["Uses string contains. "]
     },
     {
         "name": "openfarm_slug",
         "label": "Filter by Openfarm slug name, case insensitive. 'aru' matches 'Arugula', * for all.",
+        "value": "*",
         "help": [""],
-        "value": "*"
     },
     {
         "name": "age_min_day",
@@ -117,12 +117,12 @@
     {
         "name": "sequence_aftermove",
         "label": "Sequences After Move, for each plant. Eg. 'SeqName1, SeqName2'",
+        "value": "None",
         "help": [
           "Default: 'None' -> no execute sequence",
           "Sequence name matched using equals, case-insensitive.",
           "Can be an ordered list of sequences with ',' seperator. Eg. 'Seq1,Seq2,...'"
         ],
-        "value": "None"
     },
     {
         "name": "sequence_end",
@@ -143,8 +143,8 @@
     {
         "name": "save_meta_value",
         "label": "Save in meta data : value (str / #NOW#)",
+        "value": "None",
         "help": [""],
-        "value": "None"
     },
     {
         "name": "save_plant_stage",

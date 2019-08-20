@@ -41,7 +41,7 @@ def sort_points(points, use_tsp_solver=True):
 if __name__ == "__main__":
 
     # get farmware name from path
-    FARMWARE_NAME = "powerloop-farmware"
+    FARMWARE_NAME = "powerloop-dev"
     try:
         FARMWARE_NAME = ((__file__.split(os.sep))[len(__file__.split(os.sep)) - 3]).replace('-master', '')
     except:
