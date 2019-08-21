@@ -23,7 +23,7 @@ class InputStore():
     """
 
     INPUT_DEFAULTS = {
-        'pointname': ('arug', 'str'),
+        'pointname': ('*', 'str'),
         'openfarm_slug': ('*', 'str'),
         'age_min_day': (-1, 'int'),
         'age_max_day': (36500, 'int'),
@@ -48,7 +48,7 @@ class InputStore():
         'default_speed': (100, 'int'),
         'use_tsp_greedy': (True, 'bool'),
         'grid_coverage_per_step': ('None', 'str'),
-        'debug': (2, 'int')
+        'debug': (1, 'int')
     }
 
     def __init__(self, farmwarename):
@@ -149,3 +149,21 @@ class InputStore():
         # should not reach here if parse correctled, see previous return statement
         log('str_in {} could not be parsed'.format(str_in), title='parse_xy_pair')
         return None
+
+    @staticmethod
+    def merge_config(default_config, new_config):
+        merged_config = default_config.copy()
+
+        if isinstance(default_config, dict) and isinstance(new_config, dict):
+            # merge the input config with self.config, only if key defined.
+            for k, v in new_config.items():
+                if k in default_config:
+                    merged_config[k] = v
+
+            log("configs merged: {}".format(merged_config), title='merge_config')
+            return merged_config
+        else:
+            log("configs must be dicts, instead got {} and {}".format(type(default_config), type(new_config)),
+                'error',
+                title='merge_config')
+            raise Exception('configs must be a dict in merge_config')

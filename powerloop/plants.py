@@ -17,6 +17,7 @@ import re
 
 from datetime import datetime as dt
 from farmware_tools import app
+from input_store import InputStore
 from fake_plants import FakePlants
 
 # import static logger and create shortcut function
@@ -53,17 +54,7 @@ class Plants():
                 See https://github.com/amerkay/powerloop/blob/master/manifest.json for more info.
         """
         self.farmwarename = farmwarename
-
-        if isinstance(config, dict):
-            # merge the input config with self.config, only if key defined.
-            for k, v in config.items():
-                if k in self.config:
-                    self.config[k] = v
-
-            log("config merged: {}".format(self.config), title='Plants::__init__')
-        else:
-            log("config must be a dict, instead got {}".format(type(config)), 'error', title='Plants::__init__')
-            raise Exception('config must be a dict in Plants::__init__')
+        self.config = InputStore.merge_config(self.config, config)
 
     def load_points_with_filters(self):
         points = app.post('points/search', payload={'pointer_type': 'Plant'})

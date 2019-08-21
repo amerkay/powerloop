@@ -11,6 +11,7 @@ Variables:
 
 from farmware_tools import app
 from farmware_tools import device
+from input_store import InputStore
 
 # import static logger and create shortcut function
 from logger import Logger
@@ -32,20 +33,7 @@ class SequenceExecutor():
 
     def __init__(self, farmwarename, config):
         self.farmwarename = farmwarename
-
-        if isinstance(config, dict):
-            # merge the input config with self.config, only if key defined.
-            for k, v in config.items():
-                if k in self.config:
-                    self.config[k] = v
-
-            log("config merged: {}".format(self.config), title='SequenceExecutor::__init__')
-        else:
-            log("config must be a dict, instead got {}".format(type(config)),
-                'error',
-                title='SequenceExecutor::__init__')
-            raise Exception('config must be a dict in SequenceExecutor::__init__')
-
+        self.config = InputStore.merge_config(self.config, config)
         self.load_sequences_ids()
 
     def load_sequences_ids(self):

@@ -1,4 +1,5 @@
 import math
+from input_store import InputStore
 
 # import static logger and create shortcut function
 from logger import Logger
@@ -11,17 +12,7 @@ class GridPoints():
 
     def __init__(self, farmwarename, config):
         self.farmwarename = farmwarename
-
-        if isinstance(config, dict):
-            # merge the input config with self.config, only if key defined.
-            for k, v in config.items():
-                if k in self.config:
-                    self.config[k] = v
-
-            log("config merged: {}".format(self.config), title='GridPoints::__init__')
-        else:
-            log("config must be a dict, instead got {}".format(type(config)), 'error', title='GridPoints::__init__')
-            raise Exception('config must be a dict in GridPoints::__init__')
+        self.config = InputStore.merge_config(self.config, config)
 
     def calc_steps(self, min_pos=0, max_pos=0, coverage=220):
         # if they are the same, return
