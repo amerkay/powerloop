@@ -7,7 +7,9 @@ Uses farmware_tools to control device and contact app API.
 
 See https://github.com/amerkay/powerloop/blob/master/manifest.json for more info about configuring.
 
-Source: https://github.com/rdegosse/Loop-Plants-With-Filters, thank you @rdegosse!
+Unmodified Source: https://github.com/rdegosse/Loop-Plants-With-Filters, thank you @rdegosse!
+
+For this copy of the class: https://github.com/amerkay/powerloop
 
 Variables:
     log {method} -- A reference function Logger().log()
@@ -27,6 +29,7 @@ log = Logger.log
 
 class Plants():
     # defaults
+    # See https://github.com/amerkay/powerloop/blob/master/manifest.json for more info.
     config = {
         'pointname': '*',
         'openfarm_slug': '*',
@@ -51,7 +54,6 @@ class Plants():
         Arguments:
             farmwarename {str} -- Farmware name
             config {set} -- for loading the configurations. Subset of defaults to override.
-                See https://github.com/amerkay/powerloop/blob/master/manifest.json for more info.
         """
         self.farmwarename = farmwarename
         self.config = InputStore.merge_config(self.config, config)
@@ -176,8 +178,7 @@ class Plants():
                 target_age_in_seconds = \
                     (dt.utcnow() - dt.strptime(p['meta'][meta_key], '%Y-%m-%d %H:%M:%S.%f')).total_seconds()
 
-                # log('==> p is None {}, key {}, value {}'.format(p is None, meta_key, meta_value),
-                # title='_filter_meta')
+                # log('==> p is None {}, key {}, value {}'.format(p is None, meta_key, meta_value), title='_filter_meta')
 
                 if self.config['filter_meta_op'] is None or self.config['filter_meta_op'] == "==":
                     return ((p['meta'][meta_key]).lower() == meta_value.lower())
