@@ -6,7 +6,7 @@ Variables:
     log {method} -- A reference function Logger().log()
 """
 
-import tsp_greedy_solver
+import math
 
 from farmware_tools import device
 
@@ -19,8 +19,15 @@ class PointSort():
     @staticmethod
     def sort_points(points, use_tsp_solver=True):
         """ Sort the points """
-        if (use_tsp_solver is True):
-            return PointSort.sort_points_tsp_greedy(points)
+        if (use_tsp_solver is True) and len(points) > 0:
+            # Get current location
+            curr_pos = device.get_current_position()
+
+            # this is for local debugging purposes, when running `python main.py`
+            if curr_pos is None:
+                curr_pos = {'x': 0, 'y': 0}
+
+            return PointSort.sort_points_by_dist(points, curr_pos)
         else:
             return PointSort.sort_points_basic(points)
 
@@ -40,43 +47,34 @@ class PointSort():
         return points_sorted
 
     @staticmethod
-    def sort_points_tsp_greedy(points):
-        """ Sort points using Travelling Salesman Greedy Solution. See tsp_greedy_solver.py.
+    def _distance(p1, p2):
+        """ Calculate distance between two points """
+        dx = math.fabs(p1['x'] - p2['x'])
+        dy = math.fabs(p1['y'] - p2['y'])
+        return math.hypot(dx, dy)
+
+    @staticmethod
+    def sort_points_by_dist(points, start_point):
+        """ Sort points using Travelling Salesman Greedy Solution
+
+        Source: https://github.com/etcipnja/MLH
 
         Arguments:
-            points {list of Points} -- A list of Celeryscript Point JSON objects (sets)
+            points {list of Points} -- A list of Celeryscript Point JSON objects (dicts)
 
         Returns:
-            {list of Points} -- The sorted list of Celeryscript Point JSON objects (sets)
+            {list of Points} -- The sorted list of Celeryscript Point JSON objects (dicts)
         """
+        totalDist = 0
+        tr = sorted(points, key=lambda elem: (int(elem['x']), int(elem['y'])))
+        bl = sorted(points, key=lambda elem: (int(elem['x']), int(-elem['y'])))
+        dist, cur = min([(PointSort._distance(start_point, p), p) for p in (tr[0], tr[-1], bl[0], bl[-1])])
+        path = [cur]
+        for i in range(1, len(points)):
+            dists = [(PointSort._distance(cur, p), p) for p in points if p not in path]
+            nextDist, cur = min(dists, key=lambda t: t[0])
+            totalDist += nextDist
+            path.append(cur)
 
-        # Get current location
-        curr_pos = device.get_current_position()
-
-        # this is for local debugging purposes, when running `python main.py`
-        if curr_pos is None:
-            curr_pos = {'x': 0, 'y': 0}
-
-        # prepare points_to_sort = [tuple(float), ...]
-        # add current location as starting point, id 0
-        points_to_sort = [(0, curr_pos['x'], curr_pos['y'])]
-        for p in points:
-            points_to_sort.append((p['id'], p['x'], p['y']))
-
-        # run through Greedy travelling salesman algorithm
-        tsp_solution = tsp_greedy_solver.solveGreedyTSP(points_to_sort)
-
-        # sort points according to tsp_solution's order
-        points_sorted = []
-        for p in tsp_solution[0]:
-            try:
-                p_full = next(item for item in points if item["id"] == p[0])
-                points_sorted.append(p_full)
-            except Exception:  # continue if id does not exist, eg starting point
-                continue
-
-        log("{} points sorted with TSP Greedy, min_dist is {}".format(len(tsp_solution[0]), tsp_solution[1]),
-            'debug', title='sort_points_tsp_greedy')
-        # log(points_sorted, 'debug', title='sort_points_tsp_greedy')
-
-        return points_sorted
+        log("points sorted, total distance is {}".format(totalDist), title="sort_points_by_dist")
+        return path
