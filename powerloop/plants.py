@@ -176,7 +176,8 @@ class Plants():
                 target_age_in_seconds = \
                     (dt.utcnow() - dt.strptime(p['meta'][meta_key], '%Y-%m-%d %H:%M:%S.%f')).total_seconds()
 
-                # log('==> p is None {}, key {}, value {}'.format(p is None, meta_key, meta_value), title='_filter_meta')
+                # log('==> p is None {}, key {}, value {}'.format(p is None, meta_key, meta_value),
+                # title='_filter_meta')
 
                 if self.config['filter_meta_op'] is None or self.config['filter_meta_op'] == "==":
                     return ((p['meta'][meta_key]).lower() == meta_value.lower())

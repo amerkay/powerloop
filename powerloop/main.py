@@ -62,7 +62,6 @@ def run_points_loop(points, sexec, run_after_each=None, use_tsp_solver=True):
 if __name__ == "__main__":
     Logger.FARMWARE_NAME = FARMWARE_NAME
 
-    # First try block logs under "init" for debugging reasons
     try:
         # create new instance of the InputStore. this will load the user input or defaults
         input_store = InputStore(FARMWARE_NAME)
@@ -81,12 +80,7 @@ if __name__ == "__main__":
         # Start a concurrent task executor, with pool size 4
         # Example at doc @ https://docs.python.org/3/library/concurrent.futures.html
         executor = concurrent.futures.ProcessPoolExecutor(max_workers=4)
-    except Exception as e:
-        log("Exception thrown: {}, traceback: {}".format(e, format_exc()), message_type='error', title="init")
-        raise Exception(e)
 
-    # First try block logs under title "runtime" for debugging reasons
-    try:
         # load the plants
         points_plants = plants.load_points_with_filters()
 
@@ -112,7 +106,7 @@ if __name__ == "__main__":
                         use_tsp_solver=input_store.input['use_tsp_greedy'])
 
     except Exception as e:
-        log("exception: {}, traceback: {}".format(e, format_exc()), message_type='error', title="runtime")
+        log("Exception thrown: {}, traceback: {}".format(e, format_exc()), message_type='error', title="main")
         raise Exception(e)
 
     # shutdown executor

@@ -7,7 +7,7 @@ log = Logger.log
 
 
 class GridPoints():
-    #defaults
+    # default config
     config = {'grid_coverage_per_step': (250, 250)}
 
     def __init__(self, farmwarename, config):
