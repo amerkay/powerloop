@@ -6,10 +6,22 @@ log = Logger.log
 
 
 class GridPoints():
-    def __init__(self, farmwarename, input_store):
+    #defaults
+    config = {'grid_coverage_per_step': (250, 250)}
+
+    def __init__(self, farmwarename, config):
         self.farmwarename = farmwarename
-        self.input_store = input_store
-        self.input = input_store.input
+
+        if isinstance(config, dict):
+            # merge the input config with self.config, only if key defined.
+            for k, v in config.items():
+                if k in self.config:
+                    self.config[k] = v
+
+            log("config merged: {}".format(self.config), title='GridPoints::__init__')
+        else:
+            log("config must be a dict, instead got {}".format(type(config)), 'error', title='GridPoints::__init__')
+            raise Exception('config must be a dict in GridPoints::__init__')
 
     def calc_steps(self, min_pos=0, max_pos=0, coverage=220):
         # if they are the same, return
@@ -29,14 +41,14 @@ class GridPoints():
         return steps
 
     def calc_points_from_points(self, points):
-        if self.input['grid_coverage_per_step'] is None or len(points) == 0:
+        if self.config['grid_coverage_per_step'] is None or len(points) == 0:
             return None
 
         # get array of x's and y's, then pass min and max to calc_steps()
         xs = [p['x'] for p in points]
         ys = [p['y'] for p in points]
-        steps_x = self.calc_steps(min(xs), max(xs), self.input['grid_coverage_per_step'][0])
-        steps_y = self.calc_steps(min(ys), max(ys), self.input['grid_coverage_per_step'][1])
+        steps_x = self.calc_steps(min(xs), max(xs), self.config['grid_coverage_per_step'][0])
+        steps_y = self.calc_steps(min(ys), max(ys), self.config['grid_coverage_per_step'][1])
 
         i = 1
         points_out = []

@@ -23,14 +23,14 @@ class InputStore():
     """
 
     INPUT_DEFAULTS = {
-        'pointname': ('*', 'str'),
+        'pointname': ('arug', 'str'),
         'openfarm_slug': ('*', 'str'),
         'age_min_day': (-1, 'int'),
         'age_max_day': (36500, 'int'),
         'filter_meta_key': ('None', 'str'),
         'filter_meta_op': ('None', 'str'),
         'filter_meta_value': ('None', 'str'),
-        'filter_plant_stage': ('None', 'str'),
+        'filter_plant_stage': ('None', 'list'),
         'filter_min_x': ('None', 'int'),
         'filter_max_x': ('None', 'int'),
         'filter_min_y': ('None', 'int'),
@@ -48,7 +48,7 @@ class InputStore():
         'default_speed': (100, 'int'),
         'use_tsp_greedy': (True, 'bool'),
         'grid_coverage_per_step': ('None', 'str'),
-        'debug': (1, 'int')
+        'debug': (2, 'int')
     }
 
     def __init__(self, farmwarename):
@@ -79,7 +79,7 @@ class InputStore():
 
         Keyword Arguments:
             settings {tuple} -- default value (None, 0, or input val) and
-                type (str, int, bool, list) (default: {('None', 'str')})
+                type (str, int, bool, list, float) (default: {('None', 'str')})
             prefix {str} -- farmware name prefix (default: {'farmware'})
 
         Returns:
@@ -93,17 +93,20 @@ class InputStore():
         val_clean_str = str(val).lower().strip()
 
         # set the expected value type for post-processing
-        val_type = settings[1] if settings[1] in ['str', 'int', 'bool', 'list'] else 'str'
+        val_type = settings[1] if settings[1] in ['str', 'int', 'bool', 'list', 'float'] else 'str'
 
         if val_type == 'int':
             return int(self.is_randint(val)) if val_clean_str != 'none' else None
+        elif val_type == 'float':
+            return float(val) if val_clean_str != 'none' else None
         elif val_type == 'bool':
             return val_clean_str in ['true', '1', 'y', 'yes', 'on']
         elif val_type == 'list':
-            return val_clean_str.split(",") if val_clean_str != 'none' else []
+            return val_clean_str.replace(" , ", ",").replace(", ", ",")\
+                .replace(" ,", ",").split(",") if val_clean_str != 'none' else []
 
         # default treat like str
-        return val.strip() if val_clean_str != 'none' else None
+        return str(val).strip() if val_clean_str != 'none' else None
 
     def is_randint(self, val):
         """is_randint
@@ -139,7 +142,7 @@ class InputStore():
 
             # find matches using regex
             m = re.findall(r"\((\d+),(\d+)\)", str_in)
-            if len(m[0]) == 2:
+            if len(m) > 0 and len(m[0]) == 2:
                 # build pair (x, y) and return it
                 return (int(m[0][0]), int(m[0][1]))
 

@@ -8,14 +8,11 @@ it works.
 I tried to keep all classes separated by functionality as much as possible. To use any of the classes
 independantely in your own project, just replace or copy relevant classes and use in your project:
     - Remove Logger and replace with your own "print()" or "log()" function throughout the class copied.
-    - Remove InputStore references from __init__ functions and rest of class and replace with your
-    own variables loaded.
 
 Variables:
     log {method} -- A reference function Logger().log()
 """
 
-import os
 import sys
 from traceback import format_exc
 import concurrent.futures
@@ -31,7 +28,7 @@ from logger import Logger
 log = Logger.log
 
 # Farmware name, must be same as "package" attribe in manifest.json
-FARMWARE_NAME = "power-loop"
+FARMWARE_NAME = "power_loop"
 
 
 def run_points_loop(points, sexec, run_after_each=None, use_tsp_solver=True):
@@ -63,7 +60,6 @@ def run_points_loop(points, sexec, run_after_each=None, use_tsp_solver=True):
 
 
 if __name__ == "__main__":
-
     Logger.FARMWARE_NAME = FARMWARE_NAME
 
     # First try block logs under "init" for debugging reasons
@@ -74,13 +70,13 @@ if __name__ == "__main__":
         Logger.set_level(input_store.input['debug'])
 
         # create SequenceExecutor instance
-        sexec = SequenceExecutor(FARMWARE_NAME, input_store)
+        sexec = SequenceExecutor(FARMWARE_NAME, input_store.input)
 
         log('Started with python version {}'.format(sys.version_info), message_type='info', title="init")
 
         # create Plants class instance
-        plants = Plants(FARMWARE_NAME, input_store)
-        grid_points = GridPoints(FARMWARE_NAME, input_store)
+        plants = Plants(FARMWARE_NAME, input_store.input)
+        grid_points = GridPoints(FARMWARE_NAME, input_store.input)
 
         # Start a concurrent task executor, with pool size 4
         # Example at doc @ https://docs.python.org/3/library/concurrent.futures.html

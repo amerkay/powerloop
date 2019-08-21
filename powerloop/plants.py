@@ -1,9 +1,11 @@
 """ Plants class
 
 Uses API call POST points/search to load all Plants.
-Then apply_filters() uses the settings loaded from input_store to keep the matching subset.
+Then apply_filters() uses the config settings to filter just the matching subset.
 
 Uses farmware_tools to control device and contact app API.
+
+See https://github.com/amerkay/powerloop/blob/master/manifest.json for more info about configuring.
 
 Source: https://github.com/rdegosse/Loop-Plants-With-Filters, thank you @rdegosse!
 
@@ -15,7 +17,7 @@ import re
 
 from datetime import datetime as dt
 from farmware_tools import app
-# from fake_plants import FakePlants
+from fake_plants import FakePlants
 
 # import static logger and create shortcut function
 from logger import Logger
@@ -23,21 +25,50 @@ log = Logger.log
 
 
 class Plants():
-    def __init__(self, farmwarename, input_store):
+    # defaults
+    config = {
+        'pointname': '*',
+        'openfarm_slug': '*',
+        'age_min_day': -1,
+        'age_max_day': 36500,
+        'filter_meta_key': None,
+        'filter_meta_op': None,
+        'filter_meta_value': None,
+        'filter_plant_stage': None,
+        'filter_min_x': None,
+        'filter_max_x': None,
+        'filter_min_y': None,
+        'filter_max_y': None,
+        'save_meta_key': None,
+        'save_meta_value': None,
+        'save_plant_stage': None,
+    }
+
+    def __init__(self, farmwarename, config):
         """ Plants class constructor
 
         Arguments:
             farmwarename {str} -- Farmware name
-            input_store {InputStore instance} -- for loading the user settings
+            config {set} -- for loading the configurations. Subset of defaults to override.
+                See https://github.com/amerkay/powerloop/blob/master/manifest.json for more info.
         """
         self.farmwarename = farmwarename
-        self.input_store = input_store
-        self.input = input_store.input
+
+        if isinstance(config, dict):
+            # merge the input config with self.config, only if key defined.
+            for k, v in config.items():
+                if k in self.config:
+                    self.config[k] = v
+
+            log("config merged: {}".format(self.config), title='Plants::__init__')
+        else:
+            log("config must be a dict, instead got {}".format(type(config)), 'error', title='Plants::__init__')
+            raise Exception('config must be a dict in Plants::__init__')
 
     def load_points_with_filters(self):
         points = app.post('points/search', payload={'pointer_type': 'Plant'})
 
-        # points = FakePlants.get_fake_plants() if Logger.LOGGER_LEVEL == 2 else points
+        points = FakePlants.get_fake_plants() if Logger.LOGGER_LEVEL == 2 else points
 
         # this is for local debugging purposes
         if isinstance(points, str):
@@ -46,18 +77,18 @@ class Plants():
         log("all points loaded, count {}".format(len(points)), title='load_points_with_filters')
 
         points_out = self.apply_filters(points=points,
-                                        point_name=self.input['pointname'],
-                                        openfarm_slug=self.input['openfarm_slug'],
-                                        age_min_day=self.input['age_min_day'],
-                                        age_max_day=self.input['age_max_day'],
-                                        meta_key=self.input['filter_meta_key'],
-                                        meta_value=self.input['filter_meta_value'],
-                                        min_x=self.input['filter_min_x'],
-                                        min_y=self.input['filter_min_y'],
-                                        max_x=self.input['filter_max_x'],
-                                        max_y=self.input['filter_max_y'],
+                                        point_name=self.config['pointname'],
+                                        openfarm_slug=self.config['openfarm_slug'],
+                                        age_min_day=self.config['age_min_day'],
+                                        age_max_day=self.config['age_max_day'],
+                                        meta_key=self.config['filter_meta_key'],
+                                        meta_value=self.config['filter_meta_value'],
+                                        min_x=self.config['filter_min_x'],
+                                        min_y=self.config['filter_min_y'],
+                                        max_x=self.config['filter_max_x'],
+                                        max_y=self.config['filter_max_y'],
                                         pointer_type='Plant',
-                                        plant_stage=self.input['filter_plant_stage'])
+                                        plant_stages=self.config['filter_plant_stage'])
 
         log('filters applied, resulting in {} points'.format(len(points_out)),
             title='load_points_with_filters')
@@ -78,7 +109,7 @@ class Plants():
                       min_y=None,
                       max_y=None,
                       pointer_type='Plant',
-                      plant_stage=None):
+                      plant_stages=None):
 
         filtered_points = []
         now = dt.utcnow()
@@ -94,7 +125,7 @@ class Plants():
                 b_meta = self._filter_meta(p, meta_key, meta_value)
                 b_coordinate_x = self._filter_coordinates(int(p['x']), min_x, max_x)
                 b_coordinate_y = self._filter_coordinates(int(p['y']), min_y, max_y)
-                b_plantstage = self._filter_plant_stage(p['plant_stage'], plant_stage)
+                b_plantstage = self._filter_plant_stage(p['plant_stage'], plant_stages)
 
                 if (p['name'].lower().find(point_name.lower()) >= 0 or point_name == '*') \
                     and (p['openfarm_slug'].lower().find(openfarm_slug.lower()) >= 0 or openfarm_slug == '*')\
@@ -104,17 +135,16 @@ class Plants():
 
         return filtered_points
 
-    def _filter_plant_stage(self, p_stage, plant_stage):
-        if None not in (p_stage, plant_stage):
-            try:
-                if plant_stage.lower() == p_stage.lower():
+    def _filter_plant_stage(self, p_stage, plant_stages):
+        if None not in (p_stage, plant_stages) and type(plant_stages) is list and len(plant_stages) > 0:
+            for s in plant_stages:
+                if p_stage.lower() == s.lower():
                     return True
-                else:
-                    return False
-            except Exception as e:
-                return True
 
-        # default is true if None or failed
+            # otherwise
+            return False
+
+        # default is True if None or failed
         return True
 
     def _filter_coordinates(self, p_coord, min_coord, max_coord):
@@ -140,7 +170,7 @@ class Plants():
     def _filter_meta(self, p, meta_key, meta_value):
         """ Test point p against meta_key, meta_value
 
-        Uses value from self.input['filter_meta_op'] to choose the comparision method used.
+        Uses value from self.config['filter_meta_op'] to choose the comparision method used.
 
         Arguments:
             p {set} -- Celeryscript Point JSON object
@@ -157,27 +187,27 @@ class Plants():
 
                 # log('==> p is None {}, key {}, value {}'.format(p is None, meta_key, meta_value), title='_filter_meta')
 
-                if self.input['filter_meta_op'] is None or self.input['filter_meta_op'] == "==":
+                if self.config['filter_meta_op'] is None or self.config['filter_meta_op'] == "==":
                     return ((p['meta'][meta_key]).lower() == meta_value.lower())
-                elif self.input['filter_meta_op'] == ">=":
+                elif self.config['filter_meta_op'] == ">=":
                     return ((p['meta'][meta_key]) >= meta_value)
-                elif self.input['filter_meta_op'] == "<=":
+                elif self.config['filter_meta_op'] == "<=":
                     return ((p['meta'][meta_key]) <= meta_value)
-                elif self.input['filter_meta_op'] == "<":
+                elif self.config['filter_meta_op'] == "<":
                     return ((p['meta'][meta_key]) < meta_value)
-                elif self.input['filter_meta_op'] == ">":
+                elif self.config['filter_meta_op'] == ">":
                     return ((p['meta'][meta_key]) > meta_value)
-                elif self.input['filter_meta_op'] == "!=":
+                elif self.config['filter_meta_op'] == "!=":
                     return ((p['meta'][meta_key]).lower() != meta_value.lower())
-                elif self.input['filter_meta_op'].lower() == "regex":
+                elif self.config['filter_meta_op'].lower() == "regex":
                     return bool(re.compile(meta_value).match(p['meta'][meta_key]))
-                elif self.input['filter_meta_op'].lower() == "daysmax":
+                elif self.config['filter_meta_op'].lower() == "daysmax":
                     return bool(target_age_in_seconds / 86400 <= int(meta_value))
-                elif self.input['filter_meta_op'].lower() == "minutesmax":
+                elif self.config['filter_meta_op'].lower() == "minutesmax":
                     return bool(target_age_in_seconds / 60 <= int(meta_value))
-                elif self.input['filter_meta_op'].lower() == "daysmin":
+                elif self.config['filter_meta_op'].lower() == "daysmin":
                     return bool(target_age_in_seconds / 86400 >= int(meta_value))
-                elif self.input['filter_meta_op'].lower() == "minutesmin":
+                elif self.config['filter_meta_op'].lower() == "minutesmin":
                     return bool(target_age_in_seconds / 60 >= int(meta_value))
                 else:
                     return False
@@ -199,13 +229,14 @@ class Plants():
         Returns:
             {set} -- Ammended save_point set with the updates to be posted via API call
         """
-        if self.input['save_meta_key'] is not None:
-            save_meta_key = str(self.input['save_meta_key']).lower()
-            save_meta_value = self.input['save_meta_value'].lower()
+        if self.config['save_meta_key'] is not None:
+            save_meta_key = str(self.config['save_meta_key']).lower()
+            save_meta_value = self.config['save_meta_value'].lower()
 
             save_point = {'id': point['id'], 'meta': {}} if len(save_point) < 1 else save_point
 
-            save_point['meta'][save_meta_key] = str(dt.utcnow()) if save_meta_value == "#now#" else save_meta_value
+            save_point['meta'][save_meta_key] = str(
+                dt.utcnow()) if save_meta_value == "#now#" else save_meta_value
 
         return save_point
 
@@ -222,8 +253,8 @@ class Plants():
         Returns:
             {set} -- Ammended save_point set with the updates to be posted via API call
         """
-        if self.input['save_plant_stage'] is not None:
-            save_plant_stage = str(self.input['save_plant_stage']).lower()
+        if self.config['save_plant_stage'] is not None:
+            save_plant_stage = str(self.config['save_plant_stage']).lower()
             save_point = {'id': point['id']} if len(save_point) < 1 else save_point
 
             if save_plant_stage in ('planned', 'planted', 'sprouted', 'harvested'):
@@ -232,7 +263,8 @@ class Plants():
                 if save_plant_stage == 'planted':
                     save_point['planted_at'] = str(dt.utcnow())
             else:
-                log('Wrong save_plant_stage value: {}'.format(save_plant_stage), 'error',
+                log('Wrong save_plant_stage value: {}'.format(save_plant_stage),
+                    'error',
                     title='save_plant_stage')
 
         return save_point

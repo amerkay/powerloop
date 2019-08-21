@@ -3,11 +3,11 @@ from farmware_tools import device
 
 class Logger():
     FARMWARE_NAME = 'unknown farmware'
-    LOGGER_LEVEL = 2
+    LOGGER_LEVEL = 3
 
     @staticmethod
     def set_level(level):
-        Logger.LOGGER_LEVEL = int(level) if int(level) in [0, 1, 2] else 0
+        Logger.LOGGER_LEVEL = int(level) if int(level) in [0, 1, 2, 3] else 0
         device.log('[{}] LOGGER_LEVEL set to {}'.format(Logger.FARMWARE_NAME, Logger.LOGGER_LEVEL))
 
     @staticmethod
