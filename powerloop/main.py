@@ -97,7 +97,9 @@ if __name__ == "__main__":
             Arguments:
                 p {set} -- Celeryscript Point JSON object
             """
-            executor.submit(plants.save_plant, p)
+            save_point = plants.update_save_meta(p)
+            save_point = plants.update_save_plant_stage(p, save_point)
+            executor.submit(Plants.save_plant, save_point)
 
         # use points resulting from points_grid if used (returns not None)
         run_points_loop(points=points_grid if points_grid else points_plants,

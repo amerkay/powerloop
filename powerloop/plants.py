@@ -16,11 +16,12 @@ Variables:
 """
 
 import re
+from simple_cache import SimpleCache as cache
 
 from datetime import datetime as dt
 from farmware_tools import app
 from input_store import InputStore
-# from fake_plants import FakePlants
+from fake_plants import FakePlants
 
 # import static logger and create shortcut function
 from logger import Logger
@@ -53,19 +54,13 @@ class Plants():
 
         Arguments:
             farmwarename {str} -- Farmware name
-            config {set} -- for loading the configurations. Subset of defaults to override.
+            config {dict} -- for loading the configurations. Subset of defaults to override.
         """
         self.farmwarename = farmwarename
         self.config = InputStore.merge_config(self.config, config)
 
-    def load_points_with_filters(self):
-        points = app.post('points/search', payload={'pointer_type': 'Plant'})
-
-        # points = FakePlants.get_fake_plants() if Logger.LOGGER_LEVEL == 2 else points
-
-        # this is for local debugging purposes
-        if isinstance(points, str):
-            return []
+    def load_points_with_filters(self, use_cache=False):
+        points = self._get_points_cached() if use_cache is True else self._get_points()
 
         log("all points loaded, count {}".format(len(points)), title='load_points_with_filters')
 
@@ -88,6 +83,27 @@ class Plants():
 
         # log(self.points, title='load_points_with_filters')
         return points_out
+
+    def _get_points_cached(self):
+        cache_id = "plants-search"
+        lifetime = 15*60
+
+        if cache.is_cached(cache_id):
+            points_from_cache = cache.get(cache_id)
+            log("hit; using cache with {} plants".format(len(points_from_cache)), title='Plants::_get_points')
+            return points_from_cache
+        else:
+            log("miss; loading from API", title='_get_points')
+            points = self._get_points()
+
+            if type(points) is list and len(points) > 0:
+                cache.save(cache_id, points, lifetime)
+
+            return points
+
+    def _get_points(self):
+        points = app.post('points/search', payload={'pointer_type': 'Plant'})
+        return points if type(points) is list else FakePlants.get_fake_plants()
 
     def apply_filters(self,
                       points,
@@ -166,7 +182,7 @@ class Plants():
         Uses value from self.config['filter_meta_op'] to choose the comparision method used.
 
         Arguments:
-            p {set} -- Celeryscript Point JSON object
+            p {dict} -- Celeryscript Point JSON object
             meta_key {str} -- Comparision key
             meta_value {str} -- Comparision value
 
@@ -210,21 +226,21 @@ class Plants():
 
         return True
 
-    def _update_save_meta(self, point, save_point={}):
+    def update_save_meta(self, point, save_point={}):
         """ Creates or appends 'save_meta' data and returns ammended save_point set
 
         Arguments:
-            point {set} -- Celeryscript Point JSON object
+            point {dict} -- Celeryscript Point JSON object
 
         Keyword Arguments:
             save_point {dict} -- [description] (default: {{}})
 
         Returns:
-            {set} -- Ammended save_point set with the updates to be posted via API call
+            {dict} -- Ammended save_point set with the updates to be posted via API call
         """
         if self.config['save_meta_key'] is not None:
             save_meta_key = str(self.config['save_meta_key']).lower()
-            save_meta_value = self.config['save_meta_value'].lower()
+            save_meta_value = str(self.config['save_meta_value']).lower()
 
             save_point = {'id': point['id'], 'meta': {}} if len(save_point) < 1 else save_point
 
@@ -233,18 +249,18 @@ class Plants():
 
         return save_point
 
-    def _update_save_plant_stage(self, point, save_point={}):
+    def update_save_plant_stage(self, point, save_point={}):
         """ Creates or appends 'save_plant_stage' data and returns ammended save_point set.
 
         Arguments:
-            point {set} -- Celeryscript Point JSON object
+            point {dict} -- Celeryscript Point JSON object
 
         Keyword Arguments:
             save_point {dict} -- Optional, use if you already have a save_point created
                                  you'd like to append to (default: {{}})
 
         Returns:
-            {set} -- Ammended save_point set with the updates to be posted via API call
+            {dict} -- Ammended save_point set with the updates to be posted via API call
         """
         if self.config['save_plant_stage'] is not None:
             save_plant_stage = str(self.config['save_plant_stage']).lower()
@@ -262,19 +278,17 @@ class Plants():
 
         return save_point
 
-    def save_plant(self, point):
+    @staticmethod
+    def save_plant(save_point):
         """ Execute the PUT points/{id} API call.
 
         Arguments:
-            point {set} -- Celeryscript Point JSON object to update
+            point {dict} -- Celeryscript Point JSON object to update
 
         Raises:
             e -- exception
         """
         try:
-            save_point = self._update_save_meta(point)
-            save_point = self._update_save_plant_stage(point, save_point)
-
             if len(save_point) < 2:
                 log('Nothing to save: {}'.format(save_point), title='save_plant')
                 return
