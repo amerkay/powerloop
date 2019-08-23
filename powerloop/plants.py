@@ -221,7 +221,8 @@ class Plants():
                 else:
                     return False
             except Exception as e:
-                log(e, 'error', title='exception filter_meta')
+                log("{}".format(e), 'error', title='exception filter_meta')
+                raise e
                 return False
 
         return True
