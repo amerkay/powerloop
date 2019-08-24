@@ -15,7 +15,7 @@ class GridPoints():
         self.farmwarename = farmwarename
         self.config = InputStore.merge_config(self.config, config)
 
-    def _calc_steps_for_dimension(self, min_pos=0, max_pos=0, coverage=220):
+    def _calc_steps_for_dimension(self, min_pos=0, max_pos=0, coverage=220, offset=0):
         """ Calculate steps
 
         [description]
@@ -36,7 +36,7 @@ class GridPoints():
         step_width = int((max_pos - min_pos) / steps_ceil)
 
         # next, we need to get the bed dimensions
-        steps = [(i * step_width) + (min_pos - step_width) for i in range(1, steps_ceil + 2)]
+        steps = [(i * step_width) + (min_pos - step_width) + offset for i in range(1, steps_ceil + 2)]
 
         # log('--> [_calc_steps_for_dimension] min_pos {}, max_pos {}, coverage {} --- steps_ceil {}, step_width {}, steps {}'
         #     .format(min_pos, max_pos, coverage, steps_ceil, step_width, steps),
@@ -44,14 +44,14 @@ class GridPoints():
 
         return steps
 
-    def _calc_steps(self, points):
+    def _calc_steps(self, points, starting_point={'x': 0, 'y': 0}):
         cover = self.config['grid_coverage_per_step']
 
         # get array of x's and y's, then pass min and max to _calc_steps_for_dimension()
         xs = [p['x'] for p in points]
         ys = [p['y'] for p in points]
-        steps_x = self._calc_steps_for_dimension(min(xs), max(xs), cover['x'])
-        steps_y = self._calc_steps_for_dimension(min(ys), max(ys), cover['y'])
+        steps_x = self._calc_steps_for_dimension(min(xs), max(xs), cover['x'], starting_point['x'])
+        steps_y = self._calc_steps_for_dimension(min(ys), max(ys), cover['y'], starting_point['y'])
 
         return list(product(steps_x, steps_y))
 
@@ -110,7 +110,7 @@ class GridPoints():
 
         return out_arr
 
-    def _find_square_with_max_points(self, points, steps, starting_points=[{'x': 0, 'y': 0}]):
+    def _find_square_with_max_points(self, points, steps):
         """[summary]
 
         Arguments:
@@ -158,7 +158,15 @@ class GridPoints():
         points_out = []
 
         # get steps for covering area for input points
-        steps = self._calc_steps(points)
+        cover = self.config['grid_coverage_per_step']
+        d = 1 if cover['x'] < 50 or cover['y'] < 50 else 3
+        starting_points_x = [x * math.ceil(cover['x'] / d) for x in range(0, d)]
+        starting_points_y = [y * math.ceil(cover['y'] / d) for y in range(0, d)]
+        starting_points = list(zip(starting_points_x, starting_points_y))
+
+        steps = []
+        for x, y in starting_points:
+            steps += self._calc_steps(points, starting_point={'x': x, 'y': y})
 
         while len(points_in) > 0:
             res = self._find_square_with_max_points(points_in, steps)
