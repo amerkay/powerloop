@@ -21,8 +21,8 @@ class FakePlants():
                 'planted_at': '31-07-2019',
                 'last_watering_at': '2019-08-12 00:00:09.818638'
             },
-            'x': 220,
-            'y': 240,
+            'x': 2000,
+            'y': 500,
             'z': 0,
             'openfarm_slug': 'cherry-belle-radish',
             'plant_stage': 'planted',

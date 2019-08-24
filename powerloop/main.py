@@ -85,7 +85,8 @@ if __name__ == "__main__":
         points_plants = plants.load_points_with_filters()
 
         # Use plants loaded to choose grid waypoints
-        points_grid = grid_points.calc_points_from_points(points_plants)
+        # points_grid = grid_points.calc_points_from_points(points_plants)
+        points_grid = grid_points.summarize_points_by_coverage(points_plants)
 
         def run_after_each(p):
             """ Function to pass to run_points_loop() to run after each move.
