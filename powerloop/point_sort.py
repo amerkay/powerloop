@@ -73,7 +73,7 @@ class PointSort():
         # bl = sorted(points, key=lambda elem: (int(elem['x']), int(-elem['y'])))
         # dist, cur = min([(PointSort._distance(start_point, p), p) for p in (tr[0], tr[-1], bl[0], bl[-1])])
         cur = start_point
-        path = [cur]
+        path = []
         for i in range(1, len(points)):
             dists = [(PointSort._distance(cur, p), p) for p in points if p not in path]
             nextDist, cur = min(dists, key=lambda t: t[0])

@@ -124,10 +124,7 @@ class GridPoints():
             top_right = {'x': x + cover[0], 'y': y + cover[1]}
             points_in_sq = self._find_points_in_square(points, bottom_left, top_right)
             if len(points_in_sq) > 0:
-                avg_x = sum([points_in_sq[i]['x'] for i in range(0, len(points_in_sq))]) / len(points_in_sq)
-                avg_y = sum([points_in_sq[i]['y'] for i in range(0, len(points_in_sq))]) / len(points_in_sq)
-                # print("--> avg {}, {} for point {}, {}".format(avg_x, avg_y, x, y))
-                points_counts.append({'x': avg_x, 'y': avg_y, 'points': points_in_sq})
+                points_counts.append({'x': x, 'y': y, 'points': points_in_sq})
         # log('points_counts: {}'.format(len(points_counts)), title='load_points')
 
         square_with_max_plants = max(points_counts, key=lambda i: len(i['points']))
@@ -158,7 +155,5 @@ class GridPoints():
             # print("==> points remaining  {}".format(len(points_in)))
 
         log("summarized into {} points with coverage {}".format(len(points_out), self.config['grid_coverage_per_step']), title="summarize_points_by_coverage")
-
-        # log("tmp dump of points out: {}".format(points_out), title="summarize_points_by_coverage")
 
         return points_out
