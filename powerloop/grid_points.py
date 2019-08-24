@@ -108,7 +108,7 @@ class GridPoints():
 
         return out_arr
 
-    def _find_square_with_max_points(self, points, starting_points=[{'x': 0, 'y': 0}]):
+    def _find_square_with_max_points(self, points, steps, starting_points=[{'x': 0, 'y': 0}]):
         """[summary]
 
         [description]
@@ -124,9 +124,6 @@ class GridPoints():
             x, y will be set to the average point position between all points found.
         """
         # cover = self.config['grid_coverage_per_step']
-
-        # get steps for covering area for input points
-        steps = self._calc_steps(points)
 
         points_counts = []
         for x, y in steps:
@@ -161,10 +158,10 @@ class GridPoints():
         points_out = []
 
         # get steps for covering area for input points
-        # steps = self._calc_steps(points)
+        steps = self._calc_steps(points)
 
         while len(points_in) > 0:
-            res = self._find_square_with_max_points(points_in)
+            res = self._find_square_with_max_points(points_in, steps)
 
             if res is None:
                 break
