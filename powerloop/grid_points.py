@@ -90,8 +90,16 @@ class GridPoints():
         """
         out_arr = []
         cover = self.config['grid_coverage_per_step']
-        bottom_left = {'x': step_center["x"] - (cover['x'] / 2), 'y': step_center["y"] - (cover['y'] / 2)}
-        top_right = {'x': step_center["x"] + (cover['x'] / 2), 'y': step_center["y"] + (cover['y'] / 2)}
+        offset = self.config['grid_coverage_offset']
+
+        bottom_left = {
+            'x': step_center["x"] - (cover['x'] / 2) + offset['x'],
+            'y': step_center["y"] - (cover['y'] / 2) + offset['y']
+        }
+        top_right = {
+            'x': step_center["x"] + (cover['x'] / 2) + offset['x'],\
+            'y': step_center["y"] + (cover['y'] / 2) + offset['y']
+        }
 
         for p in points:
             if bottom_left['x'] <= int(p['x']) <= top_right['x']\
@@ -105,10 +113,9 @@ class GridPoints():
     def _find_square_with_max_points(self, points, steps, starting_points=[{'x': 0, 'y': 0}]):
         """[summary]
 
-        [description]
-
         Arguments:
             points {[type]} -- [description]
+            steps {list of pairs (x,y)} --
 
         Keyword Arguments:
             starting_points {list} -- [description] (default: {[{'x', 'y'}]})
@@ -117,17 +124,11 @@ class GridPoints():
             [type] -- list of point dicts [{'x': 0, 'y': 0, 'points': dict of points}]. The
             x, y will be set to the average point position between all points found.
         """
-        # cover = self.config['grid_coverage_per_step']
-        offset = self.config['grid_coverage_offset']
 
         points_counts = []
         for x, y in steps:
             # count how many plants in square
-            points_in_sq = self._find_points_in_square(points,
-                                                       step_center={
-                                                           'x': x + offset['x'],
-                                                           'y': y + offset['y']
-                                                       })
+            points_in_sq = self._find_points_in_square(points, step_center={'x': x, 'y': y})
 
             if len(points_in_sq) > 0:
                 points_counts.append({'x': x, 'y': y, 'points': points_in_sq})
