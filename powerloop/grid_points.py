@@ -38,9 +38,9 @@ class GridPoints():
         # next, we need to get the bed dimensions
         steps = [(i * step_width) + (min_pos - step_width) for i in range(1, steps_ceil + 2)]
 
-        # log('--> [_calc_steps_for_dimension] min_pos {}, max_pos {}, coverage {} --- steps_ceil {}, step_width {}, steps {}'
-        #     .format(min_pos, max_pos, coverage, steps_ceil, step_width, steps),
-        #     title='load_points')
+        log('--> [_calc_steps_for_dimension] min_pos {}, max_pos {}, coverage {} --- steps_ceil {}, step_width {}, steps {}'
+            .format(min_pos, max_pos, coverage, steps_ceil, step_width, steps),
+            title='load_points')
 
         return steps
 
