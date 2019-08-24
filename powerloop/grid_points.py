@@ -159,4 +159,6 @@ class GridPoints():
 
         log("summarized into {} points with coverage {}".format(len(points_out), self.config['grid_coverage_per_step']), title="summarize_points_by_coverage")
 
+        log("tmp dump of points out: {}".format(points_out), title="summarize_points_by_coverage")
+
         return points_out
