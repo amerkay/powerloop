@@ -38,9 +38,9 @@ class GridPoints():
         # next, we need to get the bed dimensions
         steps = [(i * step_width) + (min_pos - step_width) for i in range(1, steps_ceil + 2)]
 
-        log('--> [_calc_steps_for_dimension] min_pos {}, max_pos {}, coverage {} --- steps_ceil {}, step_width {}, steps {}'
-            .format(min_pos, max_pos, coverage, steps_ceil, step_width, steps),
-            title='load_points')
+        # log('--> [_calc_steps_for_dimension] min_pos {}, max_pos {}, coverage {} --- steps_ceil {}, step_width {}, steps {}'
+        #     .format(min_pos, max_pos, coverage, steps_ceil, step_width, steps),
+        #     title='load_points')
 
         return steps
 
@@ -100,7 +100,7 @@ class GridPoints():
 
         return out_arr
 
-    def _find_square_with_max_points(self, points, steps, starting_points=[{'x': 0, 'y': 0}]):
+    def _find_square_with_max_points(self, points, starting_points=[{'x': 0, 'y': 0}]):
         """[summary]
 
         [description]
@@ -120,15 +120,22 @@ class GridPoints():
         # get steps for covering area for input points
         steps = self._calc_steps(points)
 
+        # add a 10% margin of the average coverage
+        margin_mm_x = min([int(cover[0] * 0.10), 30])
+        margin_mm_y = min([int(cover[1] * 0.10), 30])
+
         points_counts = []
         for x, y in steps:
             # count how many plants in square
-            bottom_left = {'x': x, 'y': y}
-            top_right = {'x': x + cover[0], 'y': y + cover[1]}
+            bottom_left = {'x': x + margin_mm_x, 'y': y + margin_mm_y}
+            top_right = {'x': x + cover[0] - margin_mm_x, 'y': y + cover[1] - margin_mm_y}
             points_in_sq = self._find_points_in_square(points, bottom_left, top_right)
             if len(points_in_sq) > 0:
                 points_counts.append({'x': x, 'y': y, 'points': points_in_sq})
-        # log('points_counts: {}'.format(len(points_counts)), title='load_points')
+        log('points_counts: {}'.format(len(points_counts)), title='load_points')
+
+        if len(points_counts) == 0:
+            return None
 
         square_with_max_plants = max(points_counts, key=lambda i: len(i['points']))
         # print("square_with_max_plants cnt {}".format(len(square_with_max_plants['points'])))
@@ -144,10 +151,14 @@ class GridPoints():
         points_out = []
 
         # get steps for covering area for input points
-        steps = self._calc_steps(points)
+        # steps = self._calc_steps(points)
 
         while len(points_in) > 0:
-            res = self._find_square_with_max_points(points_in, steps)
+            res = self._find_square_with_max_points(points_in)
+
+            if res is None:
+                break
+
             points_out.append({**res, **{'id': pid}})
             pid += 1
 
@@ -157,6 +168,8 @@ class GridPoints():
 
             # print("==> points remaining  {}".format(len(points_in)))
 
-        log("summarized into {} points with coverage {}".format(len(points_out), self.config['grid_coverage_per_step']), title="summarize_points_by_coverage")
+        log("summarized into {} points with coverage {}".format(len(points_out),
+                                                                self.config['grid_coverage_per_step']),
+            title="summarize_points_by_coverage")
 
         return points_out
