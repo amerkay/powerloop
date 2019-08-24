@@ -120,15 +120,11 @@ class GridPoints():
         # get steps for covering area for input points
         steps = self._calc_steps(points)
 
-        # add a 10% margin of the average coverage
-        margin_mm_x = min([int(cover[0] * 0.10), 30])
-        margin_mm_y = min([int(cover[1] * 0.10), 30])
-
         points_counts = []
         for x, y in steps:
             # count how many plants in square
-            bottom_left = {'x': x + margin_mm_x, 'y': y + margin_mm_y}
-            top_right = {'x': x + cover[0] - margin_mm_x, 'y': y + cover[1] - margin_mm_y}
+            bottom_left = {'x': x, 'y': y}
+            top_right = {'x': x + cover[0], 'y': y + cover[1]}
             points_in_sq = self._find_points_in_square(points, bottom_left, top_right)
             if len(points_in_sq) > 0:
                 points_counts.append({'x': x, 'y': y, 'points': points_in_sq})
