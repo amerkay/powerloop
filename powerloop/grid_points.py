@@ -102,8 +102,9 @@ class GridPoints():
         }
 
         for p in points:
-            if bottom_left['x'] <= int(p['x']) <= top_right['x']\
-                and bottom_left['y'] <= int(p['y']) <= top_right['y']:
+            r = int(p['radius'])
+            if bottom_left['x'] <= int(p['x']) - r and int(p['x']) + r <= top_right['x'] and \
+               bottom_left['y'] <= int(p['y']) - r and int(p['y']) + r <= top_right['y']:
                 out_arr.append(p)
 
         # print("==> found {} points in square {}, {}".format(len(out_arr), bottom_left, top_right))
