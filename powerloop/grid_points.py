@@ -117,6 +117,9 @@ class GridPoints():
         """
         cover = self.config['grid_coverage_per_step']
 
+        # get steps for covering area for input points
+        steps = self._calc_steps(points)
+
         points_counts = []
         for x, y in steps:
             # count how many plants in square
