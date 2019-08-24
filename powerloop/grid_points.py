@@ -76,7 +76,7 @@ class GridPoints():
     def _del_from_dict_list(self, source_list, dict_id):
         return [d for d in source_list if d['id'] != dict_id]
 
-    def _find_points_in_square(self, points, bottom_left=(0, 0), top_right=(0, 0)):
+    def _find_points_in_square(self, points, step_center={'x': 0, 'y': 0}):
         """ Count number of points that fall within the square bound by bottom_left and top_right corners.
 
         Arguments:
@@ -84,12 +84,20 @@ class GridPoints():
 
         Keyword Arguments:
             bottom_left {tuple} -- (x, y) coordinates of the square's bottom left corner (default: {(0, 0)})
-            top_right {tuple} -- (x, y) coordinates of the square's top right corner (default: {(0, 0)})
 
         Returns:
             int -- the count of points within that square
         """
         out_arr = []
+        cover = self.config['grid_coverage_per_step']
+        bottom_left = {
+            'x': step_center["x"] - (cover[0] / 2),
+            'y': step_center["y"] - (cover[1] / 2)
+        }
+        top_right = {
+            'x': step_center["x"] + (cover[0] / 2),
+            'y': step_center["y"] + (cover[1] / 2)
+        }
 
         for p in points:
             if bottom_left['x'] <= int(p['x']) <= top_right['x']\
@@ -115,7 +123,7 @@ class GridPoints():
             [type] -- list of point dicts [{'x': 0, 'y': 0, 'points': dict of points}]. The
             x, y will be set to the average point position between all points found.
         """
-        cover = self.config['grid_coverage_per_step']
+        # cover = self.config['grid_coverage_per_step']
 
         # get steps for covering area for input points
         steps = self._calc_steps(points)
@@ -123,13 +131,19 @@ class GridPoints():
         points_counts = []
         for x, y in steps:
             # count how many plants in square
-            bottom_left = {'x': x, 'y': y}
-            top_right = {'x': x + cover[0], 'y': y + cover[1]}
-            points_in_sq = self._find_points_in_square(points, bottom_left, top_right)
+            points_in_sq = self._find_points_in_square(points, step_center={'x': x, 'y': y})
+
             if len(points_in_sq) > 0:
                 points_counts.append({'x': x, 'y': y, 'points': points_in_sq})
-        log('points_counts: {}'.format(len(points_counts)), title='load_points')
+                # avg_x = sum([points_in_sq[i]['x'] for i in range(0, len(points_in_sq))]) / len(points_in_sq)
+                # avg_y = sum([points_in_sq[i]['y'] for i in range(0, len(points_in_sq))]) / len(points_in_sq)
+                # points_counts.append({
+                #     'x': avg_x,
+                #     'y': avg_y,
+                #     'points': self._find_points_in_square(points, step_center={'x': avg_x, 'y': avg_y})
+                # })
 
+        # log('points_counts: {}'.format(len(points_counts)), title='load_points')
         if len(points_counts) == 0:
             return None
 
