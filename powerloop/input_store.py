@@ -47,7 +47,8 @@ class InputStore():
         'default_z': (0, 'int'),
         'default_speed': (100, 'int'),
         'use_tsp_greedy': (True, 'bool'),
-        'grid_coverage_per_step': ('(250,250)', 'str'),
+        'grid_coverage_per_step': ('(250,250)', 'xycoord'),
+        'grid_coverage_offset': ('(50,100)', 'xycoord'),
         'debug': (1, 'int')
     }
 
@@ -64,9 +65,6 @@ class InputStore():
         # get all inputs values
         for key, settings in InputStore.INPUT_DEFAULTS.items():
             self.input[key] = self.get_input_val(key, settings, prefix)
-
-        # special case input: extract (x, y) pair
-        self.input['grid_coverage_per_step'] = self.parse_xy_pair(self.input['grid_coverage_per_step'])
 
         for key, val in self.input.items():
             log('input {}: {}'.format(key, val), title='get_input_env')
@@ -93,7 +91,7 @@ class InputStore():
         val_clean_str = str(val).lower().strip()
 
         # set the expected value type for post-processing
-        val_type = settings[1] if settings[1] in ['str', 'int', 'bool', 'list', 'float'] else 'str'
+        val_type = settings[1] if settings[1] in ['str', 'int', 'bool', 'list', 'float', 'xycoord'] else 'str'
 
         if val_type == 'int':
             return int(self.is_randint(val)) if val_clean_str != 'none' else None
@@ -104,6 +102,8 @@ class InputStore():
         elif val_type == 'list':
             return val_clean_str.replace(" , ", ",").replace(", ", ",")\
                 .replace(" ,", ",").split(",") if val_clean_str != 'none' else []
+        elif val_type == 'xycoord':
+            return self.parse_xy_pair(val_clean_str) if val_clean_str != 'none' else None
 
         # default treat like str
         return str(val).strip() if val_clean_str != 'none' else None
@@ -137,14 +137,11 @@ class InputStore():
             # extract (x, y) from input string
             str_in = str_in.replace(" ", "").lower()
 
-            if str_in.lower() == 'none':
-                return None
-
             # find matches using regex
             m = re.findall(r"\((\d+),(\d+)\)", str_in)
             if len(m) > 0 and len(m[0]) == 2:
                 # build pair (x, y) and return it
-                return (int(m[0][0]), int(m[0][1]))
+                return {'x': int(m[0][0]), 'y': int(m[0][1])}
 
         # should not reach here if parse correctled, see previous return statement
         log('str_in {} could not be parsed'.format(str_in), title='parse_xy_pair')

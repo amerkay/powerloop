@@ -3,7 +3,7 @@
     "language": "python",
     "author": "amerkay",
     "description": "PowerLoop for Farmbot: Loop your farmbot by plants with search filters, or by automatic waypoint calculation to cover Plant search results grid area. Features include executing sequences and saving meta data. The code is as annotated as could be, so have a look at https://github.com/amerkay/powerloop/",
-    "version": "1.1.12",
+    "version": "1.1.13",
     "min_os_version_major": 6,
     "url": "https://raw.githubusercontent.com/amerkay/powerloop/master/manifest.json",
     "zip": "https://github.com/amerkay/powerloop/archive/master.zip",
@@ -190,6 +190,12 @@
           "Grid coverage (x, y) per step. E.g for camera field of view enter '(220, 310)', no quotes, depending on your z axis height for camera FoV. If set it uses the results of Plant filtering, then calculates waypoints based on grid_coverage_per_step value."
         ],
         "value": "None"
+    },
+    {
+        "name": "grid_coverage_offset",
+        "label": "Grid coverage offset (x, y) from center. Default (0,0), set to enable. E.g camera is offset '(50, 100)'.",
+        "help": [""],
+        "value": "(0,0)"
     },
     {
         "name": "debug",

@@ -9,7 +9,7 @@ log = Logger.log
 
 class GridPoints():
     # default config
-    config = {'grid_coverage_per_step': (250, 250)}
+    config = {'grid_coverage_per_step': {'x': 250, 'y': 250}, 'grid_coverage_offset': {'x': 0, 'y': 0}}
 
     def __init__(self, farmwarename, config):
         self.farmwarename = farmwarename
@@ -50,8 +50,8 @@ class GridPoints():
         # get array of x's and y's, then pass min and max to _calc_steps_for_dimension()
         xs = [p['x'] for p in points]
         ys = [p['y'] for p in points]
-        steps_x = self._calc_steps_for_dimension(min(xs), max(xs), cover[0])
-        steps_y = self._calc_steps_for_dimension(min(ys), max(ys), cover[1])
+        steps_x = self._calc_steps_for_dimension(min(xs), max(xs), cover['x'])
+        steps_y = self._calc_steps_for_dimension(min(ys), max(ys), cover['y'])
 
         return list(product(steps_x, steps_y))
 
@@ -90,14 +90,8 @@ class GridPoints():
         """
         out_arr = []
         cover = self.config['grid_coverage_per_step']
-        bottom_left = {
-            'x': step_center["x"] - (cover[0] / 2),
-            'y': step_center["y"] - (cover[1] / 2)
-        }
-        top_right = {
-            'x': step_center["x"] + (cover[0] / 2),
-            'y': step_center["y"] + (cover[1] / 2)
-        }
+        bottom_left = {'x': step_center["x"] - (cover['x'] / 2), 'y': step_center["y"] - (cover['y'] / 2)}
+        top_right = {'x': step_center["x"] + (cover['x'] / 2), 'y': step_center["y"] + (cover['y'] / 2)}
 
         for p in points:
             if bottom_left['x'] <= int(p['x']) <= top_right['x']\
@@ -124,11 +118,16 @@ class GridPoints():
             x, y will be set to the average point position between all points found.
         """
         # cover = self.config['grid_coverage_per_step']
+        offset = self.config['grid_coverage_offset']
 
         points_counts = []
         for x, y in steps:
             # count how many plants in square
-            points_in_sq = self._find_points_in_square(points, step_center={'x': x, 'y': y})
+            points_in_sq = self._find_points_in_square(points,
+                                                       step_center={
+                                                           'x': x + offset['x'],
+                                                           'y': y + offset['y']
+                                                       })
 
             if len(points_in_sq) > 0:
                 points_counts.append({'x': x, 'y': y, 'points': points_in_sq})
