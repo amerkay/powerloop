@@ -3,210 +3,210 @@
     "language": "python",
     "author": "amerkay",
     "description": "PowerLoop for Farmbot: Loop your farmbot by plants with search filters, or by automatic waypoint calculation to cover Plant search results grid area. Features include executing sequences and saving meta data. The code is as annotated as could be, so have a look at https://github.com/amerkay/powerloop/",
-    "version": "1.1.20",
+    "version": "1.1.21",
     "min_os_version_major": 6,
     "url": "https://raw.githubusercontent.com/amerkay/powerloop/master/manifest.json",
     "zip": "https://github.com/amerkay/powerloop/archive/master.zip",
     "executable": "python",
     "args": ["powerloop-master/powerloop/main.py"],
-    "config": [
-    {
-        "name": "pointname",
-        "label": "Filter by plant name, case insensitive. 'aru' matches 'Arugula', * for all.",
-        "help": ["Uses string contains. "],
-        "value": "*"
-    },
-    {
-        "name": "openfarm_slug",
-        "label": "Filter by Openfarm slug name, case insensitive. 'aru' matches 'Arugula', * for all.",
-        "help": [""],
-        "value": "*"
-    },
-    {
-        "name": "age_min_day",
-        "label": "Filter by plant age (minimum days)",
-        "help": [""],
-        "value": "-1"
-    },
-    {
-        "name": "age_max_day",
-        "label": "Filter by plant age (maximum days)",
-        "help": [""],
-        "value": "36500"
-    },
-    {
-        "name": "filter_meta_key",
-        "label": "Filter by meta data : key",
-        "help": [""],
-        "value": "None"
-    },
-    {
-        "name": "filter_meta_op",
-        "label": "Filter by meta data : operator (==,!=,>,<,>=,<=,regex,daysmin,daysmax,minutesmin,minutesmax)",
-        "help": [
-            " Default: '==' equals (numeric/string)",
-            " '!=' different (numeric/string)",
-            " '>' superior (numeric)",
-            " '<' inferior (numeric)",
-            " '>=' superior or equal (numeric)",
-            " '<=' inferior or equal (numeric)",
-            " 'regex' regular expression",
-            " 'daysmin' minimum days number from now to include plant (datetime)",
-            " 'daysmax' maximum days number from now to include plant (datetime)",
-            " 'minutesmin' minimum minutes number from now to include plant (datetime)",
-            " 'minutesmax' maximum minutes number from now to include plant (datetime)."
-        ],
-        "value": "=="
-    },
-    {
-        "name": "filter_meta_value",
-        "label": "Filter by meta data : value",
-        "help": [""],
-        "value": "None"
-    },
-    {
-        "name": "filter_plant_stage",
-        "label": "Filter by plant stage (Allowed: None, planned, planted, sprouted, harvested). Multiple allowed comma separated.",
-        "help": ["Eg: 'planted, sprouted', no quotes."],
-        "value": "None"
-    },
-    {
-        "name": "filter_min_x",
-        "label": "Filter by coordinates - Min X",
-        "help": [""],
-        "value": "None"
-    },
-    {
-        "name": "filter_max_x",
-        "label": "Filter by coordinates - Max X",
-        "help": [""],
-        "value": "None"
-    },
-    {
-        "name": "filter_min_y",
-        "label": "Filter by coordinates - Min Y",
-        "help": [""],
-        "value": "None"
-    },
-    {
-        "name": "filter_max_y",
-        "label": "Filter by coordinates - Max Y",
-        "help": [""],
-        "value": "None"
-    },
-    {
-        "name": "sequence_init",
-        "label": "Init Sequences, one-time execution. Eg. 'SeqName1, SeqName2'",
-        "help": [
-          "Default: 'None' -> no execute sequence",
-          "Sequence name matched using equals, case-insensitive.",
-          "Can be an ordered list of sequences with ',' seperator. Eg. 'Seq1,Seq2,...'"
-        ],
-        "value": "None"
-    },
-    {
-        "name": "sequence_beforemove",
-        "label": "Sequences Before Next Move, for each plant. Eg. 'SeqName1, SeqName2'",
-        "help": [
-          "Default: 'None' -> no execute sequence",
-          "Sequence name matched using equals, case-insensitive.",
-          "Can be an ordered list of sequences with ',' seperator. Eg. 'Seq1,Seq2,...'"
-        ],
-        "value": "None"
-    },
-    {
-        "name": "sequence_aftermove",
-        "label": "Sequences After Move, for each plant. Eg. 'SeqName1, SeqName2'",
-        "help": [
-          "Default: 'None' -> no execute sequence",
-          "Sequence name matched using equals, case-insensitive.",
-          "Can be an ordered list of sequences with ',' seperator. Eg. 'Seq1,Seq2,...'"
-        ],
-        "value": "None"
-    },
-    {
-        "name": "sequence_end",
-        "label": "End Sequences, one-time execution. Eg. 'SeqName1, SeqName2'",
-        "help": [
-          "Default: 'None' -> no execute sequence",
-          "Sequence name matched using equals, case-insensitive.",
-          "Can be an ordered list of sequences with ',' seperator. Eg. 'Seq1,Seq2,...'"
-        ],
-        "value": "None"
-    },
-    {
-        "name": "save_meta_key",
-        "label": "Save in meta data : key",
-        "help": [""],
-        "value": "None"
-    },
-    {
-        "name": "save_meta_value",
-        "label": "Save in meta data : value (str / #NOW#)",
-        "help": [""],
-        "value": "None"
-    },
-    {
-        "name": "save_plant_stage",
-        "label": "Set plant stage (None, planned, planted, sprouted, harvested)",
-        "help": ["If planted, 'planted_at' property is changed to now UTC (like web app)"],
-        "value": "None"
-    },
-    {
-        "name": "offset_x",
-        "label": "Offset X value when moving - (integer, randint(i,j))",
-        "help": ["Optional: set to 'randint(i,j)' no quotes, returns a random integer N such that i <= N <= j."],
-        "value": 0
-    },
-    {
-        "name": "offset_y",
-        "label": "Offset Y value when moving - (integer, randint(i,j))",
-        "help": ["Optional: set to 'randint(i,j)' no quotes, returns a random integer N such that i <= N <= j."],
-        "value": 0
-    },
-    {
-        "name": "default_z",
-        "label": "Default Z axis value when moving",
-        "help": [""],
-        "value": 0
-    },
-    {
-        "name": "default_speed",
-        "label": "Default speed value when moving. Percent of max speed (1-100)",
-        "help": [""],
-        "value": 100
-    },
-    {
-        "name": "use_tsp_greedy",
-        "label": "Use Travelling Salesman Problem Greedy algorithm to optimize route? If 'True', no quotes, TSP Greedy Algorithm will be used (default True).",
-        "help": ["Default: True -> use TSPGreedy, rather than sort(x,y). See README, Fig. 1."],
-        "value": "True"
-    },
-    {
-        "name": "grid_coverage_per_step",
-        "label": "Grid coverage (x, y) per step. None to disable (default), set to enable. E.g camera fov '(220, 310)'. When used, no point data will be saved.",
-        "help": [
-          "Default: 'None' to disable grid coverage. Min value (100, 100). Uses the default plant search and filter for the points data.",
-          "Grid coverage (x, y) per step. E.g for camera field of view enter '(220, 310)', no quotes, depending on your z axis height for camera FoV. If set it uses the results of Plant filtering, then calculates waypoints based on grid_coverage_per_step value."
-          "Min is (100, 100) otherwise plant radius won't fit, and it will fail."
-        ],
-        "value": "None"
-    },
-    {
-        "name": "grid_coverage_offset",
-        "label": "Grid coverage offset (x, y) from center. Default (0,0), set to enable. E.g camera is offset '(50, 100)'.",
-        "help": ["Max is 50% of the grid_coverage_per_step"],
-        "value": "(0,0)"
-    },
-    {
-        "name": "debug",
-        "label": "Debug mode (0-> No FW debug msg, 1-> FW debug msg (default), 2-> No move/exec - do save point data, 3-> simulation, log only)",
-        "help": [
-          "0 -> no farmware debug log",
-          "1 -> farmware debug log",
-          "2 -> no move, no execute sequences. Do save point data and farmware debug log",
-          "3 -> simulation mode. No move, no execute sequence, no save meta data. Enable farmware debug log"
-        ],
-        "value": 1
-    }]
+    "config": [{
+            "name": "pointname",
+            "label": "Filter by plant name, case insensitive. 'aru' matches 'Arugula', * for all.",
+            "help": ["Uses string contains. "],
+            "value": "*"
+        },
+        {
+            "name": "openfarm_slug",
+            "label": "Filter by Openfarm slug name, case insensitive. 'aru' matches 'Arugula', * for all.",
+            "help": [""],
+            "value": "*"
+        },
+        {
+            "name": "age_min_day",
+            "label": "Filter by plant age (minimum days)",
+            "help": [""],
+            "value": "-1"
+        },
+        {
+            "name": "age_max_day",
+            "label": "Filter by plant age (maximum days)",
+            "help": [""],
+            "value": "36500"
+        },
+        {
+            "name": "filter_meta_key",
+            "label": "Filter by meta data : key",
+            "help": [""],
+            "value": "None"
+        },
+        {
+            "name": "filter_meta_op",
+            "label": "Filter by meta data : operator (==,!=,>,<,>=,<=,regex,daysmin,daysmax,minutesmin,minutesmax)",
+            "help": [
+                " Default: '==' equals (numeric/string)",
+                " '!=' different (numeric/string)",
+                " '>' superior (numeric)",
+                " '<' inferior (numeric)",
+                " '>=' superior or equal (numeric)",
+                " '<=' inferior or equal (numeric)",
+                " 'regex' regular expression",
+                " 'daysmin' minimum days number from now to include plant (datetime)",
+                " 'daysmax' maximum days number from now to include plant (datetime)",
+                " 'minutesmin' minimum minutes number from now to include plant (datetime)",
+                " 'minutesmax' maximum minutes number from now to include plant (datetime)."
+            ],
+            "value": "=="
+        },
+        {
+            "name": "filter_meta_value",
+            "label": "Filter by meta data : value",
+            "help": [""],
+            "value": "None"
+        },
+        {
+            "name": "filter_plant_stage",
+            "label": "Filter by plant stage (Allowed: None, planned, planted, sprouted, harvested). Multiple allowed comma separated.",
+            "help": ["Eg: 'planted, sprouted', no quotes."],
+            "value": "None"
+        },
+        {
+            "name": "filter_min_x",
+            "label": "Filter by coordinates - Min X",
+            "help": [""],
+            "value": "None"
+        },
+        {
+            "name": "filter_max_x",
+            "label": "Filter by coordinates - Max X",
+            "help": [""],
+            "value": "None"
+        },
+        {
+            "name": "filter_min_y",
+            "label": "Filter by coordinates - Min Y",
+            "help": [""],
+            "value": "None"
+        },
+        {
+            "name": "filter_max_y",
+            "label": "Filter by coordinates - Max Y",
+            "help": [""],
+            "value": "None"
+        },
+        {
+            "name": "sequence_init",
+            "label": "Init Sequences, one-time execution. Eg. 'SeqName1, SeqName2'",
+            "help": [
+                "Default: 'None' -> no execute sequence",
+                "Sequence name matched using equals, case-insensitive.",
+                "Can be an ordered list of sequences with ',' seperator. Eg. 'Seq1,Seq2,...'"
+            ],
+            "value": "None"
+        },
+        {
+            "name": "sequence_beforemove",
+            "label": "Sequences Before Next Move, for each plant. Eg. 'SeqName1, SeqName2'",
+            "help": [
+                "Default: 'None' -> no execute sequence",
+                "Sequence name matched using equals, case-insensitive.",
+                "Can be an ordered list of sequences with ',' seperator. Eg. 'Seq1,Seq2,...'"
+            ],
+            "value": "None"
+        },
+        {
+            "name": "sequence_aftermove",
+            "label": "Sequences After Move, for each plant. Eg. 'SeqName1, SeqName2'",
+            "help": [
+                "Default: 'None' -> no execute sequence",
+                "Sequence name matched using equals, case-insensitive.",
+                "Can be an ordered list of sequences with ',' seperator. Eg. 'Seq1,Seq2,...'"
+            ],
+            "value": "None"
+        },
+        {
+            "name": "sequence_end",
+            "label": "End Sequences, one-time execution. Eg. 'SeqName1, SeqName2'",
+            "help": [
+                "Default: 'None' -> no execute sequence",
+                "Sequence name matched using equals, case-insensitive.",
+                "Can be an ordered list of sequences with ',' seperator. Eg. 'Seq1,Seq2,...'"
+            ],
+            "value": "None"
+        },
+        {
+            "name": "save_meta_key",
+            "label": "Save in meta data : key",
+            "help": [""],
+            "value": "None"
+        },
+        {
+            "name": "save_meta_value",
+            "label": "Save in meta data : value (str / #NOW#)",
+            "help": [""],
+            "value": "None"
+        },
+        {
+            "name": "save_plant_stage",
+            "label": "Set plant stage (None, planned, planted, sprouted, harvested)",
+            "help": ["If planted, 'planted_at' property is changed to now UTC (like web app)"],
+            "value": "None"
+        },
+        {
+            "name": "offset_x",
+            "label": "Offset X value when moving - (integer, randint(i,j))",
+            "help": ["Optional: set to 'randint(i,j)' no quotes, returns a random integer N such that i <= N <= j."],
+            "value": 0
+        },
+        {
+            "name": "offset_y",
+            "label": "Offset Y value when moving - (integer, randint(i,j))",
+            "help": ["Optional: set to 'randint(i,j)' no quotes, returns a random integer N such that i <= N <= j."],
+            "value": 0
+        },
+        {
+            "name": "default_z",
+            "label": "Default Z axis value when moving",
+            "help": [""],
+            "value": 0
+        },
+        {
+            "name": "default_speed",
+            "label": "Default speed value when moving. Percent of max speed (1-100)",
+            "help": [""],
+            "value": 100
+        },
+        {
+            "name": "use_tsp_greedy",
+            "label": "Use Travelling Salesman Problem Greedy algorithm to optimize route? If 'True', no quotes, TSP Greedy Algorithm will be used (default True).",
+            "help": ["Default: True -> use TSPGreedy, rather than sort(x,y). See README, Fig. 1."],
+            "value": "True"
+        },
+        {
+            "name": "grid_coverage_per_step",
+            "label": "Grid coverage (x, y) per step. None to disable (default), set to enable. E.g camera fov '(220, 310)'. When used, no point data will be saved.",
+            "help": [
+                "Default: 'None' to disable grid coverage. Min value (100, 100). Uses the default plant search and filter for the points data.",
+                "Grid coverage (x, y) per step. E.g for camera field of view enter '(220, 310)', no quotes, depending on your z axis height for camera FoV. If set it uses the results of Plant filtering, then calculates waypoints based on grid_coverage_per_step value.",
+                "Min is (100, 100) otherwise plant radius won't fit, and it will fail."
+            ],
+            "value": "None"
+        },
+        {
+            "name": "grid_coverage_offset",
+            "label": "Grid coverage offset (x, y) from center. Default (0,0), set to enable. E.g camera is offset '(50, 100)'.",
+            "help": ["Max is 50% of the grid_coverage_per_step"],
+            "value": "(0,0)"
+        },
+        {
+            "name": "debug",
+            "label": "Debug mode (0-> No FW debug msg, 1-> FW debug msg (default), 2-> No move/exec - do save point data, 3-> simulation, log only)",
+            "help": [
+                "0 -> no farmware debug log",
+                "1 -> farmware debug log",
+                "2 -> no move, no execute sequences. Do save point data and farmware debug log",
+                "3 -> simulation mode. No move, no execute sequence, no save meta data. Enable farmware debug log"
+            ],
+            "value": 1
+        }
+    ]
 }
