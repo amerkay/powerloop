@@ -48,7 +48,7 @@ class InputStore():
         'default_speed': (100, 'int'),
         'use_tsp_greedy': (True, 'bool'),
         'grid_coverage_per_step': ('(250,250)', 'xycoord'),
-        'grid_coverage_offset': ('(50,100)', 'xycoord'),
+        'grid_coverage_offset': ('(-50,-100)', 'xycoord'),
         'debug': (1, 'int')
     }
 
@@ -138,7 +138,7 @@ class InputStore():
             str_in = str_in.replace(" ", "").lower()
 
             # find matches using regex
-            m = re.findall(r"\((\d+),(\d+)\)", str_in)
+            m = re.findall(r"\(([+-]?\d+),([+-]?\d+)\)", str_in)
             if len(m) > 0 and len(m[0]) == 2:
                 # build pair (x, y) and return it
                 return {'x': int(m[0][0]), 'y': int(m[0][1])}
