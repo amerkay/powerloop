@@ -148,7 +148,7 @@ class GridPoints():
 
         while len(points_in) > 0:
             res = self._find_square_with_max_points(points_in, steps)
-            points_out.append({**res, **{'id': pid, 'count': len(res['points'])}})
+            points_out.append({**res, **{'id': pid}})
             pid += 1
 
             # delete points appended from points_in and loop
@@ -159,6 +159,6 @@ class GridPoints():
 
         log("summarized into {} points with coverage {}".format(len(points_out), self.config['grid_coverage_per_step']), title="summarize_points_by_coverage")
 
-        log("tmp dump of points out: {}".format(points_out), title="summarize_points_by_coverage")
+        # log("tmp dump of points out: {}".format(points_out), title="summarize_points_by_coverage")
 
         return points_out

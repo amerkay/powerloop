@@ -65,10 +65,14 @@ class PointSort():
         Returns:
             {list of Points} -- The sorted list of Celeryscript Point JSON objects (dicts)
         """
+
+        # return sorted(points, key=lambda e: distance(e, target))
+
         totalDist = 0
-        tr = sorted(points, key=lambda elem: (int(elem['x']), int(elem['y'])))
-        bl = sorted(points, key=lambda elem: (int(elem['x']), int(-elem['y'])))
-        dist, cur = min([(PointSort._distance(start_point, p), p) for p in (tr[0], tr[-1], bl[0], bl[-1])])
+        # tr = sorted(points, key=lambda elem: (int(elem['x']), int(elem['y'])))
+        # bl = sorted(points, key=lambda elem: (int(elem['x']), int(-elem['y'])))
+        # dist, cur = min([(PointSort._distance(start_point, p), p) for p in (tr[0], tr[-1], bl[0], bl[-1])])
+        cur = start_point
         path = [cur]
         for i in range(1, len(points)):
             dists = [(PointSort._distance(cur, p), p) for p in points if p not in path]
