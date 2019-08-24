@@ -3,7 +3,7 @@
     "language": "python",
     "author": "amerkay",
     "description": "PowerLoop for Farmbot: Loop your farmbot by plants with search filters, or by automatic waypoint calculation to cover Plant search results grid area. Features include executing sequences and saving meta data. The code is as annotated as could be, so have a look at https://github.com/amerkay/powerloop/",
-    "version": "1.1.18",
+    "version": "1.1.20",
     "min_os_version_major": 6,
     "url": "https://raw.githubusercontent.com/amerkay/powerloop/master/manifest.json",
     "zip": "https://github.com/amerkay/powerloop/archive/master.zip",
@@ -186,15 +186,16 @@
         "name": "grid_coverage_per_step",
         "label": "Grid coverage (x, y) per step. None to disable (default), set to enable. E.g camera fov '(220, 310)'. When used, no point data will be saved.",
         "help": [
-          "Default: 'None' to disable grid coverage. Uses the default plant search and filter for the points data.",
+          "Default: 'None' to disable grid coverage. Min value (100, 100). Uses the default plant search and filter for the points data.",
           "Grid coverage (x, y) per step. E.g for camera field of view enter '(220, 310)', no quotes, depending on your z axis height for camera FoV. If set it uses the results of Plant filtering, then calculates waypoints based on grid_coverage_per_step value."
+          "Min is (100, 100) otherwise plant radius won't fit, and it will fail."
         ],
         "value": "None"
     },
     {
         "name": "grid_coverage_offset",
         "label": "Grid coverage offset (x, y) from center. Default (0,0), set to enable. E.g camera is offset '(50, 100)'.",
-        "help": [""],
+        "help": ["Max is 50% of the grid_coverage_per_step"],
         "value": "(0,0)"
     },
     {

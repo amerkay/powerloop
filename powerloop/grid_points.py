@@ -17,7 +17,12 @@ class GridPoints():
         self.farmwarename = farmwarename
         self.config = InputStore.merge_config(self.config, config)
 
-    def _calc_steps_for_dimension(self, min_pos=0, max_pos=0, coverage=220, offset=0):
+        cover = self.config['grid_coverage_per_step']
+        offset = self.config['grid_coverage_offset']
+        if offset['x'] >= cover['x'] * 0.5 or offset['y'] >= cover['y'] * 0.5:
+            log("Offset cannot be more than half the coverage.", "error", title="GridPoints __init__")
+
+    def _gen_steps_for_dimension(self, min_pos=0, max_pos=0, coverage=220):
         """ Calculate steps
 
         [description]
@@ -34,26 +39,30 @@ class GridPoints():
         if max_pos == min_pos:
             return [min_pos]
 
-        steps_ceil = math.ceil((max_pos - min_pos) / coverage)
+        # set overlap percentage. recommended 0.2-0.5 value
+        overlap = 0.3
+
+        steps_ceil = math.ceil((1 + overlap) * (max_pos - min_pos) / coverage)
         step_width = int((max_pos - min_pos) / steps_ceil)
 
         # next, we need to get the bed dimensions
-        steps = [(i * step_width) + (min_pos - step_width) + offset for i in range(1, steps_ceil + 2)]
+        steps = [(i * step_width) + (min_pos - step_width) for i in range(1, steps_ceil + 3)]
 
-        # log('--> [_calc_steps_for_dimension] min_pos {}, max_pos {}, coverage {} --- steps_ceil {}, step_width {}, steps {}'
+        # log('--> [_gen_steps_for_dimension] min_pos {}, max_pos {}, coverage {} --- steps_ceil {}, step_width {}, steps {}'
         #     .format(min_pos, max_pos, coverage, steps_ceil, step_width, steps),
         #     title='load_points')
 
         return steps
 
-    def _calc_steps(self, points, starting_point={'x': 0, 'y': 0}):
+    def _gen_steps(self, points):
         cover = self.config['grid_coverage_per_step']
+        offset = self.config['grid_coverage_offset']
 
-        # get array of x's and y's, then pass min and max to _calc_steps_for_dimension()
+        # get array of x's and y's, then pass min and max to _gen_steps_for_dimension()
         xs = [p['x'] for p in points]
         ys = [p['y'] for p in points]
-        steps_x = self._calc_steps_for_dimension(min(xs), max(xs), cover['x'], starting_point['x'])
-        steps_y = self._calc_steps_for_dimension(min(ys), max(ys), cover['y'], starting_point['y'])
+        steps_x = self._gen_steps_for_dimension(min(xs) - offset['x'], max(xs) + offset['x'], cover['x'])
+        steps_y = self._gen_steps_for_dimension(min(ys) - offset['y'], max(ys) + offset['y'], cover['y'])
 
         return list(product(steps_x, steps_y))
 
@@ -62,7 +71,7 @@ class GridPoints():
             return None
 
         # get steps
-        steps = self._calc_steps(points)
+        steps = self._gen_steps(points)
 
         i = 1
         points_out = []
@@ -98,13 +107,10 @@ class GridPoints():
             'x': step_center["x"] - (cover['x'] / 2) + offset['x'],
             'y': step_center["y"] - (cover['y'] / 2) + offset['y']
         }
-        top_right = {
-            'x': step_center["x"] + (cover['x'] / 2) + offset['x'],
-            'y': step_center["y"] + (cover['y'] / 2) + offset['y']
-        }
+        top_right = {'x': bottom_left['x'] + cover['x'], 'y': bottom_left['y'] + cover['y']}
 
         for p in points:
-            r = int(p['radius'])*2
+            r = int(p['radius'])
             if bottom_left['x'] <= int(p['x']) - r and int(p['x']) + r <= top_right['x'] and \
                bottom_left['y'] <= int(p['y']) - r and int(p['y']) + r <= top_right['y']:
                 out_arr.append(p)
@@ -113,7 +119,7 @@ class GridPoints():
 
         return out_arr
 
-    def _find_square_with_max_points(self, points, steps):
+    def _find_square_with_max_points(self, points):
         """[summary]
 
         Arguments:
@@ -128,6 +134,9 @@ class GridPoints():
             x, y will be set to the average point position between all points found.
         """
 
+        steps = self._gen_steps(points)
+        # print("==> {}".format(steps))
+
         points_counts = []
         for x, y in steps:
             # count how many plants in square
@@ -135,15 +144,9 @@ class GridPoints():
 
             if len(points_in_sq) > 0:
                 points_counts.append({'x': x, 'y': y, 'points': points_in_sq})
-                # avg_x = sum([points_in_sq[i]['x'] for i in range(0, len(points_in_sq))]) / len(points_in_sq)
-                # avg_y = sum([points_in_sq[i]['y'] for i in range(0, len(points_in_sq))]) / len(points_in_sq)
-                # points_counts.append({
-                #     'x': avg_x,
-                #     'y': avg_y,
-                #     'points': self._find_points_in_square(points, step_center={'x': avg_x, 'y': avg_y})
-                # })
 
         # log('points_counts: {}'.format(len(points_counts)), title='load_points')
+
         if len(points_counts) == 0:
             return None
 
@@ -156,28 +159,29 @@ class GridPoints():
         if self.config['grid_coverage_per_step'] is None or len(points) == 0:
             return None
 
+        cover = self.config['grid_coverage_per_step']
+        if(cover['x'] < 100 or cover['y'] < 100):
+            raise Exception("coverage (x,y) cannot be less than 100,100")
+
+        if self.config['grid_coverage_offset'] is not None:
+            offset = self.config['grid_coverage_offset']
+            if abs(offset['x']) >= cover['x'] / 2 or abs(offset['y']) >= cover['y'] / 2:
+                raise Exception("Summarize by coverage cannot have offset >= 50% of the coverage.")
+
         pid = 1
         points_in = points.copy()
         points_out = []
 
         # get steps for covering area for input points
-        cover = self.config['grid_coverage_per_step']
-        offset = self.config['grid_coverage_offset']
-
-        d = 1 if cover['x'] < 50 or cover['y'] < 50 else 1
-        starting_points_x = [x * math.ceil(cover['x'] / d) for x in range(0, d)]
-        starting_points_y = [y * math.ceil(cover['y'] / d) for y in range(0, d)]
-        starting_points = list(zip(starting_points_x, starting_points_y))
-
-        steps = []
-        for x, y in starting_points:
-            steps += self._calc_steps(points, starting_point={'x': x, 'y': y})
+        # steps = self._gen_steps(points)
 
         while len(points_in) > 0:
-            res = self._find_square_with_max_points(points_in, steps)
+            res = self._find_square_with_max_points(points_in)
 
             if res is None:
-                break
+                raise Exception(
+                    "Grid points failed. Please open an issue with the coverage value used and print screen of your garden."
+                )
 
             points_out.append({**res, **{'id': pid}})
             pid += 1
@@ -207,6 +211,15 @@ class GridPoints():
         # for p in points:
         #     plt_x.append(p['x'])
         #     plt_y.append(p['y'])
+
+        #     r = p['radius']
+        #     ax.add_patch(
+        #         Rectangle(xy=(p['x'] - r, p['y'] - r),
+        #                   width=r * 2,
+        #                   height=r * 2,
+        #                   linewidth=2,
+        #                   color='g',
+        #                   fill=False))
         # ax.scatter(plt_x, plt_y, color=next(cycol), s=10)
 
         # # Add rectangles
@@ -216,7 +229,7 @@ class GridPoints():
         #                       p['y'] - (cover['y'] / 2) + offset['y']),
         #                   width=cover['x'],
         #                   height=cover['y'],
-        #                   linewidth=random.randint(1, 3),
+        #                   linewidth=random.randint(1, 2),
         #                   color=next(cycol),
         #                   fill=False))
         # ax.axis('equal')

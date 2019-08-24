@@ -47,7 +47,7 @@ class InputStore():
         'default_z': (0, 'int'),
         'default_speed': (100, 'int'),
         'use_tsp_greedy': (True, 'bool'),
-        'grid_coverage_per_step': ('(200,300)', 'xycoord'),
+        'grid_coverage_per_step': ('(220, 330)', 'xycoord'),
         'grid_coverage_offset': ('(50,100)', 'xycoord'),
         'debug': (1, 'int')
     }
