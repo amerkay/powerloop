@@ -17,11 +17,6 @@ class GridPoints():
         self.farmwarename = farmwarename
         self.config = InputStore.merge_config(self.config, config)
 
-        cover = self.config['grid_coverage_per_step']
-        offset = self.config['grid_coverage_offset']
-        if offset['x'] >= cover['x'] * 0.5 or offset['y'] >= cover['y'] * 0.5:
-            log("Offset cannot be more than half the coverage.", "error", title="GridPoints __init__")
-
     def _gen_steps_for_dimension(self, min_pos=0, max_pos=0, coverage=220):
         """ Calculate steps
 
