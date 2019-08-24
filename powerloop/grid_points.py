@@ -1,4 +1,6 @@
 import math
+import random
+
 from itertools import product
 from input_store import InputStore
 
@@ -97,12 +99,12 @@ class GridPoints():
             'y': step_center["y"] - (cover['y'] / 2) + offset['y']
         }
         top_right = {
-            'x': step_center["x"] + (cover['x'] / 2) + offset['x'],\
+            'x': step_center["x"] + (cover['x'] / 2) + offset['x'],
             'y': step_center["y"] + (cover['y'] / 2) + offset['y']
         }
 
         for p in points:
-            r = int(p['radius'])
+            r = int(p['radius'])*2
             if bottom_left['x'] <= int(p['x']) - r and int(p['x']) + r <= top_right['x'] and \
                bottom_left['y'] <= int(p['y']) - r and int(p['y']) + r <= top_right['y']:
                 out_arr.append(p)
@@ -160,7 +162,9 @@ class GridPoints():
 
         # get steps for covering area for input points
         cover = self.config['grid_coverage_per_step']
-        d = 1 if cover['x'] < 50 or cover['y'] < 50 else 3
+        offset = self.config['grid_coverage_offset']
+
+        d = 1 if cover['x'] < 50 or cover['y'] < 50 else 1
         starting_points_x = [x * math.ceil(cover['x'] / d) for x in range(0, d)]
         starting_points_y = [y * math.ceil(cover['y'] / d) for y in range(0, d)]
         starting_points = list(zip(starting_points_x, starting_points_y))
@@ -187,5 +191,37 @@ class GridPoints():
         log("summarized into {} points with coverage {}".format(len(points_out),
                                                                 self.config['grid_coverage_per_step']),
             title="summarize_points_by_coverage")
+
+        # import matplotlib.pyplot as plt
+        # from matplotlib.patches import Rectangle
+        # from itertools import cycle
+
+        # cycol = cycle('bgrcmyk')
+
+        # # plot plants
+        # fig = plt.figure()
+        # ax = fig.add_subplot(111)
+
+        # plt_x = []
+        # plt_y = []
+        # for p in points:
+        #     plt_x.append(p['x'])
+        #     plt_y.append(p['y'])
+        # ax.scatter(plt_x, plt_y, color=next(cycol), s=10)
+
+        # # Add rectangles
+        # for p in points_out:
+        #     ax.add_patch(
+        #         Rectangle(xy=(p["x"] - (cover['x'] / 2) + offset['x'],
+        #                       p['y'] - (cover['y'] / 2) + offset['y']),
+        #                   width=cover['x'],
+        #                   height=cover['y'],
+        #                   linewidth=random.randint(1, 3),
+        #                   color=next(cycol),
+        #                   fill=False))
+        # ax.axis('equal')
+        # plt.show()
+
+        # exit()
 
         return points_out
