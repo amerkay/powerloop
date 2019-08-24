@@ -124,7 +124,7 @@ class InputStore():
 
             if val.startswith("randint("):
                 # return the randint result of the parsed range from regex
-                m = re.findall(r"randint\((\d+),(\d+)\)", val)
+                m = re.findall(r"randint\(([+-]?\d+),([+-]?\d+)\)", val)
                 pos = random.randint(int(m[0][0]), int(m[0][1]))
                 # pos *= -1 if random.randint(0, 1) else 1
                 return pos
