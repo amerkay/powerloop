@@ -61,7 +61,7 @@ class InputStore():
 
         Keyword Arguments:
             settings {tuple} -- default value (None, 0, or input val) and
-                type (str, int, bool, list, float) (default: {('None', 'str')})
+                type (str, int, bool, list, float, xycoord) (default: {('None', 'str')})
             prefix {str} -- farmware name prefix (default: {'farmware'})
 
         Returns:
@@ -117,6 +117,14 @@ class InputStore():
         return val
 
     def parse_xy_pair(self, str_in):
+        """ Extract x, y pair from string
+
+        Arguments:
+            str_in {str} -- String input
+
+        Returns:
+            dict -- {'x': resx, 'y': resy} or None
+        """
         if isinstance(str_in, str):
             # extract (x, y) from input string
             str_in = str_in.replace(" ", "").lower()
@@ -133,6 +141,18 @@ class InputStore():
 
     @staticmethod
     def merge_config(default_config, new_config):
+        """ Merge two config dicts, only if default_config has the value, ignoring unmatching inputs
+
+        Arguments:
+            default_config {dict} -- Set of allowed config values, and their defaults
+            new_config {dict} -- Set of user input configs to update accordingly
+
+        Returns:
+            dict -- merged configuration dict
+
+        Raises:
+            Exception -- if invalid dicts provided
+        """
         merged_config = default_config.copy()
 
         if isinstance(default_config, dict) and isinstance(new_config, dict):

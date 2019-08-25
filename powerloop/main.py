@@ -26,9 +26,10 @@ from point_sort import PointSort
 from logger import Logger
 log = Logger.log
 
-# Farmware name, must be same as "package" attribe in manifest.json
-FARMWARE_NAME = "power_loop"
+# Farmware name, must be same as "package" attrib in manifest.json
+FARMWARE_NAME = "power-loop"
 
+# The defaults, see InputStore class for more information.
 INPUT_DEFAULTS = {
     'filter_pointname': ('*', 'str'),
     'filter_openfarm_slug': ('*', 'str'),
@@ -70,7 +71,7 @@ def run_points_loop(points, sexec, run_after_each=None, use_simple_sort=False):
 
     Keyword Arguments:
         run_after_each {method} -- Method to run after each move (default: {None})
-        use_tsp_solver {bool} -- Use TSP Solver instead of regular sort (default: {True})
+        use_simple_sort {bool} -- Use regular sort instead of TSP Solver (default: {False})
     """
     points_sorted = PointSort.sort_points(points, use_simple_sort)
 
