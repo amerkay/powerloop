@@ -2,10 +2,9 @@
 
 Loop your Farmbot by plants with filters, or by automatic waypoint calculation to cover plant search results grid area.
 
-> FARMBOT_OS 6. Tested only on 7.0.1 for now. Should work on 6. Please open an [issue](../../issues) with problems with other versions.
+> FARMBOT_OS 6. Tested only on 7.0.1 for now. Should work on v6. Please open an [issue](../../issues) with any problems.
 
 > Originally forked from [Loop-Plants-With-Filters](https://github.com/rdegosse/Loop-Plants-With-Filters), thank you @rdegosse!
-
 
 ## Installation
 
@@ -13,11 +12,9 @@ Go to [My Farmbot -> Farmware](https://my.farm.bot/app/farmware/), then paste th
 ```
 https://raw.githubusercontent.com/amerkay/powerloop/master/manifest.json
 ```
+## Developers
 
-## Devs welcome
-
-I tried to add as much comments and documentation within the files. Also, if you want to use one of the files in your own project, I made sure they are as self-contained and documented as possible.
-
+I tried to add as much comments and documentation within the files, as well as clear variable and method naming. If you want to use one of the files in your own project, I made sure they are as self-contained and documented as possible. Please use freely. Pull requests appreciated - even if it takes me time to get to it.
 
 ## PowerLoop's Features
 
@@ -41,7 +38,6 @@ I tried to add as much comments and documentation within the files. Also, if you
 
 ![Travelling Salesman Solution](tsp_greedy_farmware_screenshot.jpg)
 *Fig. 1: Travelling Salesman Solution to filtered list of plants*
-
 
 ## PowerLoop's Input Variables Documentation
 

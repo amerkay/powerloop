@@ -29,6 +29,37 @@ log = Logger.log
 # Farmware name, must be same as "package" attribe in manifest.json
 FARMWARE_NAME = "power_loop"
 
+INPUT_DEFAULTS = {
+    'filter_pointname': ('*', 'str'),
+    'filter_openfarm_slug': ('*', 'str'),
+    'filter_age_min_day': (-1, 'int'),
+    'filter_age_max_day': (36500, 'int'),
+    'filter_meta_key': ('None', 'str'),
+    'filter_meta_op': ('None', 'str'),
+    'filter_meta_value': ('None', 'str'),
+    'filter_plant_stage': ('None', 'list'),
+    'filter_min_x': ('None', 'int'),
+    'filter_max_x': ('None', 'int'),
+    'filter_min_y': ('None', 'int'),
+    'filter_max_y': ('None', 'int'),
+    'sequence_init': ('None', 'list'),
+    'sequence_beforemove': ('None', 'list'),
+    'sequence_aftermove': ('None', 'list'),
+    'sequence_end': ('None', 'list'),
+    'save_meta_key': ('None', 'str'),
+    'save_meta_value': ('None', 'str'),
+    'save_plant_stage': ('None', 'str'),
+    'move_offset_x': ('None', 'int'),
+    'move_offset_y': ('None', 'int'),
+    'move_z': (0, 'int'),
+    'move_speed': (100, 'int'),
+    'use_simple_sort': (False, 'bool'),
+    'grid_coverage_per_step': ('None', 'xycoord'),
+    'grid_coverage_offset': ('None', 'xycoord'),
+    'grid_coverage_overlap': (30, 'int'),
+    'debug': (1, 'int')
+}
+
 
 def run_points_loop(points, sexec, run_after_each=None, use_simple_sort=False):
     """ Loop all the points loaded, and execute sequences.
@@ -63,7 +94,7 @@ if __name__ == "__main__":
 
     try:
         # create new instance of the InputStore. this will load the user input or defaults
-        input_store = InputStore(FARMWARE_NAME)
+        input_store = InputStore(FARMWARE_NAME, defaults=INPUT_DEFAULTS)
         # set logger level
         Logger.set_level(input_store.input['debug'])
 

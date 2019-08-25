@@ -8,53 +8,36 @@ log = Logger.log
 
 
 class InputStore():
-    """ InputStore class to load user input settings or defaults.
+    """ InputStore class to load user input settings or defaults. """
 
-    Variables:
-        INPUT_DEFAULTS {dict} -- Set of inputs to load and format
-            {'variable name': (default value, type), ...}
-            Types supported are
-                - 'str',
-                - 'int' (support 'randint(i,j)'),
-                - 'bool'
-                - 'list' (.split(",") run on it)
+    def __init__(self, farmwarename, defaults={}):
+        """ InputStore constructor
 
-            More info in manifest.json and README
-    """
+        Arguments:
+            farmwarename {str} -- Farmware name
 
-    INPUT_DEFAULTS = {
-        'filter_pointname': ('*', 'str'),
-        'filter_openfarm_slug': ('*', 'str'),
-        'filter_age_min_day': (-1, 'int'),
-        'filter_age_max_day': (36500, 'int'),
-        'filter_meta_key': ('None', 'str'),
-        'filter_meta_op': ('None', 'str'),
-        'filter_meta_value': ('None', 'str'),
-        'filter_plant_stage': ('None', 'list'),
-        'filter_min_x': ('None', 'int'),
-        'filter_max_x': ('None', 'int'),
-        'filter_min_y': ('None', 'int'),
-        'filter_max_y': ('None', 'int'),
-        'sequence_init': ('None', 'list'),
-        'sequence_beforemove': ('None', 'list'),
-        'sequence_aftermove': ('None', 'list'),
-        'sequence_end': ('None', 'list'),
-        'save_meta_key': ('None', 'str'),
-        'save_meta_value': ('None', 'str'),
-        'save_plant_stage': ('None', 'str'),
-        'move_offset_x': ('None', 'int'),
-        'move_offset_y': ('None', 'int'),
-        'move_z': (0, 'int'),
-        'move_speed': (100, 'int'),
-        'use_simple_sort': (False, 'bool'),
-        'grid_coverage_per_step': ('None', 'xycoord'),
-        'grid_coverage_offset': ('None', 'xycoord'),
-        'grid_coverage_overlap': (30, 'int'),
-        'debug': (1, 'int')
-    }
+        Keyword Arguments:
+            default_inputs {dict} -- Set of inputs to load and format (default: {{}})
+                {'variable name': (default value, type), ...}
 
-    def __init__(self, farmwarename):
+                Types supported are
+                    - 'str',
+                    - 'int' (support 'randint(i,j)'),
+                    - 'bool'
+                    - 'list' (.split(",") run on it)
+                    - 'float'
+                    - 'xycoord' (x,y)
+
+                Example:
+                {
+                        'water_ml_per_sec': (100, 'int'),
+                        'debug': (2, 'int')
+                }
+
+                More info in manifest.json and README.md
+        """
         self.farmwarename = farmwarename
+        self.default_inputs = defaults
         self.input = {}
         self.get_input_env()
 
@@ -64,7 +47,7 @@ class InputStore():
         log('using prefix {}'.format(prefix), 'info', title='get_input_env')
 
         # get all inputs values
-        for key, settings in InputStore.INPUT_DEFAULTS.items():
+        for key, settings in self.default_inputs.items():
             self.input[key] = self.get_input_val(key, settings, prefix)
 
         for key, val in self.input.items():
