@@ -49,7 +49,7 @@ I tried to add as much comments and documentation within the files. Also, if you
 
 ## Example usages
 
-1. [Automatic Farmbot Garden Selfie](examples/Automatic Garden Selfie.md)
+1. [Automatic Farmbot Garden Selfie](./examples/Automatic Garden Selfie.md)
 ![Selfie with optimized number of pictures taken](http://i.imgur.com/X3mU555.png)
 
 2. Water all plants, two modes, basic and using 'Water Doser' farmware for calculating how many seconds to water each plant individually.

@@ -4,7 +4,7 @@ This is a simple example of how to use PowerLoop to photograph all your plants w
 
 ### Steps to configure
 
-After you've installed PowerLoop on your device ([see README](README.md)), do the following:
+After you've installed PowerLoop on your device ([see README](../README.md)), do the following:
 
 1. Make sure you have a 'Take a photo' sequence.
 
@@ -22,4 +22,4 @@ A Selfie consisting of the minimum number of pictures taken.
 
 ![Selfie with optimized number of pictures taken](http://i.imgur.com/X3mU555.png)
 
-### Back to [README.md](README.md) for more examples.
+### Back to [README.md](../README.md) for more examples.
