@@ -36,4 +36,6 @@ With the PowerLoop and Water Doser farmware installed, you can water each plant 
 
 Each plant visited in an optimized route, Water Doser is run for each plant and opens water valve the calculated amount. The meta key 'last_water_at' is set for each plant to avoid excessive watering in case of errors.
 
+![Travelling Salesman Solution](../tsp_greedy_farmware_screenshot.jpg)
+
 #### Back to [README.md](../README.md) for more examples.
