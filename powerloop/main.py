@@ -4,7 +4,6 @@ This is the main executable class for powerloop farmware. Read comments below fo
 it works.
 
 ### To copy just one of the classes for use in your own project:
-
 I tried to keep all classes separated by functionality as much as possible. To use any of the classes
 independantely in your own project, just replace or copy relevant classes and use in your project:
     - Remove Logger and replace with your own "print()" or "log()" function throughout the class copied.
@@ -31,7 +30,7 @@ log = Logger.log
 FARMWARE_NAME = "power_loop"
 
 
-def run_points_loop(points, sexec, run_after_each=None, use_tsp_solver=True):
+def run_points_loop(points, sexec, run_after_each=None, use_simple_sort=False):
     """ Loop all the points loaded, and execute sequences.
 
     Arguments:
@@ -42,7 +41,7 @@ def run_points_loop(points, sexec, run_after_each=None, use_tsp_solver=True):
         run_after_each {method} -- Method to run after each move (default: {None})
         use_tsp_solver {bool} -- Use TSP Solver instead of regular sort (default: {True})
     """
-    points_sorted = PointSort.sort_points(points, use_tsp_solver)
+    points_sorted = PointSort.sort_points(points, use_simple_sort)
 
     if len(points_sorted) > 0:
         sexec.execute_sequence_init()
@@ -85,8 +84,8 @@ if __name__ == "__main__":
         points_plants = plants.load_points_with_filters()
 
         # Use plants loaded to choose grid waypoints
-        # points_grid = grid_points.calc_points_from_points(points_plants)
-        points_grid = grid_points.summarize_points_by_coverage(points_plants)
+        # points_grid = grid_points.calc_waypoints_basic(points_plants)
+        points_grid = grid_points.calc_waypoints_summary(points_plants)
 
         def run_after_each(p):
             """ Function to pass to run_points_loop() to run after each move.
@@ -106,7 +105,7 @@ if __name__ == "__main__":
         run_points_loop(points=points_grid if points_grid else points_plants,
                         sexec=sexec,
                         run_after_each=run_after_each if points_grid is None else None,
-                        use_tsp_solver=input_store.input['use_tsp_greedy'])
+                        use_simple_sort=input_store.input['use_simple_sort'])
 
     except Exception as e:
         log("Exception thrown: {}, traceback: {}".format(e, format_exc()), message_type='error', title="main")

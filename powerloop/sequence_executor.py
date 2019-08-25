@@ -25,10 +25,10 @@ class SequenceExecutor():
         'sequence_beforemove': [],
         'sequence_aftermove': [],
         'sequence_end': [],
-        'offset_x': 0,
-        'offset_y': 0,
-        'default_z': 0,
-        'default_speed': 100
+        'move_offset_x': 0,
+        'move_offset_y': 0,
+        'move_z': 0,
+        'move_speed': 100
     }
 
     def __init__(self, farmwarename, config):
@@ -104,17 +104,17 @@ class SequenceExecutor():
             log('Nothing to execute', title='execute_sequence_end')
 
     def move_absolute_point(self, point):
-        offset_x = 0 if self.config['offset_x'] is None else self.config['offset_x']
-        offset_y = 0 if self.config['offset_y'] is None else self.config['offset_y']
-        default_z = 0 if self.config['default_z'] is None else self.config['default_z']
+        move_offset_x = 0 if self.config['move_offset_x'] is None else self.config['move_offset_x']
+        move_offset_y = 0 if self.config['move_offset_y'] is None else self.config['move_offset_y']
+        move_z = 0 if self.config['move_z'] is None else self.config['move_z']
 
         point_desc = '{} of type {}'.format(point['name'], point['pointer_type']) if 'name' in point else ''
 
-        log('Move absolute to {} ({}, {}) with offset ({}, {}) and default_z {}'.format(
-            point_desc, point['x'], point['y'], offset_x, offset_y, default_z),
+        log('Move absolute to {} ({}, {}) with offset ({}, {}) and move_z {}'.format(
+            point_desc, point['x'], point['y'], move_offset_x, move_offset_y, move_z),
             title='move_absolute_point')
 
         if Logger.LOGGER_LEVEL < 2:
-            device.move_absolute(location=device.assemble_coordinate(point['x'], point['y'], default_z),
-                                 offset=device.assemble_coordinate(offset_x, offset_y, 0),
-                                 speed=self.config['default_speed'])
+            device.move_absolute(location=device.assemble_coordinate(point['x'], point['y'], move_z),
+                                 offset=device.assemble_coordinate(move_offset_x, move_offset_y, 0),
+                                 speed=self.config['move_speed'])

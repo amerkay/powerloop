@@ -17,9 +17,9 @@ log = Logger.log
 
 class PointSort():
     @staticmethod
-    def sort_points(points, use_tsp_solver=True):
+    def sort_points(points, use_simple_sort=False):
         """ Sort the points """
-        if (use_tsp_solver is True) and len(points) > 0:
+        if not use_simple_sort and len(points) > 0:
             # Get current location
             curr_pos = device.get_current_position()
 

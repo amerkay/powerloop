@@ -23,10 +23,10 @@ class InputStore():
     """
 
     INPUT_DEFAULTS = {
-        'pointname': ('*', 'str'),
-        'openfarm_slug': ('*', 'str'),
-        'age_min_day': (-1, 'int'),
-        'age_max_day': (36500, 'int'),
+        'filter_pointname': ('*', 'str'),
+        'filter_openfarm_slug': ('*', 'str'),
+        'filter_age_min_day': (-1, 'int'),
+        'filter_age_max_day': (36500, 'int'),
         'filter_meta_key': ('None', 'str'),
         'filter_meta_op': ('None', 'str'),
         'filter_meta_value': ('None', 'str'),
@@ -42,13 +42,14 @@ class InputStore():
         'save_meta_key': ('None', 'str'),
         'save_meta_value': ('None', 'str'),
         'save_plant_stage': ('None', 'str'),
-        'offset_x': ('None', 'int'),
-        'offset_y': ('None', 'int'),
-        'default_z': (0, 'int'),
-        'default_speed': (100, 'int'),
-        'use_tsp_greedy': (True, 'bool'),
-        'grid_coverage_per_step': ('(220, 330)', 'xycoord'),
-        'grid_coverage_offset': ('(50,100)', 'xycoord'),
+        'move_offset_x': ('None', 'int'),
+        'move_offset_y': ('None', 'int'),
+        'move_z': (0, 'int'),
+        'move_speed': (100, 'int'),
+        'use_simple_sort': (False, 'bool'),
+        'grid_coverage_per_step': ('None', 'xycoord'),
+        'grid_coverage_offset': ('(0,0)', 'xycoord'),
+        'grid_coverage_overlap': (30, 'int'),
         'debug': (1, 'int')
     }
 

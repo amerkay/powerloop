@@ -32,10 +32,10 @@ class Plants():
     # defaults
     # See https://github.com/amerkay/powerloop/blob/master/manifest.json for more info.
     config = {
-        'pointname': '*',
-        'openfarm_slug': '*',
-        'age_min_day': -1,
-        'age_max_day': 36500,
+        'filter_pointname': '*',
+        'filter_openfarm_slug': '*',
+        'filter_age_min_day': -1,
+        'filter_age_max_day': 36500,
         'filter_meta_key': None,
         'filter_meta_op': None,
         'filter_meta_value': None,
@@ -65,10 +65,10 @@ class Plants():
         log("all points loaded, count {}".format(len(points)), title='load_points_with_filters')
 
         points_out = self.apply_filters(points=points,
-                                        point_name=self.config['pointname'],
-                                        openfarm_slug=self.config['openfarm_slug'],
-                                        age_min_day=self.config['age_min_day'],
-                                        age_max_day=self.config['age_max_day'],
+                                        point_name=self.config['filter_pointname'],
+                                        filter_openfarm_slug=self.config['filter_openfarm_slug'],
+                                        filter_age_min_day=self.config['filter_age_min_day'],
+                                        filter_age_max_day=self.config['filter_age_max_day'],
                                         meta_key=self.config['filter_meta_key'],
                                         meta_value=self.config['filter_meta_value'],
                                         min_x=self.config['filter_min_x'],
@@ -108,9 +108,9 @@ class Plants():
     def apply_filters(self,
                       points,
                       point_name='',
-                      openfarm_slug='',
-                      age_min_day=0,
-                      age_max_day=36500,
+                      filter_openfarm_slug='',
+                      filter_age_min_day=0,
+                      filter_age_max_day=36500,
                       meta_key=None,
                       meta_value=None,
                       min_x=None,
@@ -137,8 +137,8 @@ class Plants():
                 b_plantstage = self._filter_plant_stage(p['plant_stage'], plant_stages)
 
                 if (p['name'].lower().find(point_name.lower()) >= 0 or point_name == '*') \
-                    and (p['openfarm_slug'].lower().find(openfarm_slug.lower()) >= 0 or openfarm_slug == '*')\
-                    and (age_min_day <= age_day <= age_max_day) and b_meta is True \
+                    and (p['openfarm_slug'].lower().find(filter_openfarm_slug.lower()) >= 0 or filter_openfarm_slug == '*')\
+                    and (filter_age_min_day <= age_day <= filter_age_max_day) and b_meta is True \
                         and b_coordinate_x and b_coordinate_y and b_plantstage:
                     filtered_points.append(p.copy())
 

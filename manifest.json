@@ -3,32 +3,32 @@
     "language": "python",
     "author": "amerkay",
     "description": "PowerLoop for Farmbot: Loop your farmbot by plants with search filters, or by automatic waypoint calculation to cover Plant search results grid area. Features include executing sequences and saving meta data. The code is as annotated as could be, so have a look at https://github.com/amerkay/powerloop/",
-    "version": "1.1.25",
+    "version": "1.2.0",
     "min_os_version_major": 6,
     "url": "https://raw.githubusercontent.com/amerkay/powerloop/master/manifest.json",
     "zip": "https://github.com/amerkay/powerloop/archive/master.zip",
     "executable": "python",
     "args": ["powerloop-master/powerloop/main.py"],
     "config": [{
-            "name": "pointname",
+            "name": "filter_pointname",
             "label": "Filter by plant name, case insensitive. 'aru' matches 'Arugula', * for all.",
             "help": ["Uses string contains. "],
             "value": "*"
         },
         {
-            "name": "openfarm_slug",
+            "name": "filter_openfarm_slug",
             "label": "Filter by Openfarm slug name, case insensitive. 'aru' matches 'Arugula', * for all.",
             "help": [""],
             "value": "*"
         },
         {
-            "name": "age_min_day",
+            "name": "filter_age_min_day",
             "label": "Filter by plant age (minimum days)",
             "help": [""],
             "value": "-1"
         },
         {
-            "name": "age_max_day",
+            "name": "filter_age_max_day",
             "label": "Filter by plant age (maximum days)",
             "help": [""],
             "value": "36500"
@@ -152,34 +152,34 @@
             "value": "None"
         },
         {
-            "name": "offset_x",
+            "name": "move_offset_x",
             "label": "Offset X value when moving - (integer, randint(i,j))",
             "help": ["Optional: set to 'randint(i,j)' no quotes, returns a random integer N such that i <= N <= j."],
             "value": 0
         },
         {
-            "name": "offset_y",
+            "name": "move_offset_y",
             "label": "Offset Y value when moving - (integer, randint(i,j))",
             "help": ["Optional: set to 'randint(i,j)' no quotes, returns a random integer N such that i <= N <= j."],
             "value": 0
         },
         {
-            "name": "default_z",
+            "name": "move_z",
             "label": "Default Z axis value when moving",
             "help": [""],
             "value": 0
         },
         {
-            "name": "default_speed",
+            "name": "move_speed",
             "label": "Default speed value when moving. Percent of max speed (1-100)",
             "help": [""],
             "value": 100
         },
         {
-            "name": "use_tsp_greedy",
-            "label": "Use Travelling Salesman Problem Greedy algorithm to optimize route? If 'True', no quotes, TSP Greedy Algorithm will be used (default True).",
-            "help": ["Default: True -> use TSPGreedy, rather than sort(x,y). See README, Fig. 1."],
-            "value": "True"
+            "name": "use_simple_sort",
+            "label": "Use simple X, Y sort instead of Travelling Salesman Problem Greedy algorithm to optimize route? If 'False' (default), no quotes, TSP Greedy Algorithm will be used.",
+            "help": ["Default: False -> Use simple sort(x,y) rather than travelling salesman greedy solution. See README, Fig. 1."],
+            "value": "False"
         },
         {
             "name": "grid_coverage_per_step",
@@ -196,6 +196,12 @@
             "label": "Grid coverage offset (x, y) from center. Default (0,0), set to enable. E.g camera is offset '(50, 100)'.",
             "help": ["Max is 50% of the grid_coverage_per_step"],
             "value": "(0,0)"
+        },
+        {
+            "name": "grid_coverage_overlap",
+            "label": "The overlap between coverage-area rectangles. Default 30%. Value 0%-75% integer. If you want to scan entire planted area without overlap, set to 0.",
+            "help": ["Max is 75%."],
+            "value": "30"
         },
         {
             "name": "debug",
