@@ -83,9 +83,11 @@ if __name__ == "__main__":
         # load the plants
         points_plants = plants.load_points_with_filters()
 
-        # Use plants loaded to choose grid waypoints
-        # points_grid = grid_points.calc_waypoints_basic(points_plants)
-        points_grid = grid_points.calc_waypoints_summary(points_plants)
+        # Use plants loaded to choose grid waypoints, if overlap = 0, use basic waypoints
+        if input_store.input["grid_coverage_overlap"] == 0:
+            waypoints = grid_points.calc_waypoints_basic(points_plants)
+        else:
+            waypoints = grid_points.calc_waypoints_summary(points_plants)
 
         def run_after_each(p):
             """ Function to pass to run_points_loop() to run after each move.
@@ -101,10 +103,10 @@ if __name__ == "__main__":
             save_point = plants.update_save_plant_stage(p, save_point)
             executor.submit(Plants.save_plant, save_point)
 
-        # use points resulting from points_grid if used (returns not None)
-        run_points_loop(points=points_grid if points_grid else points_plants,
+        # use points resulting from waypoints if used (returns not None)
+        run_points_loop(points=waypoints if waypoints else points_plants,
                         sexec=sexec,
-                        run_after_each=run_after_each if points_grid is None else None,
+                        run_after_each=run_after_each if waypoints is None else None,
                         use_simple_sort=input_store.input['use_simple_sort'])
 
     except Exception as e:

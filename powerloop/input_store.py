@@ -48,7 +48,7 @@ class InputStore():
         'move_speed': (100, 'int'),
         'use_simple_sort': (False, 'bool'),
         'grid_coverage_per_step': ('None', 'xycoord'),
-        'grid_coverage_offset': ('(0,0)', 'xycoord'),
+        'grid_coverage_offset': ('None', 'xycoord'),
         'grid_coverage_overlap': (30, 'int'),
         'debug': (1, 'int')
     }
