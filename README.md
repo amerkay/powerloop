@@ -36,6 +36,8 @@ I tried to add as much comments and documentation within the files, as well as c
     - Save plant_stage value, if set
     - Runs before and after list of sequences, if set
 
+- Uses official [farmware_tools](https://github.com/FarmBot-Labs/farmware-tools) to contact Farmbot API and control device.
+
 ![Travelling Salesman Solution](tsp_greedy_farmware_screenshot.jpg)
 *Fig. 1: Travelling Salesman Solution to filtered list of plants*
 
