@@ -38,6 +38,9 @@ I tried to add as much comments and documentation within the files, as well as c
 
 - Uses official [farmware_tools](https://github.com/FarmBot-Labs/farmware-tools) to contact Farmbot API and control device.
 
+- Uses concurrent task executor to save meta data to API, to save time executing each move. More about [concurrent.futures.ProcessPoolExecutor](https://docs.python.org/3/library/concurrent.futures.html) at Python docs.
+
+
 ![Travelling Salesman Solution](tsp_greedy_farmware_screenshot.jpg)
 *Fig. 1: Travelling Salesman Solution to filtered list of plants*
 
