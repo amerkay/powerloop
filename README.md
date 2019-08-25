@@ -45,6 +45,6 @@ I tried to add as much comments and documentation within the files, as well as c
 
 ## Example usages
 
-1. [Automatic Farmbot Garden Selfie](./examples/Automatic%20Garden%20Selfie.md), automate taking photos/weed detecion of your plants with the least number of waypoints to visit.
+1. [Automatic Farmbot Garden Selfie](./examples/Automatic%20Farmbot%20Garden%20Selfie.md), automate taking photos/weed detecion of your plants with the least number of waypoints to visit.
 
-2. Water all plants, two modes, basic and using 'Water Doser' farmware for calculating how many seconds to water each plant individually.
+2. [Water all Farmbot plants using 'Water Doser' farmware](./examples/Smart%20Watering%20for%20Farmbot.md), automatically calculating how many seconds to water each plant individually based on it's age and maximum spread from OpenFarm data.
