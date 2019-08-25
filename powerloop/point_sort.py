@@ -74,11 +74,11 @@ class PointSort():
         # dist, cur = min([(PointSort._distance(start_point, p), p) for p in (tr[0], tr[-1], bl[0], bl[-1])])
         cur = start_point
         path = []
-        for i in range(1, len(points)):
+        for i in range(0, len(points)):
             dists = [(PointSort._distance(cur, p), p) for p in points if p not in path]
             nextDist, cur = min(dists, key=lambda t: t[0])
             totalDist += nextDist
             path.append(cur)
 
-        log("points sorted, total distance is {}".format(totalDist), title="sort_points_by_dist")
+        log("{} points sorted, total distance is {}".format(len(path), totalDist), title="sort_points_by_dist")
         return path
