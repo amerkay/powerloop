@@ -19,7 +19,9 @@ With the PowerLoop and Water Doser farmware installed, you can water each plant 
 3. Create new sequence `Water all plants` with:
 - Execute Sequence: `Pick up watering tool` (your own sequence)
 - Excute Farmware `PowerLoop`:
-	- Sequences After Move (created in previous step): `Run Water Doser`
+	- Sequences After Move (created in previous step): **`Run Water Doser`**
+	- Filter by plant name: *\**
+	- Filter by OpenFarm slug name: *\**
 	- Filter by meta data key: `last_watering_at`
 	- Filter by meta data operator: `minutesmin`
 	- Filter by meta data value (2 hours min passed): `120`
