@@ -22,4 +22,4 @@ A Selfie consisting of the minimum number of pictures taken.
 
 ![Selfie with optimized number of pictures taken](http://i.imgur.com/X3mU555.png)
 
-### Back to [README.md](../README.md) for more examples.
+#### Back to [README.md](../README.md) for more examples.

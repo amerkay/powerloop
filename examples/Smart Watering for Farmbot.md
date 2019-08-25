@@ -14,7 +14,7 @@ With the PowerLoop and Water Doser farmware installed, you can water each plant 
 
 2. Create new sequence `Run Water Doser` to execute Farmware `Water Doser` with the default parameters.
 > Hint: If you wish to use your own timed watering sequence, skip this step.
-![Sequence Run Water Doser](http://i.imgur.com/VM8zBCy.png)
+![Sequence Run Water Doser](http://i.imgur.com/Sgw1yAT.png)
 
 3. Create new sequence `Water all plants` with:
 - Execute Sequence: `Pick up watering tool` (your own sequence)
@@ -34,4 +34,4 @@ With the PowerLoop and Water Doser farmware installed, you can water each plant 
 
 Each plant visited in an optimized route, Water Doser is run for each plant and opens water valve the calculated amount. The meta key 'last_water_at' is set for each plant to avoid excessive watering in case of errors.
 
-### Back to [README.md](../README.md) for more examples.
+#### Back to [README.md](../README.md) for more examples.
