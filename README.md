@@ -7,7 +7,7 @@ Loop your Farmbot by plants with filters, or by automatic waypoint calculation t
 > Originally forked from [Loop-Plants-With-Filters](https://github.com/rdegosse/Loop-Plants-With-Filters), thank you @rdegosse!
 
 ![Selfie with overlap=30, taking into consideration plant radius](http://i.imgur.com/jpcPl1J.png)
-*Fig. P30: PowerLoop taking a Selfie of my Farmbot garden, automatically choosing steps where the photos includes plants (with their radius), excluding empty shots*
+*Fig. P30: [PowerLoop taking a Selfie](./examples/Automatic%20Farmbot%20Garden%20Selfie.md) of my Farmbot garden, automatically choosing steps where the photos includes plants (with their radius), excluding empty shots*
 
 ## Installation
 
