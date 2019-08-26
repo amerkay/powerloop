@@ -63,7 +63,7 @@ Automate taking photos/weed detecion of your plants with the least number of way
 *Fig. 2: Selfie with coverage area=(400,400) and overlap=30. Python test file output with matplotlib. See /test/ directory*
 
 
-### [Water all Farmbot plants using 'Water Doser' farmware](./examples/Smart%20Watering%20for%20Farmbot.md)
+### [Water all Farmbot plants](./examples/Smart%20Watering%20for%20Farmbot.md) using 'Water Doser' farmware
 
 ["Water Doser"](https://github.com/amerkay/water-doser) farmware automatically calculate how many seconds to water each plant individually based on it's age and maximum spread from OpenFarm data. Can be run independantly, as it guesses which plant the farmbot is on top of automatically if configured correctly.
 Alternatively, you can have your own watering sequence.
