@@ -35,9 +35,9 @@ Logger.FARMWARE_NAME = FARMWARE_NAME
 cycol = cycle('bgrcmyk') # cycle through colors
 
 # config
-cover = {'x': 150, 'y': 150}
+cover = {'x': 400, 'y': 400}
 offset = {'x': 25, 'y': 25}
-overlap = 30
+overlap = 0
 
 if __name__ == "__main__":
     try:
