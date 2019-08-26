@@ -16,12 +16,21 @@ After you've installed PowerLoop on your device ([see README](../README.md)), do
 - Plant name: *\* (or partial plant name to filter by)*
 - Grid coverage (x, y) per step: *(230, 300)* (you can check your config by taking a photo and measuring it out on the grid)
 - Grid coverage offset (x, y) from center (check your camera's calibration): *(25,25)*
-- Grid coverage overlap
+- Grid coverage overlap: 30
+
 
 ### Expected outcome:
 
 A Selfie of only areas with plants.
 
-![Selfie with optimized number of pictures taken](http://i.imgur.com/X3mU555.png)
+#### Selfie with overlap=0, choosing only rectangles with plants in them
+
+![Selfie with overlap=0, choosing only rectangles with plants in them](http://i.imgur.com/7epQ6ja.png)
+
+#### Selfie with overlap=30
+Overlap >= 30 automatically switches to using plant radius and covering each plant with it's radius only once
+
+![Selfie with overlap=30, taking into consideration plant radius](http://i.imgur.com/jpcPl1J.png)
+
 
 #### Back to [README.md](../README.md) for more examples.
