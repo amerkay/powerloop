@@ -9,7 +9,7 @@ After you've installed PowerLoop on your device ([see README](../README.md)), do
 1. Make sure you have a 'Take a photo' sequence.
 
 ![Take a photo sequence](http://i.imgur.com/hl6Gk2t.png)
-*Fig. 1: Take a photo sequence*
+*Fig. SP: Take a photo sequence*
 
 2. Create new sequence with the following parameters:
 - Sequences After Move: *Take a photo*
@@ -27,13 +27,13 @@ A Selfie of only areas with plants.
 #### Selfie with overlap=0, choosing only rectangles with plants in them:
 
 ![Selfie with overlap=0, choosing only rectangles with plants in them](http://i.imgur.com/7epQ6ja.png)
-*Fig. 2: Selfie with overlap=0*
+*Fig. P0: Selfie with overlap=0*
 
 #### Selfie with overlap=30:
 Overlap >= 30 automatically switches to using plant radius and covering each plant including once at least.
 
 ![Selfie with overlap=30, taking into consideration plant radius](http://i.imgur.com/jpcPl1J.png)
-*Fig. 3: Selfie with overlap=30*
+*Fig. P30: Selfie with overlap=30*
 
 
 #### Back to [README.md](../README.md) for more examples.

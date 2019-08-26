@@ -6,6 +6,9 @@ Loop your Farmbot by plants with filters, or by automatic waypoint calculation t
 
 > Originally forked from [Loop-Plants-With-Filters](https://github.com/rdegosse/Loop-Plants-With-Filters), thank you @rdegosse!
 
+![Selfie with overlap=30, taking into consideration plant radius](http://i.imgur.com/jpcPl1J.png)
+*Fig. P30: PowerLoop taking a Selfie of my Farmbot garden, automatically choosing steps where the photos includes plants (with their radius), excluding empty shots*
+
 ## Installation
 
 Go to [My Farmbot -> Farmware](https://my.farm.bot/app/farmware/), then paste the manifest.json path to install:
@@ -55,12 +58,12 @@ Automate taking photos/weed detecion of your plants with the least number of way
 #### Basic grid coverage with overlap < 30, only uses the plant's point (no radius)
 
 ![Selfie with overlap=0, excluding any steps that cover no plant points](http://i.imgur.com/oetvubR.png)
-*Fig. 1: Selfie with coverage area=(400,400) and overlap=0. Python test file output with matplotlib. See /test/ directory*
+*Fig. ST0: Selfie with coverage area=(400,400) and overlap=0. Python test file output with matplotlib. See /test/ directory*
 
 #### Summary grid coverage with overlap >= 30, takes plant radius into consideration
 
 ![Selfie with overlap=30, taking into consideration each plant's radius](http://i.imgur.com/rnHEVJ1.png)
-*Fig. 2: Selfie with coverage area=(400,400) and overlap=30. Python test file output with matplotlib. See /test/ directory*
+*Fig. ST30: Selfie with coverage area=(400,400) and overlap=30. Python test file output with matplotlib. See /test/ directory*
 
 
 ### [Water all Farmbot plants](./examples/Smart%20Watering%20for%20Farmbot.md) using 'Water Doser' farmware
@@ -69,4 +72,4 @@ Automate taking photos/weed detecion of your plants with the least number of way
 Alternatively, you can have your own watering sequence.
 
 ![Travelling Salesman Solution](tsp_greedy_farmware_screenshot.jpg)
-*Fig. 3: Travelling Salesman Solution for moving between the resulting filtered list of plants (default behaviour)*
+*Fig. TSP: Travelling Salesman Solution for moving between the resulting filtered list of plants (default behaviour)*
