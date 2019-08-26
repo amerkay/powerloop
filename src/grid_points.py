@@ -48,14 +48,17 @@ class GridPoints():
         if self.config['grid_coverage_per_step'] is None or len(points) == 0:
             return None
 
-        # get steps
+        # generate steps
         steps = self._gen_steps(points)
 
         i = 1
         waypoints = []
-        for x, y in steps:
-            waypoints.append({'id': i, 'x': x, 'y': y})
-            i += 1
+
+        steps_counted = self._find_points_for_steps(points, steps, use_radius=False)
+        for s in steps_counted:
+            if len(s['points']) > 0:
+                waypoints.append({'id': i, 'x': s['x'], 'y': s['y']})
+                i += 1
 
         log('points calculated, result: {}'.format(len(waypoints)), title='calc_waypoints_basic')
 
@@ -66,7 +69,7 @@ class GridPoints():
         using config values (see __init__):
          - grid_coverage_per_step x,y,
          - grid_coverage_offset per step x,y
-         - grid_coverage_overlap percentage (0-75 integer).
+         - grid_coverage_overlap percentage (20-50 integer).
 
         Arguments:
             points {list of point dicts} -- Points to cover, could be using Plants class filtering.
@@ -82,20 +85,24 @@ class GridPoints():
         points_in = points.copy()
         waypoints = []
 
-        while len(points_in) > 0:
-            res = self._find_rect_with_max_points(points_in)
+        # generate steps to search
+        steps = self._gen_steps(points)
 
-            if res is None:
-                raise Exception(
-                    "Grid points failed. Please open an issue with the coverage value used and print screen of your garden."
-                )
+        while len(points_in) > 0:
+            steps_counted = self._find_points_for_steps(points_in, steps, use_radius=True)
+
+            if len(steps_counted) == 0:
+                raise Exception("Grid points failed. Try using a higher overlap value. Try 50%.")
+
+            rect_with_max_plants = max(steps_counted, key=lambda i: len(i['points']))
+            # print("rect_with_max_plants cnt {}".format(len(rect_with_max_plants['points'])))
 
             # add id and append
-            waypoints.append({**res, **{'id': pid}})
+            waypoints.append({**rect_with_max_plants, **{'id': pid}})
             pid += 1
 
             # delete points appended from points_in and loop
-            for p in res['points']:
+            for p in rect_with_max_plants['points']:
                 points_in = self._del_from_dict_list(points_in, p['id'])
 
             # print("==> points remaining  {}".format(len(points_in)))
@@ -118,7 +125,7 @@ class GridPoints():
         if (cover['x'] < 100 or cover['y'] < 100):
             raise Exception("coverage (x,y) cannot be less than 100,100")
 
-        if not (0 <= self.config['grid_coverage_overlap'] <= 75):
+        if not (0 <= self.config['grid_coverage_overlap'] <= 50):
             self.config['grid_coverage_overlap'] = 30
             log('Invalid value, resetting grid_coverage_overlap to default: {}'.format(
                 self.config['grid_coverage_overlap']),
@@ -146,12 +153,12 @@ class GridPoints():
 
         # set overlap percentage. recommended 0.2-0.5 value
         overlap = self.config['grid_coverage_overlap'] / 100
-
-        steps_ceil = math.ceil((1 + overlap) * (max_pos - min_pos) / coverage)
-        step_width = int((max_pos - min_pos) / steps_ceil)
+        step_width = coverage * (1 - overlap)
+        steps_ceil = math.ceil((max_pos - min_pos) / step_width)
 
         # next, we need to get the bed dimensions
-        steps = [(i * step_width) + (min_pos - step_width) for i in range(1, steps_ceil + 2)]
+        start_point = (min_pos - step_width)
+        steps = [(i * step_width) + start_point for i in range(1, steps_ceil + 2)]
 
         # log('--> [_gen_steps_for_dimension] min_pos {}, max_pos {}, coverage {} --- steps_ceil {}, step_width {}, steps {}'
         #     .format(min_pos, max_pos, coverage, steps_ceil, step_width, steps),
@@ -172,10 +179,15 @@ class GridPoints():
         offset = self.config['grid_coverage_offset']
 
         # get array of x's and y's, then pass min and max to _gen_steps_for_dimension()
-        xs = [p['x'] for p in points]
-        ys = [p['y'] for p in points]
-        steps_x = self._gen_steps_for_dimension(min(xs) - offset['x'], max(xs) + offset['x'], cover['x'])
-        steps_y = self._gen_steps_for_dimension(min(ys) - offset['y'], max(ys) + offset['y'], cover['y'])
+        # take plant radius into consideration
+        # TODO could take plant spread from Openfarm
+        min_x = min([int(p['x']) - int(p['radius']) for p in points]) - offset['x'] + cover['x'] / 2
+        max_x = max([int(p['x']) + int(p['radius']) for p in points]) - offset['x'] - cover['x'] / 2
+        min_y = min([int(p['y']) - int(p['radius']) for p in points]) - offset['y'] + cover['y'] / 2
+        max_y = max([int(p['y']) + int(p['radius']) for p in points]) - offset['y'] - cover['y'] / 2
+
+        steps_x = self._gen_steps_for_dimension(min_x, max_x, cover['x'])
+        steps_y = self._gen_steps_for_dimension(min_y, max_y, cover['y'])
 
         return list(product(steps_x, steps_y))
 
@@ -189,14 +201,14 @@ class GridPoints():
         """
         return [d for d in source_list if d['id'] != dict_id]
 
-    def _find_points_in_rect(self, points, step_center={'x': 0, 'y': 0}):
+    def _find_points_in_rect(self, points, step_center={'x': 0, 'y': 0}, use_radius=True):
         """ Count number of points that fall within the rect bound by bottom_left and top_right corners.
 
         Arguments:
             points {list} -- of Celeryscript points with ['x'] and ['y'] dict keys
 
         Keyword Arguments:
-            bottom_left {tuple} -- (x, y) coordinates of the rect's bottom left corner (default: {(0, 0)})
+            step_center {tuple} -- (x, y) coordinates of the rect's center (default: {(0, 0)})
 
         Returns:
             int -- the count of points within that rect
@@ -212,7 +224,7 @@ class GridPoints():
         top_right = {'x': bottom_left['x'] + cover['x'], 'y': bottom_left['y'] + cover['y']}
 
         for p in points:
-            r = int(p['radius'])
+            r = int(p['radius']) if use_radius else 0
             if bottom_left['x'] <= int(p['x']) - r and int(p['x']) + r <= top_right['x'] and \
                bottom_left['y'] <= int(p['y']) - r and int(p['y']) + r <= top_right['y']:
                 out_arr.append(p)
@@ -221,38 +233,32 @@ class GridPoints():
 
         return out_arr
 
-    def _find_rect_with_max_points(self, points):
-        """ Uses _find_points_in_rect() to find the rect containing most the points
+    def _find_points_for_steps(self, points, steps, use_radius=True):
+        """ Uses _find_points_in_rect() to find points in each rect
 
         Arguments:
-            points {[type]} -- [description]
-            steps {list of pairs (x,y)} --
+            points {list of dicts} -- The points to fit into the steps rectangles
+            steps {list of pairs (x,y)} -- to count plants within
 
         Keyword Arguments:
-            starting_points {list} -- [description] (default: {[{'x', 'y'}]})
+            use_radius {bool} -- Consider plant radius (default: True)
 
         Returns:
             [type] -- list of point dicts [{'x': 0, 'y': 0, 'points': dict of points}]. The
-            x, y will be set to the average point position between all points found.
+            x, y will be the input steps with points they contain.
         """
-
-        # generate steps to search
-        steps = self._gen_steps(points)
-
         points_counts = []
         for x, y in steps:
             # count how many plants in rect
-            points_in_sq = self._find_points_in_rect(points, step_center={'x': x, 'y': y})
+            points_in_sq = self._find_points_in_rect(points,
+                                                     step_center={
+                                                         'x': x,
+                                                         'y': y
+                                                     },
+                                                     use_radius=use_radius)
 
             if len(points_in_sq) > 0:
                 points_counts.append({'x': x, 'y': y, 'points': points_in_sq})
 
-        # log('points_counts: {}'.format(len(points_counts)), title='_find_rect_with_max_points')
-
-        if len(points_counts) == 0:
-            return None
-
-        rect_with_max_plants = max(points_counts, key=lambda i: len(i['points']))
-        # print("rect_with_max_plants cnt {}".format(len(rect_with_max_plants['points'])))
-
-        return rect_with_max_plants
+        # log('points_counts: {}'.format(len(points_counts)), title='_find_points_for_steps')
+        return points_counts

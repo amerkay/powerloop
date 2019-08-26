@@ -13,12 +13,14 @@ After you've installed PowerLoop on your device ([see README](../README.md)), do
 2. Create new sequence with the following parameters:
 - Sequences After Move: *Take a photo*
     > Hint: You can change that to a new sequence that runs the Check for Weeds farmware.
-- Grid coverage (x, y) per step: *(200, 300)*
+- Plant name: *\* (or partial plant name to filter by)*
+- Grid coverage (x, y) per step: *(230, 300)* (you can check your config by taking a photo and measuring it out on the grid)
 - Grid coverage offset (x, y) from center (check your camera's calibration): *(25,25)*
+- Grid coverage overlap
 
 ### Expected outcome:
 
-A Selfie consisting of the minimum number of pictures taken.
+A Selfie of only areas with plants.
 
 ![Selfie with optimized number of pictures taken](http://i.imgur.com/X3mU555.png)
 

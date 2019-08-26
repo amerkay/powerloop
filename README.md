@@ -12,6 +12,7 @@ Go to [My Farmbot -> Farmware](https://my.farm.bot/app/farmware/), then paste th
 ```
 https://raw.githubusercontent.com/amerkay/powerloop/master/manifest.json
 ```
+
 ## Developers
 
 I tried to add as much comments and documentation within the files, as well as clear variable and method naming. If you want to use one of the files in your own project, I made sure they are as self-contained and documented as possible. Please use freely. Pull requests appreciated - even if it takes me time to get to it.
@@ -24,7 +25,7 @@ I tried to add as much comments and documentation within the files, as well as c
 
 - Sort resulting plants or Grid waypoints using simple sort(x, y), or using Travelling Salesman Greedy Algorithm by setting 'Use Travelling Salesman Problem Greedy algorithm' to 'True'.
 
-- Calculate grid coverage waypoints, using (optionally filtered) plant list as input. This is useful when you want to scan your garden with multiple photos, run the deweeding algorithm, or simply water say 3 seconds each 25x25cm area rathar than each plant. See example section.
+- Calculate grid coverage waypoints, using (optionally filtered) plant list as input. This is useful when you want to scan your garden with multiple photos or run the deweeding algorithm. See examples section.
 
 - Execute list of sequences (initial, before each move, after each move, end).
 

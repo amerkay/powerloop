@@ -18,7 +18,7 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle
 from itertools import cycle
 
-sys.path.append('../powerloop/')
+sys.path.append('../src/')
 
 from fake_plants import FakePlants
 from grid_points import GridPoints
@@ -35,7 +35,7 @@ Logger.FARMWARE_NAME = FARMWARE_NAME
 cycol = cycle('bgrcmyk') # cycle through colors
 
 # config
-cover = {'x': 200, 'y': 300}
+cover = {'x': 150, 'y': 150}
 offset = {'x': 25, 'y': 25}
 overlap = 30
 
@@ -58,9 +58,13 @@ if __name__ == "__main__":
                                  })
 
         # points_grid = grid_points.calc_waypoints_basic(points_plants)
-        points_grid = grid_points.calc_waypoints_summary(points_plants)
+        # Use plants loaded to choose grid waypoints, if overlap = 0, use basic waypoints
+        if overlap >= 30:
+            waypoints = grid_points.calc_waypoints_summary(points_plants)
+        else:
+            waypoints = grid_points.calc_waypoints_basic(points_plants)
 
-        points = points_grid if points_grid else points_plants
+        points = waypoints if waypoints else points_plants
 
         # ------------- plot plants ----------------
         fig = plt.figure()

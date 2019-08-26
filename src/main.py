@@ -115,11 +115,11 @@ if __name__ == "__main__":
         # load the plants
         points_plants = plants.load_points_with_filters()
 
-        # Use plants loaded to choose grid waypoints, if overlap = 0, use basic waypoints
-        if input_store.input["grid_coverage_overlap"] == 0:
-            waypoints = grid_points.calc_waypoints_basic(points_plants)
-        else:
+        # Use plants loaded to choose grid waypoints, if overlap < 20, use basic waypoints
+        if input_store.input["grid_coverage_overlap"] >= 30:
             waypoints = grid_points.calc_waypoints_summary(points_plants)
+        else:
+            waypoints = grid_points.calc_waypoints_basic(points_plants)
 
         def run_after_each(p):
             """ Function to pass to run_points_loop() to run after each move.
