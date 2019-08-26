@@ -52,11 +52,8 @@ I tried to add as much comments and documentation within the files, as well as c
 ## Example usages
 
 1. [Automatic Farmbot Garden Selfie](./examples/Automatic%20Farmbot%20Garden%20Selfie.md), automate taking photos/weed detecion of your plants with the least number of waypoints to visit.
-
-
 ![Selfie with overlap=0, excluding any steps that cover no plant points](http://i.imgur.com/oetvubR.png)
 *Fig. 2: Selfie with coverage area=(400,400) and overlap=0. Python test file output with matplotlib. See /test/ directory*
-
 ![Selfie with overlap=30, taking into consideration each plant's radius](http://i.imgur.com/rnHEVJ1.png)
 *Fig. 3: Selfie with coverage area=(400,400) and overlap=30. Python test file output with matplotlib. See /test/ directory*
 
