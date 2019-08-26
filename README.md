@@ -42,21 +42,31 @@ I tried to add as much comments and documentation within the files, as well as c
 - Uses concurrent task executor to save meta data to API, to save time executing each move. More about [concurrent.futures.ProcessPoolExecutor](https://docs.python.org/3/library/concurrent.futures.html) at Python docs.
 
 
-![Travelling Salesman Solution](tsp_greedy_farmware_screenshot.jpg)
-*Fig. 1: Travelling Salesman Solution to filtered list of plants*
-
 ## PowerLoop's Input Variables Documentation
 
 [See manifest.json](manifest.json), includes extra "help" key with more information.
 
 ## Example usages
 
-1. [Automatic Farmbot Garden Selfie](./examples/Automatic%20Farmbot%20Garden%20Selfie.md), automate taking photos/weed detecion of your plants with the least number of waypoints to visit.
+### [Automatic Farmbot Garden Selfie](./examples/Automatic%20Farmbot%20Garden%20Selfie.md)
+
+Automate taking photos/weed detecion of your plants with the least number of waypoints to visit. You can run it in two different modes: basic and summary.
+
+#### Basic grid coverage with overlap < 30, only uses the plant's point (no radius)
 
 ![Selfie with overlap=0, excluding any steps that cover no plant points](http://i.imgur.com/oetvubR.png)
-*Fig. 2: Selfie with coverage area=(400,400) and overlap=0. Python test file output with matplotlib. See /test/ directory*
+*Fig. 1: Selfie with coverage area=(400,400) and overlap=0. Python test file output with matplotlib. See /test/ directory*
+
+#### Summary grid coverage with overlap >= 30, takes plant radius into consideration
 
 ![Selfie with overlap=30, taking into consideration each plant's radius](http://i.imgur.com/rnHEVJ1.png)
-*Fig. 3: Selfie with coverage area=(400,400) and overlap=30. Python test file output with matplotlib. See /test/ directory*
+*Fig. 2: Selfie with coverage area=(400,400) and overlap=30. Python test file output with matplotlib. See /test/ directory*
 
-2. [Water all Farmbot plants using 'Water Doser' farmware](./examples/Smart%20Watering%20for%20Farmbot.md), automatically calculating how many seconds to water each plant individually based on it's age and maximum spread from OpenFarm data.
+
+#### [Water all Farmbot plants using 'Water Doser' farmware](./examples/Smart%20Watering%20for%20Farmbot.md)
+
+["Water Doser"](https://github.com/amerkay/water-doser) farmware automatically calculate how many seconds to water each plant individually based on it's age and maximum spread from OpenFarm data. Can be run independantly, as it guesses which plant the farmbot is on top of automatically if configured correctly.
+Alternatively, you can have your own watering sequence.
+
+![Travelling Salesman Solution](tsp_greedy_farmware_screenshot.jpg)
+*Fig. 3: Travelling Salesman Solution for moving between the resulting filtered list of plants (default behaviour)*
