@@ -70,4 +70,4 @@ Automate taking photos/weed detecion of your plants with the least number of way
 Alternatively, you can have your own watering sequence. [Tutorial here](./examples/Smart%20Watering%20for%20Farmbot.md)
 
 ![Travelling Salesman Solution](tsp_greedy_farmware_screenshot.jpg)
-*Fig. TSP: Travelling Salesman Solution for moving between the resulting filtered list of plants (default behaviour)*
+*Fig. TSP: Travelling Salesman Solution for moving between the resulting filtered list of plants (default behavior)*
