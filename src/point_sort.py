@@ -12,10 +12,11 @@ from farmware_tools import device
 
 # import static logger and create shortcut function
 from logger import Logger
+
 log = Logger.log
 
 
-class PointSort():
+class PointSort:
     @staticmethod
     def sort_points(points, use_simple_sort=False):
         """ Sort the points """
@@ -25,7 +26,7 @@ class PointSort():
 
             # this is for local debugging purposes, when running `python main.py`
             if curr_pos is None:
-                curr_pos = {'x': 0, 'y': 0}
+                curr_pos = {"x": 0, "y": 0}
 
             return PointSort.sort_points_by_dist(points, curr_pos)
         else:
@@ -41,7 +42,9 @@ class PointSort():
         Returns:
             {list of Points} -- The sorted list of Celeryscript Point JSON objects (sets)
         """
-        points_sorted = sorted(points, key=lambda elem: (int(elem['x']), int(elem['y'])))
+        points_sorted = sorted(
+            points, key=lambda elem: (int(elem["x"]), int(elem["y"]))
+        )
         # log(points_sorted, title='sort_points')
 
         return points_sorted
@@ -49,8 +52,8 @@ class PointSort():
     @staticmethod
     def _distance(p1, p2):
         """ Calculate distance between two points """
-        dx = math.fabs(p1['x'] - p2['x'])
-        dy = math.fabs(p1['y'] - p2['y'])
+        dx = math.fabs(p1["x"] - p2["x"])
+        dy = math.fabs(p1["y"] - p2["y"])
         return math.hypot(dx, dy)
 
     @staticmethod
@@ -80,5 +83,8 @@ class PointSort():
             totalDist += nextDist
             path.append(cur)
 
-        log("{} points sorted, total distance is {}".format(len(path), totalDist), title="sort_points_by_dist")
+        log(
+            "{} points sorted, total distance is {}".format(len(path), totalDist),
+            title="sort_points_by_dist",
+        )
         return path
