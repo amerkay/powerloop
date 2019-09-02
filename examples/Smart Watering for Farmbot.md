@@ -3,20 +3,19 @@
 With the PowerLoop and Water Doser farmware installed, you can water each plant precisely.
 
 ### Check your Farmbot configurations
-> Make sure your Farmbot configurations are correct:
-> - check camera calibration offset x and y,
-> - Photos must align when enabled from the [farm designer](https://my.farm.bot/app/designer/plants) by toggling "Photos" on the right side. To take photos of entire planted area, use PowerLoops with grid_coverage_overlap set to 0. See [Automatic Farmbot Garden Selfie example](Automatic%20Farmbot%20Garden%20Selfie.md)
-> - The way to check is to move the Farmbot to the plant location and drop the z axis to plant level and see if the center of the UMT aligns with the center of the plant.
+Make sure your Farmbot configurations are correct:
+- check camera calibration offset x and y,
+- Photos must align when enabled from the [farm designer](https://my.farm.bot/app/designer/plants) by toggling "Photos" on the right side. To take photos of entire planted area, use PowerLoops with grid_coverage_overlap set to 0. See [Automatic Farmbot Garden Selfie example](Automatic%20Farmbot%20Garden%20Selfie.md)
+- The way to check is to move the Farmbot to the plant location and drop the z axis to plant level and see if the center of the UMT aligns with the center of the plant.
 
 ### Steps to configure
 
 1. Install ["PowerLoop"](https://github.com/amerkay/powerloop) AND ["Water Doser"](https://github.com/amerkay/water-doser) farmwares.
 
 2. Create new sequence `Run Water Doser` to execute Farmware `Water Doser` with the default parameters.
-> Hint: If you wish to use your own timed watering sequence, skip this step.
-
 ![Sequence Run Water Doser](http://i.imgur.com/2KHjLB7.png)
 *Fig. SWD: Water Dose Sequence with water-doser farmware*
+	> Hint: If you wish to use your own timed watering sequence, skip this step.
 
 3. Create new sequence `Water all plants` with:
 - Execute Sequence: `Pick up watering tool` (your own sequence)
