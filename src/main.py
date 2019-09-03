@@ -59,6 +59,7 @@ INPUT_DEFAULTS = {
     "grid_coverage_per_step": ("None", "xycoord"),
     "grid_coverage_offset": ("None", "xycoord"),
     "grid_coverage_overlap": (30, "int"),
+    "grid_coverage_summarize": (False, "bool"),
     "debug": (1, "int"),
 }
 
@@ -121,7 +122,7 @@ if __name__ == "__main__":
         points_plants = plants.load_points_with_filters()
 
         # Use plants loaded to choose grid waypoints, if overlap < 20, use basic waypoints
-        if input_store.input["grid_coverage_overlap"] >= 30:
+        if input_store.input["grid_coverage_summarize"] is True:
             waypoints = grid_points.calc_waypoints_summary(points_plants)
         else:
             waypoints = grid_points.calc_waypoints_basic(points_plants)

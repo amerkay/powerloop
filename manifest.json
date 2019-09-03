@@ -3,7 +3,7 @@
     "language": "python",
     "author": "amerkay",
     "description": "PowerLoop for Farmbot: Loop your farmbot by plants with search filters, or by automatic waypoint calculation to cover Plant search results grid area. Features include executing sequences and saving meta data. The code is as annotated as could be, so have a look at https://github.com/amerkay/powerloop/",
-    "version": "1.2.8",
+    "version": "1.2.9",
     "min_os_version_major": 6,
     "url": "https://raw.githubusercontent.com/amerkay/powerloop/master/manifest.json",
     "zip": "https://github.com/amerkay/powerloop/archive/master.zip",
@@ -200,12 +200,20 @@
     },
     {
         "name": "grid_coverage_overlap",
-        "label": "Grid coverage overlap. The overlap between coverage-area rectangles. Default 0. Max value 50%. If set to 30 or higher, waypoint summary mode with radius coverage will be used.",
+        "label": "Grid coverage overlap. The overlap between coverage-area rectangles. Default 0. Max value 75 (%).",
         "help": [
-            "Max is 50. If set to 30 or higher, summary mode will be used, see calc_waypoints_summary function.",
+            "Max is 75. If set to 30 or higher, summary mode will be used, see calc_waypoints_summary function.",
             "If you want to scan entire planted area without overlap, set to 0."
         ],
         "value": "0"
+    },
+    {
+        "name": "grid_coverage_summarize",
+        "label": "Grid coverage, summarize steps attempting to cover each Plant once at least. Default: False. If set True, waypoint summary mode with radius coverage will be used.",
+        "help": [
+            ""
+        ],
+        "value": "False"
     },
     {
         "name": "debug",

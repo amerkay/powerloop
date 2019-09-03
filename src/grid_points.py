@@ -23,6 +23,7 @@ class GridPoints:
         "grid_coverage_per_step": {"x": 250, "y": 250},
         "grid_coverage_offset": {"x": 0, "y": 0},
         "grid_coverage_overlap": 30,
+        "grid_coverage_summarize": False,
     }
 
     def __init__(self, farmwarename, config):
@@ -129,7 +130,7 @@ class GridPoints:
         if cover["x"] < 100 or cover["y"] < 100:
             raise Exception("coverage (x,y) cannot be less than 100,100")
 
-        if not (0 <= self.config["grid_coverage_overlap"] <= 50):
+        if not (0 <= self.config["grid_coverage_overlap"] <= 75):
             self.config["grid_coverage_overlap"] = 30
             log(
                 "Invalid value, resetting grid_coverage_overlap to default: {}".format(
