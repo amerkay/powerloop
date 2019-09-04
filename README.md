@@ -53,15 +53,15 @@ I tried to add as much comments and documentation within the files, as well as c
 
 Automate taking photos/weed detecion of your plants with the least number of waypoints to visit. You can run it in two different modes: basic and summary. [Tutorial here](./examples/Automatic%20Farmbot%20Garden%20Selfie.md).
 
-#### Basic grid coverage with overlap < 30, only uses the plant's point (no radius)
+#### Basic grid coverage with grid_coverage_summarize = False, only uses the plant's point (no radius)
 
-![Selfie with overlap=0, excluding any steps that cover no plant points](http://i.imgur.com/oetvubR.png)
-*Fig. ST0: Selfie with coverage area=(400,400) and overlap=0. Python test file output with matplotlib. See /test/ directory*
+![Selfie with overlap=0, grid_coverage_summarize = False, excluding any steps that cover no plant points](http://i.imgur.com/oetvubR.png)
+*Fig. ST0: Selfie with coverage area=(400,400), grid_coverage_summarize = False, and overlap=0. Python test file output with matplotlib. See /test/ directory*
 
-#### Summary grid coverage with overlap >= 30, takes plant radius into consideration
+#### Summary grid coverage with grid_coverage_summarize = True, takes plant radius into consideration
 
-![Selfie with overlap=30, taking into consideration each plant's radius](http://i.imgur.com/rnHEVJ1.png)
-*Fig. ST30: Selfie with coverage area=(400,400) and overlap=30. Python test file output with matplotlib. See /test/ directory*
+![Selfie with overlap=30, grid_coverage_summarize = True, taking into consideration each plant's radius](http://i.imgur.com/rnHEVJ1.png)
+*Fig. ST30: Selfie with coverage area=(400,400), grid_coverage_summarize = True, and overlap=30. Python test file output with matplotlib. See /test/ directory*
 
 
 ## Example 2: [Water all Farmbot plants](./examples/Smart%20Watering%20for%20Farmbot.md) using 'Water Doser' farmware
@@ -71,3 +71,7 @@ Alternatively, you can have your own watering sequence. [Tutorial here](./exampl
 
 ![Travelling Salesman Solution](tsp_greedy_farmware_screenshot.jpg)
 *Fig. TSP: Travelling Salesman Solution for moving between the resulting filtered list of plants (default behavior)*
+
+## More examples and notes:
+
+- [Calibrating Farmbot Camera for precision](./examples/Calibrating%20Farmbot%20Camera%20for%20precision.md), with an example on how to setup to shoot weeds with the water output (without the watering tool).
