@@ -24,15 +24,17 @@ After you've installed PowerLoop on your device ([see README](../README.md)), do
 
 A Selfie of only areas with plants.
 
-#### Selfie with overlap=0, choosing only rectangles with plants in them:
+#### Selfie with overlap=0, grid_coverage_summarize = False:
+
+Choosing only rectangles/steps with plants in them (points only):
 
 ![Selfie with overlap=0, choosing only rectangles with plants in them](http://i.imgur.com/7epQ6ja.png)
 *Fig. P0: Selfie with overlap=0*
 
-#### Selfie with overlap=30:
-Overlap >= 30 automatically switches to using plant radius and covering each plant including once at least.
+#### Selfie with overlap=30, grid_coverage_summarize = True:
+Overlap = 30, grid_coverage_summarize = True to enable using plant radius and covering each plant once.
 
-![Selfie with overlap=30, taking into consideration plant radius](http://i.imgur.com/jpcPl1J.png)
+![Selfie with overlap=30, grid_coverage_summarize = True, taking into consideration plant radius](http://i.imgur.com/jpcPl1J.png)
 *Fig. P30: Selfie with overlap=30*
 
 
