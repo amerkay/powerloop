@@ -157,6 +157,8 @@ if __name__ == "__main__":
         )
         raise Exception(e)
 
-    # shutdown executor
+    # shutdown executors
     executor.shutdown()
+
     log("End", message_type="success", title=FARMWARE_NAME)
+    Logger.shutdown()
