@@ -15,7 +15,7 @@ Go to [My Farmbot -> Farmware](https://my.farm.bot/app/farmware/), then paste th
 https://raw.githubusercontent.com/amerkay/powerloop/master/manifest_v2.json
 ```
 
-> Please report bugs using the [issues tab](issues/).
+> Please report bugs using the [issues tab](../../issues/).
 
 
 #### For Farmbot OS 6 and 7
