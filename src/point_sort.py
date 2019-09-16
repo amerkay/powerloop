@@ -52,8 +52,8 @@ class PointSort:
     @staticmethod
     def _distance(p1, p2):
         """ Calculate distance between two points """
-        dx = math.fabs(int(p1["x"]) - int(p2["x"]))
-        dy = math.fabs(int(p1["y"]) - int(p2["y"]))
+        dx = math.fabs(int(float(p1["x"])) - int(float(p2["x"])))
+        dy = math.fabs(int(float(p1["y"])) - int(float(p2["y"])))
         return math.hypot(dx, dy)
 
     @staticmethod
