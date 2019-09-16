@@ -16,7 +16,6 @@ Variables:
 """
 
 import re
-from simple_cache import SimpleCache as cache
 
 from datetime import datetime as dt
 from farmware_tools import app
@@ -93,6 +92,8 @@ class Plants:
         return points_out
 
     def _get_points_cached(self):
+        from simple_cache import SimpleCache as cache
+
         cache_id = "plants-search"
         lifetime = 15 * 60
 
