@@ -10,7 +10,7 @@
     "zip": "https://github.com/amerkay/powerloop/archive/master.zip",
     "executable": "python",
     "args": "powerloop-master/src/main.py",
-    "config": 
+    "config": {
     {
         "name": "filter_pointname",
         "label": "Filter by plant name, case insensitive. 'aru' matches 'Arugula', * for all.",
@@ -227,4 +227,5 @@
         ],
         "value": 1
     }
+   }
 }
