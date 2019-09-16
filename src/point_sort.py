@@ -28,8 +28,6 @@ class PointSort:
             if curr_pos is None:
                 curr_pos = {"x": 0, "y": 0}
 
-            log("curr_pos is {}".format(curr_pos), title="sort_points")
-
             return PointSort.sort_points_by_dist(points, curr_pos)
         else:
             return PointSort.sort_points_basic(points)
@@ -54,16 +52,9 @@ class PointSort:
     @staticmethod
     def _distance(p1, p2):
         """ Calculate distance between two points """
-        try:
-            dx = math.fabs(p1["x"] - p2["x"])
-            dy = math.fabs(p1["y"] - p2["y"])
-            return math.hypot(dx, dy)
-        except Exception as e:
-            log(
-                "error in _distance (p1 {}, p2 {}): {}".format(p1, p2, e),
-                "error",
-                title="sort_points",
-            )
+        dx = math.fabs(int(p1["x"]) - int(p2["x"]))
+        dy = math.fabs(int(p1["y"]) - int(p2["y"]))
+        return math.hypot(dx, dy)
 
     @staticmethod
     def sort_points_by_dist(points, start_point):
