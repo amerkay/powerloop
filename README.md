@@ -2,8 +2,6 @@
 
 Loop your Farmbot by plants with filters, or by automatic waypoint calculation to cover plant search results grid area.
 
-> FARMBOT_OS 6. Tested only on 7.0.1 for now. Should work on v6. Please open an [issue](../../issues) with any problems.
-
 > Originally forked from [Loop-Plants-With-Filters](https://github.com/rdegosse/Loop-Plants-With-Filters), thank you @rdegosse!
 
 ![Selfie with overlap=30, taking into consideration plant radius](http://i.imgur.com/jpcPl1J.png)
@@ -11,6 +9,16 @@ Loop your Farmbot by plants with filters, or by automatic waypoint calculation t
 
 ## Installation
 
+#### For Farmbot OS 8 ***(new)***
+Go to [My Farmbot -> Farmware](https://my.farm.bot/app/farmware/), then paste the manifest.json path to install:
+```
+https://raw.githubusercontent.com/amerkay/powerloop/master/manifest_v2.json
+```
+
+> Please report bugs using the [issues tab](issues/).
+
+
+#### For Farmbot OS 6 and 7
 Go to [My Farmbot -> Farmware](https://my.farm.bot/app/farmware/), then paste the manifest.json path to install:
 ```
 https://raw.githubusercontent.com/amerkay/powerloop/master/manifest.json
