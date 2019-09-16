@@ -3,158 +3,242 @@
     "language": "python",
     "author": "amerkay",
     "description": "PowerLoop for Farmbot: Loop your farmbot by plants with search filters, or by automatic waypoint calculation to cover Plant search results grid area. Features include executing sequences and saving meta data.",
-    "package_version": "1.2.9",
+    "package_version": "1.2.10",
     "farmware_manifest_version": "2.0.0",
     "farmbot_os_version_requirement": ">= 8.0.0",
-    "url": "https://raw.githubusercontent.com/AscendFB/powerloop/master/manifest.json",
-    "zip": "https://github.com/AscendFB/powerloop/archive/master.zip",
+    "url": "https://raw.githubusercontent.com/amerkay/powerloop/master/manifest.json",
+    "zip": "https://github.com/amerkay/powerloop/archive/master.zip",
     "executable": "python",
     "args": "powerloop-master/src/main.py",
-    "config": {
-    "1":{
-        "name": "filter_pointname",
-        "label": "Filter by plant name, case insensitive. 'aru' matches 'Arugula', * for all.",
-        "value": "*"
-    },
-    "2":{
-        "name": "filter_openfarm_slug",
-        "label": "Filter by Openfarm slug name, case insensitive. 'aru' matches 'Arugula', * for all.",
-        "value": "*"
-    },
-    "3":{
-        "name": "filter_age_min_day",
-        "label": "Filter by plant age (minimum days)",
-        "value": "-1"
-    },
-    "4":{
-        "name": "filter_age_max_day",
-        "label": "Filter by plant age (maximum days)",
-        "value": "36500"
-    },
-    "5":{
-        "name": "filter_meta_key",
-        "label": "Filter by meta data : key",
-        "value": "None"
-    },
-    "6":{
-        "name": "filter_meta_op",
-        "label": "Filter by meta data : operator (==,!=,>,<,>=,<=,regex,daysmin,daysmax,minutesmin,minutesmax)",
-        "value": "=="
-    },
-    "7":{
-        "name": "filter_meta_value",
-        "label": "Filter by meta data : value",
-        "value": "None"
-    },
-    "8":{
-        "name": "filter_plant_stage",
-        "label": "Filter by plant stage (Allowed: None, planned, planted, sprouted, harvested). Multiple allowed comma separated.",
-        "value": "None"
-    },
-    "9":{
-        "name": "filter_min_x",
-        "label": "Filter by coordinates - Min X",
-        "value": "None"
-    },
-    "10":{
-        "name": "filter_max_x",
-        "label": "Filter by coordinates - Max X",
-        "value": "None"
-    },
-    "11":{
-        "name": "filter_min_y",
-        "label": "Filter by coordinates - Min Y",
-        "value": "None"
-    },
-    "12":{
-        "name": "filter_max_y",
-        "label": "Filter by coordinates - Max Y",
-        "value": "None"
-    },
-    "13":{
-        "name": "sequence_init",
-        "label": "Init Sequences, one-time execution. Eg. 'SeqName1, SeqName2'",
-        "value": "None"
-    },
-    "14":{
-        "name": "sequence_beforemove",
-        "label": "Sequences Before Next Move, for each plant. Eg. 'SeqName1, SeqName2'",
-        "value": "None"
-    },
-    "15":{
-        "name": "sequence_aftermove",
-        "label": "Sequences After Move, for each plant. Eg. 'SeqName1, SeqName2'",
-        "value": "None"
-    },
-    "16":{
-        "name": "sequence_end",
-        "label": "End Sequences, one-time execution. Eg. 'SeqName1, SeqName2'",
-        "value": "None"
-    },
-    "17":{
-        "name": "save_meta_key",
-        "label": "Save in meta data : key",
-        "value": "None"
-    },
-    "18":{
-        "name": "save_meta_value",
-        "label": "Save in meta data : value (str / #NOW#)",
-        "value": "None"
-    },
-    "19":{
-        "name": "save_plant_stage",
-        "label": "Set plant stage (None, planned, planted, sprouted, harvested)",
-        "value": "None"
-    },
-    "20":{
-        "name": "move_offset_x",
-        "label": "Offset X value when moving - (integer, randint(i,j))",
-        "value": 0
-    },
-    "21":{
-        "name": "move_offset_y",
-        "label": "Offset Y value when moving - (integer, randint(i,j))",
-        "value": 0
-    },
-    "22":{
-        "name": "move_z",
-        "label": "Default Z axis value when moving",
-        "value": 0
-    },
-    "23":{
-        "name": "move_speed",
-        "label": "Default speed value when moving. Percent of max speed (1-100)",
-        "value": 100
-    },
-    "24":{
-        "name": "use_simple_sort",
-        "label": "Use simple X, Y sort instead of Travelling Salesman Problem Greedy algorithm to optimize route? If 'False' (default), no quotes, TSP Greedy Algorithm will be used.",
-        "value": "False"
-    },
-    "25":{
-        "name": "grid_coverage_per_step",
-        "label": "Grid coverage (x, y) per step. None to disable (default), set to enable. E.g camera fov '(220, 310)'. When used, no point data will be saved.",
-        "value": "None"
-    },
-    "26":{
-        "name": "grid_coverage_offset",
-        "label": "Grid coverage offset (x, y) from center. Default (0,0), set to enable. E.g camera is offset '(50, 100)'.",
-        "value": "(0,0)"
-    },
-    "27":{
-        "name": "grid_coverage_overlap",
-        "label": "Grid coverage overlap. The overlap between coverage-area rectangles. Default 0. Max value 75 (%).",
-        "value": "0"
-    },
-    "28":{
-        "name": "grid_coverage_summarize",
-        "label": "Grid coverage, summarize steps attempting to cover each Plant once at least. Default: False. If set True, waypoint summary mode with radius coverage will be used.",
-        "value": "False"
-    },
-    "29":{
-        "name": "debug",
-        "label": "Debug mode (0-> No FW debug msg, 1-> FW debug msg (default), 2-> No move/exec - do save point data, 3-> simulation, log only)",
-        "value": 1
+    "config":
+    {
+        "1":
+        {
+            "name": "filter_pointname",
+            "label": "Filter by plant name, case insensitive. 'aru' matches 'Arugula', * for all.",
+            "help": ["Uses string contains. "],
+            "value": "*"
+        },
+        "2":
+        {
+            "name": "filter_openfarm_slug",
+            "label": "Filter by Openfarm slug name, case insensitive. 'aru' matches 'Arugula', * for all.",
+            "value": "*"
+        },
+        "3":
+        {
+            "name": "filter_age_min_day",
+            "label": "Filter by plant age (minimum days)",
+            "value": "-1"
+        },
+        "4":
+        {
+            "name": "filter_age_max_day",
+            "label": "Filter by plant age (maximum days)",
+            "value": "36500"
+        },
+        "5":
+        {
+            "name": "filter_meta_key",
+            "label": "Filter by meta data : key",
+            "value": "None"
+        },
+        "6":
+        {
+            "name": "filter_meta_op",
+            "label": "Filter by meta data : operator (==,!=,>,<,>=,<=,regex,daysmin,daysmax,minutesmin,minutesmax)",
+            "help": [
+                " Default: '==' equals (numeric/string)",
+                " '!=' different (numeric/string)",
+                " '>' superior (numeric)",
+                " '<' inferior (numeric)",
+                " '>=' superior or equal (numeric)",
+                " '<=' inferior or equal (numeric)",
+                " 'regex' regular expression",
+                " 'daysmin' minimum days number from now to include plant (datetime)",
+                " 'daysmax' maximum days number from now to include plant (datetime)",
+                " 'minutesmin' minimum minutes number from now to include plant (datetime)",
+                " 'minutesmax' maximum minutes number from now to include plant (datetime)."
+            ],
+            "value": "=="
+        },
+        "7":
+        {
+            "name": "filter_meta_value",
+            "label": "Filter by meta data : value",
+            "value": "None"
+        },
+        "8":
+        {
+            "name": "filter_plant_stage",
+            "label": "Filter by plant stage (Allowed: None, planned, planted, sprouted, harvested). Multiple allowed comma separated.",
+            "help": ["Eg: 'planted, sprouted', no quotes."],
+            "value": "None"
+        },
+        "9":
+        {
+            "name": "filter_min_x",
+            "label": "Filter by coordinates - Min X",
+            "value": "None"
+        },
+        "10":
+        {
+            "name": "filter_max_x",
+            "label": "Filter by coordinates - Max X",
+            "value": "None"
+        },
+        "11":
+        {
+            "name": "filter_min_y",
+            "label": "Filter by coordinates - Min Y",
+            "value": "None"
+        },
+        "12":
+        {
+            "name": "filter_max_y",
+            "label": "Filter by coordinates - Max Y",
+            "value": "None"
+        },
+        "13":
+        {
+            "name": "sequence_init",
+            "label": "Init Sequences, one-time execution. Eg. 'SeqName1, SeqName2'",
+            "help": [
+                "Default: 'None' -> no execute sequence",
+                "Sequence name matched using equals, case-insensitive.",
+                "Can be an ordered list of sequences with ',' seperator. Eg. 'Seq1,Seq2,...'"
+            ],
+            "value": "None"
+        },
+        "14":
+        {
+            "name": "sequence_beforemove",
+            "label": "Sequences Before Next Move, for each plant. Eg. 'SeqName1, SeqName2'",
+            "help": [
+                "Default: 'None' -> no execute sequence",
+                "Sequence name matched using equals, case-insensitive.",
+                "Can be an ordered list of sequences with ',' seperator. Eg. 'Seq1,Seq2,...'"
+            ],
+            "value": "None"
+        },
+        "15":
+        {
+            "name": "sequence_aftermove",
+            "label": "Sequences After Move, for each plant. Eg. 'SeqName1, SeqName2'",
+            "help": [
+                "Default: 'None' -> no execute sequence",
+                "Sequence name matched using equals, case-insensitive.",
+                "Can be an ordered list of sequences with ',' seperator. Eg. 'Seq1,Seq2,...'"
+            ],
+            "value": "None"
+        },
+        "16":
+        {
+            "name": "sequence_end",
+            "label": "End Sequences, one-time execution. Eg. 'SeqName1, SeqName2'",
+            "help": [
+                "Default: 'None' -> no execute sequence",
+                "Sequence name matched using equals, case-insensitive.",
+                "Can be an ordered list of sequences with ',' seperator. Eg. 'Seq1,Seq2,...'"
+            ],
+            "value": "None"
+        },
+        "17":
+        {
+            "name": "save_meta_key",
+            "label": "Save in meta data : key",
+            "value": "None"
+        },
+        "18":
+        {
+            "name": "save_meta_value",
+            "label": "Save in meta data : value (str / #NOW#)",
+            "value": "None"
+        },
+        "19":
+        {
+            "name": "save_plant_stage",
+            "label": "Set plant stage (None, planned, planted, sprouted, harvested)",
+            "help": ["If planted, 'planted_at' property is changed to now UTC (like web app)"],
+            "value": "None"
+        },
+        "20":
+        {
+            "name": "move_offset_x",
+            "label": "Offset X value when moving - (integer, randint(i,j))",
+            "help": ["Optional: set to 'randint(i,j)' no quotes, returns a random integer N such that i <= N <= j."],
+            "value": 0
+        },
+        "21":
+        {
+            "name": "move_offset_y",
+            "label": "Offset Y value when moving - (integer, randint(i,j))",
+            "value": 0
+        },
+        "22":
+        {
+            "name": "move_z",
+            "label": "Default Z axis value when moving",
+            "value": 0
+        },
+        "23":
+        {
+            "name": "move_speed",
+            "label": "Default speed value when moving. Percent of max speed (1-100)",
+            "value": 100
+        },
+        "24":
+        {
+            "name": "use_simple_sort",
+            "label": "Use simple X, Y sort instead of Travelling Salesman Problem Greedy algorithm to optimize route? If 'False' (default), no quotes, TSP Greedy Algorithm will be used.",
+            "help": ["Default: False -> Use simple sort(x,y) rather than travelling salesman greedy solution. See README, Fig. 1."],
+            "value": "False"
+        },
+        "25":
+        {
+            "name": "grid_coverage_per_step",
+            "label": "Grid coverage (x, y) per step. None to disable (default), set to enable. E.g camera fov '(220, 310)'. When used, no point data will be saved.",
+            "help": [
+                "Default: 'None' to disable grid coverage. Min value (100, 100). Uses the default plant search and filter for the points data.",
+                "Grid coverage (x, y) per step. E.g for camera field of view enter '(220, 310)', no quotes, depending on your z axis height for camera FoV. If set it uses the results of Plant filtering, then calculates waypoints based on grid_coverage_per_step value.",
+                "Min is (100, 100) otherwise plant radius won't fit, and it will fail."
+            ],
+            "value": "None"
+        },
+        "26":
+        {
+            "name": "grid_coverage_offset",
+            "label": "Grid coverage offset (x, y) from center. Default (0,0), set to enable. E.g camera is offset '(50, 100)'.",
+            "help": ["Max is 50% of the grid_coverage_per_step"],
+            "value": "(0,0)"
+        },
+        "27":
+        {
+            "name": "grid_coverage_overlap",
+            "label": "Grid coverage overlap. The overlap between coverage-area rectangles. Default 0. Max value 75 (%).",
+            "help": [
+                "Max is 75. If set to 30 or higher, summary mode will be used, see calc_waypoints_summary function.",
+                "If you want to scan entire planted area without overlap, set to 0."
+            ],
+            "value": "0"
+        },
+        "28":
+        {
+            "name": "grid_coverage_summarize",
+            "label": "Grid coverage, summarize steps attempting to cover each Plant once at least. Default: False. If set True, waypoint summary mode with radius coverage will be used.",
+            "value": "False"
+        },
+        "29":
+        {
+            "name": "debug",
+            "label": "Debug mode (0-> No FW debug msg, 1-> FW debug msg (default), 2-> No move/exec - do save point data, 3-> simulation, log only)",
+            "help": [
+                "0 -> no farmware debug log",
+                "1 -> farmware debug log",
+                "2 -> no move, no execute sequences. Do save point data and farmware debug log",
+                "3 -> simulation mode. No move, no execute sequence, no save meta data. Enable farmware debug log"
+            ],
+            "value": 1
+        }
     }
-   }
 }
