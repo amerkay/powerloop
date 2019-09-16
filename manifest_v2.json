@@ -3,7 +3,7 @@
     "language": "python",
     "author": "amerkay",
     "description": "PowerLoop for Farmbot: Loop your farmbot by plants with search filters, or by automatic waypoint calculation to cover Plant search results grid area. Features include executing sequences and saving meta data.",
-    "package_version": "1.2.13",
+    "package_version": "1.2.14",
     "farmware_manifest_version": "2.0.0",
     "farmbot_os_version_requirement": ">= 8.0.0",
     "url": "https://raw.githubusercontent.com/amerkay/powerloop/master/manifest_v2.json",
