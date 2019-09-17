@@ -8,7 +8,7 @@ class Logger:
 
     # Start a concurrent task executor, with pool size 4
     # Example at doc @ https://docs.python.org/3/library/concurrent.futures.html
-    executor = concurrent.futures.ProcessPoolExecutor(max_workers=4)
+    executor = concurrent.futures.ProcessPoolExecutor(max_workers=1)
 
     @staticmethod
     def set_level(level):
